@@ -1,0 +1,26 @@
+section{
+    background-color: white;
+    display: flex;
+    width:100%;
+    justify-content: center;
+    padding-bottom: 10px;
+}
+
+section .board{
+    width: 100%;
+    align-items: center;
+}
+
+.title{
+    border-bottom: solid #ccc;
+    border-width: 0.1px;
+    padding: 8px;
+    font-size: 2rem;
+}
+
+.stiky-notes-container{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
