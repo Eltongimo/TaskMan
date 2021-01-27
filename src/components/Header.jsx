@@ -11,10 +11,12 @@ export default props =>
           </a>
           </div>
           <div className='search-input'>
-               <input type='text' placeholder='search'/>
+                <div class="form-outline">
+                    <input type="search" id="form1" class="form-control" placeholder="Search..."/>
+               </div>    
           </div>
           <div className='logo'>
-               Task Manager System
+               <h3>TMS</h3>
           </div>
           <div className='icons'>
                <div className='information-icon'>
