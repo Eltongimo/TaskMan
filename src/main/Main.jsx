@@ -10,7 +10,8 @@ export default props =>
     <div className='main'>
         <Header></Header>
         <div className='main-content'>
-            <Menu></Menu>
+            <Menu>
+            </Menu>
             <Board>
             </Board>
         </div>

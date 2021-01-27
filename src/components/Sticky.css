@@ -8,12 +8,16 @@
     display:flex;
     border: solid #ccc 0.1px;
     padding: 20px;
-    margin-top: 20px;
+    margin: 20px 0px 20px 0px;
     width: 15rem;
+    height: 50vh;;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-radius: 12px;
 }
 
 .sticky-notes:hover{
-    background-color: red;
+    transform: scale(1.1);
+    background-color: white;
 }
 
 .header{
@@ -27,8 +31,4 @@
 
 a{
     padding: 10px
-}
-
-a:hover{
-    font-size: 1.5rem;
 }

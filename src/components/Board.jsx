@@ -11,7 +11,7 @@ function content(){
 }
 
 export default props =>
-        <section className='shadow-sm p-3 mb-5 rounded'>
+        <section >
             <div className='board'>
                 <div className='title'> 
                     <i class="bi bi-clipboard"></i>
