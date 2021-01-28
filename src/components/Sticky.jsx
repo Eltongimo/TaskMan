@@ -3,8 +3,32 @@ import './Sticky.css'
 
 /*This elements mus come from Backend in very short future*/
 
-function getElementsForStickyNotes(){
+function getTaskElements(elements, leftArrow, rightArrow, deleteButton){
+    
+    let result = []
 
+    for (let element in elements){
+        result.push(
+            <div className='icon-container'>
+                <div className='taskDescription'>
+                    {elements[element]}
+                </div>
+                
+                <div className='leftArrow'>
+                    <i className={leftArrow}></i>
+                </div>
+            
+                <div className='rightArrow'>
+                    <i className={rightArrow}></i>
+                </div>
+
+                <div className='deleteItem'>
+                    <i className='bi bi-trash'></i>
+                </div>
+        </div>
+        )
+    }
+    return result
 }
 
 export default props =>
@@ -13,24 +37,13 @@ export default props =>
             <div className='header'>
                 {props.header}      
                 <a href="#">
-                    <i class="bi bi-plus-square"></i>
+                    <i className="bi bi-plus-square"></i>
                 </a>        
             </div>
             <div className='content'>
-              
-                <div className='icon-container'>
-                    
-                    <div className='leftArrow'>
-                        <i className={props.leftArrow}></i>
-                    </div>
-                    <div className='rightArrow'>
-                        <i class={props.rightArrow}></i>
-                    </div>
-
-                    <div className='deleteItem'>
-                        <i class={props.deleteItem}></i>
-                    </div>
-                </div>
+            {getTaskElements(props.content,
+                            props.leftArrow,
+                            props.rigthArrow)}
             </div>
         </div>
     </div>

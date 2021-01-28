@@ -1,3 +1,6 @@
+div p{
+    margin: 0;
+}
 
 .header-container{
     display: flex;
@@ -10,9 +13,10 @@
     padding: 20px;
     margin: 20px 0px 20px 0px;
     width: 15rem;
-    height: 50vh;;
+    height: 50vh;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     border-radius: 12px;
+    overflow: hidden;
 }
 
 .sticky-notes:hover{
@@ -32,3 +36,40 @@
 a{
     padding: 10px
 }
+
+
+.icon-container{
+    display:flex;
+    padding: 5px;
+}
+
+.taskDescription{
+    width: 70%;
+}
+
+.leftArrow{
+    width: 10%;
+}
+
+.rightArrow{
+    width:10%;
+}
+
+.deleteItem{
+    width: 10%;
+}
+
+.icon-container:hover{
+    border-bottom: #ccc 0.5px solid;
+}
+
+.bi-arrow-bar-left:hover, .bi-arrow-bar-right:hover{
+    cursor: pointer;
+    color: blue;
+}
+
+.bi-trash:hover{
+    cursor: pointer;
+    color: red;
+}
+

@@ -1,7 +1,13 @@
 
 a{
-    color: black;
     text-decoration: none;
+    list-style: none;
+    color:black;
+}
+
+.icons.a:hover{
+    color: black;
+    background-color: green;
 }
 
 header{   
@@ -15,6 +21,7 @@ header{
     box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
     border-bottom: 12px;
     border-radius: 5px;
+    color: white;
 }
 
 header .home{
@@ -34,7 +41,10 @@ header .search-input{
 
 header .logo{
     margin-left: 20px;
+}
 
+h3{
+    color: white;
 }
 
 header .icons{
