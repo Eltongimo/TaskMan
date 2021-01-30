@@ -21,7 +21,6 @@ div p{
 
 .sticky-notes:hover{
     transform: scale(1.1);
-    background-color: white;
 }
 
 .header{
@@ -61,6 +60,7 @@ a{
 
 .icon-container:hover{
     border-bottom: #ccc 0.5px solid;
+    cursor: pointer;
 }
 
 .bi-arrow-bar-left:hover, .bi-arrow-bar-right:hover{

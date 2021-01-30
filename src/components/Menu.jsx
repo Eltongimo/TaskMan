@@ -1,12 +1,25 @@
 import React from 'react'
 import './Menu.css'
+import { Route, Link} from 'react-router-dom'
+
+import Sticky from './Sticky'
+
+
 
 export default props =>
-    <nav >
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/myboard">Board</a></li>
-            <li><a href="/mycards">Cards</a></li>
-            <li><a href="/mytasks">Tasks</a></li>
-        </ul>
-    </nav>
+    <div className='navigation'>
+        <nav >
+            <ul>
+                <li>
+                    <Link to="/" exact> 
+                        Home
+                    </Link></li>
+                <li>
+                    <Link to="/mytasks" exact>
+                        Tasks   
+                    </Link>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    

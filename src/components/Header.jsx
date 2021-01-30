@@ -6,7 +6,6 @@ export default props =>
           <div className="home">
                <a href='/'>
                     <i class="bi bi-house-door-fill" style={{'cursor':'pointer','fontSize': '2rem', 'color': 'white'}}></i>
-                    
                </a>
           </div>
           <div className='search-input'>
@@ -15,7 +14,7 @@ export default props =>
                </div>    
           </div>
           <div className='logo'>
-               <h3>TMS</h3>
+               <h1>TMS</h1>
           </div>
           <div className='icons'>
                <div className='information-icon'>

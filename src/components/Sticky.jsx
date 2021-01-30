@@ -3,7 +3,7 @@ import './Sticky.css'
 
 /*This elements mus come from Backend in very short future*/
 
-function getTaskElements(elements, leftArrow, rightArrow, deleteButton){
+function getTaskElements(elements, leftArrow, rightArrow){
     
     let result = []
 

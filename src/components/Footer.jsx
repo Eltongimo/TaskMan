@@ -2,6 +2,6 @@ import React from 'react'
 import './Footer.css'
 
 export default props =>
-   <footer>
-       Developed by Elton Gimo
+   <footer style={{"color": "white"}}>
+       <span>Developed by Elton Gimo</span>
    </footer>
