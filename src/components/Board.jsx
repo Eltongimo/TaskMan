@@ -1,5 +1,6 @@
 import './Board.css'
 import  Sticky from './Sticky'
+import Report from './Report'
 import React from 'react'
 
 import {Switch, Route} from 'react-router-dom'
@@ -9,16 +10,20 @@ function content(){
 }
 
 export default props =>
-        <section >
+        <section className='container'>
             <div className='board'>
                 <div className='title'> 
                     <i className="bi bi-clipboard"></i>
                         My Board
                 </div>
 
-
                 <div className='stiky-notes-container'>
                     <Switch>
+
+                    <Route path='/report' exact>
+                            <Report/>
+                        </Route>
+                        
                         <Route path='' exact>
                             <Sticky header='Items' content={content()}
                                 leftArrow=''
@@ -35,10 +40,7 @@ export default props =>
                                 rigthArrow=''
                             />
                         </Route>
-
-                        <Route >
-                            
-                        </Route>
+                        
                     </Switch>
                 </div>
             </div>

@@ -15,7 +15,7 @@ export default props =>
                         Home
                     </Link></li>
                 <li>
-                    <Link to="/mytasks" exact>
+                    <Link to="/report" exact>
                         Tasks   
                     </Link>
                 </li>
