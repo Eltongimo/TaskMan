@@ -6,14 +6,103 @@ import React from 'react'
 export default props =>
     <div className='table-container'>
         <div className='header-container'>
-            <div className='header'>Task</div>
-            <div className='header'>Status</div>
-            <div className='header'>Start Date</div>
-            <div className='header'>End Date</div>
-            <div className='header'>Performance</div>
+            <div className='report-header'>Task</div>
+            <div className='report-header'>Status</div>
+            <div className='report-header'>Start Date</div>
+            <div className='report-header'>End Date</div>
+            <div className='report-header'>Performance</div>
         </div>
         
         <div className='rows-container'>
+            <div className='rows-report'>
+                <div className='colmns-report'>
+                    <ul>
+                        <li>
+                            Lorem ipsum dolor sit amet.
+                        </li>
+                        <li>
+                            Lorem ipsum dolor sit amet.
+                        </li>
+                        <li>
+                            Lorem ipsum dolor sit amet.
+                        </li>
+                        <li>
+                            Lorem ipsum dolor sit amet.
+                        </li>
+                        <li>
+                            Lorem ipsum dolor sit amet.
+                        </li>
+                    </ul>
+                </div>
+            </div>
 
+            <div className='rows-report'>
+                <div className='colmns-report'>
+                    <ul>
+                        <li>
+                            Lorem ipsum dolor sit amet.
+                        </li>
+                        <li>
+                            Lorem ipsum dolor sit amet.
+                        </li>
+                        <li>
+                            Lorem ipsum dolor sit amet.
+                        </li>
+                        <li>
+                            Lorem ipsum dolor sit amet.
+                        </li>
+                        <li>
+                            Lorem ipsum dolor sit amet.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div className='rows-report'>
+                <div className='colmns-report'>
+                    <ul>
+                        <li>
+                            Lorem ipsum dolor sit amet.
+                        </li>
+                        <li>
+                            Lorem ipsum dolor sit amet.
+                        </li>
+                        <li>
+                            Lorem ipsum dolor sit amet.
+                        </li>
+                        <li>
+                            Lorem ipsum dolor sit amet.
+                        </li>
+                        <li>
+                            Lorem ipsum dolor sit amet.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div className='rows-report'>
+                <div className='colmns-report'>
+                    <ul>
+                        <li>
+                            Lorem ipsum dolor sit amet.
+                        </li>
+                        <li>
+                            Lorem ipsum dolor sit amet.
+                        </li>
+                        <li>
+                            Lorem ipsum dolor sit amet.
+                        </li>
+                        <li>
+                            Lorem ipsum dolor sit amet.
+                        </li>
+                        <li>
+                            Lorem ipsum dolor sit amet.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            
         </div>
     </div>
+           
