@@ -16,6 +16,7 @@
     flex-direction: row;
     flex-wrap: nowrap;
     padding: 10px;
+    border-bottom: solid #ccc 2px;
 }
 
 

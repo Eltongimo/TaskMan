@@ -1,8 +1,23 @@
 import './Report.css'
 import React from 'react'
+import axios from 'axios'
+
 /*
     O header pode ser melhorado ...
 */
+
+const baseUrl = "http://localhost:3001/tasks"
+
+function getData(){
+
+    axios.get(baseUrl)
+        .then((response) =>{
+            console.log(response.data);
+        })
+}
+
+getData()
+
 export default props =>
     <div className='table-container'>
         <div className='header-container'>
@@ -57,52 +72,6 @@ export default props =>
                     </ul>
                 </div>
             </div>
-
-            <div className='rows-report'>
-                <div className='colmns-report'>
-                    <ul>
-                        <li>
-                            Lorem ipsum dolor sit amet.
-                        </li>
-                        <li>
-                            Lorem ipsum dolor sit amet.
-                        </li>
-                        <li>
-                            Lorem ipsum dolor sit amet.
-                        </li>
-                        <li>
-                            Lorem ipsum dolor sit amet.
-                        </li>
-                        <li>
-                            Lorem ipsum dolor sit amet.
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <div className='rows-report'>
-                <div className='colmns-report'>
-                    <ul>
-                        <li>
-                            Lorem ipsum dolor sit amet.
-                        </li>
-                        <li>
-                            Lorem ipsum dolor sit amet.
-                        </li>
-                        <li>
-                            Lorem ipsum dolor sit amet.
-                        </li>
-                        <li>
-                            Lorem ipsum dolor sit amet.
-                        </li>
-                        <li>
-                            Lorem ipsum dolor sit amet.
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            
         </div>
     </div>
            
