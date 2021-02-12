@@ -1,77 +1,44 @@
 import './Report.css'
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import axios from 'axios'
+import TaskRow from './TaskRow'
+const baseUrl = 'http://localhost:3001/tasks'
 
-/*
-    O header pode ser melhorado ...
-*/
 
-const baseUrl = "http://localhost:3001/tasks"
+function GetData(){
+    const [rows, setRows] = useState([])
 
-function getData(){
+    useEffect(() => axios.get(baseUrl)
+                        .then( (response) => setRows(response.data))
+    ,[])
 
-    axios.get(baseUrl)
-        .then((response) =>{
-            console.log(response.data);
-        })
+    return (
+                rows.map((item,index) => <TaskRow name={item.name}
+                                 startDate = {item.startDate} 
+                                 endDate = {item.endDate}
+                                 status = {item.status}
+                                 performance = {item.performance} 
+                                 key={index}
+                            />
+                )
+            )
 }
 
-getData()
-
-export default props =>
-    <div className='table-container'>
-        <div className='header-container'>
-            <div className='report-header'>Task</div>
-            <div className='report-header'>Status</div>
-            <div className='report-header'>Start Date</div>
-            <div className='report-header'>End Date</div>
-            <div className='report-header'>Performance</div>
-        </div>
-        
-        <div className='rows-container'>
-            <div className='rows-report'>
-                <div className='colmns-report'>
-                    <ul>
-                        <li>
-                            Lorem ipsum dolor sit amet.
-                        </li>
-                        <li>
-                            Lorem ipsum dolor sit amet.
-                        </li>
-                        <li>
-                            Lorem ipsum dolor sit amet.
-                        </li>
-                        <li>
-                            Lorem ipsum dolor sit amet.
-                        </li>
-                        <li>
-                            Lorem ipsum dolor sit amet.
-                        </li>
-                    </ul>
-                </div>
+function Report() {  
+    return (
+        <div className='table-container'>
+            <div className='header-container'>
+                <div className='report-header'>Task</div>
+                <div className='report-header'>Status</div>
+                <div className='report-header'>Start Date</div>
+                <div className='report-header'>End Date</div>
+                <div className='report-header'>Performance</div>
             </div>
-
-            <div className='rows-report'>
-                <div className='colmns-report'>
-                    <ul>
-                        <li>
-                            Lorem ipsum dolor sit amet.
-                        </li>
-                        <li>
-                            Lorem ipsum dolor sit amet.
-                        </li>
-                        <li>
-                            Lorem ipsum dolor sit amet.
-                        </li>
-                        <li>
-                            Lorem ipsum dolor sit amet.
-                        </li>
-                        <li>
-                            Lorem ipsum dolor sit amet.
-                        </li>
-                    </ul>
-                </div>
+            
+            <div className='rows-container'>
+                {GetData()}
             </div>
         </div>
-    </div>
-           
+)}
+
+export default Report

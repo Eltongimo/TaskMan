@@ -9,7 +9,6 @@ div p{
 
 .sticky-notes{
     display:flex;
-    border: solid #ccc 0.1px;
     padding: 20px;
     margin: 20px 0px 20px 0px;
     width: 15rem;
@@ -23,9 +22,21 @@ div p{
     transform: scale(1.03);
 }
 
-.header{
-    border-bottom: #ccc solid 0.1px;
+.note-header{
     padding: 5px;
+    border-bottom: solid black 0.1px;
+    padding: 10px;
+    font-size: 1.3rem;
+    display:flex;
+}
+
+.note-header-title{
+    width: 50%;
+}
+
+.note-header-icon{
+    width:50%;
+    padding-left: 55px;
 }
 
 .items {
@@ -59,8 +70,9 @@ a{
 }
 
 .icon-container:hover{
-    border-bottom: #ccc 0.5px solid;
+    background: linear-gradient(135deg, #07a7e3 0%, #32dac3 100%);
     cursor: pointer;
+    border-radius: 10px;
 }
 
 .bi-arrow-bar-left:hover, .bi-arrow-bar-right:hover{
@@ -73,3 +85,6 @@ a{
     color: red;
 }
 
+.content{
+    padding: 5px;
+}

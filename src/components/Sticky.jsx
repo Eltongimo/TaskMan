@@ -34,11 +34,15 @@ function getTaskElements(elements, leftArrow, rightArrow){
 export default props =>
    <div className='sticky-notes'>
         <div className='items'>
-            <div className='header'>
-                {props.header}      
-                <a href="#">
-                    <i className="bi bi-plus-square"></i>
-                </a>        
+            <div className='note-header'>
+                <div className='note-header-title'>
+                    {props.header}
+                </div>
+                <div className='note-header-icon'>
+                    <a href="#">
+                        <i className="bi bi-plus-square"></i>
+                    </a>
+                </div>        
             </div>
             <div className='content'>
             {getTaskElements(props.content,
