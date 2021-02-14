@@ -20,8 +20,8 @@ export default props =>
                 <div className='stiky-notes-container'>
                     <Switch>
 
-                    <Route path='/report' exact>
-                            <Report/>
+                       <Route path='/report' exact>
+                                <Report/>
                         </Route>
                         
                         <Route path='' exact>

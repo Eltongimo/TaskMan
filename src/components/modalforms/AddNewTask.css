@@ -1,0 +1,27 @@
+.modal-container-new-task{
+    height: 50vh;
+    width: 55%;
+    background-color: white;
+    border: solid 3px #ccc;
+    margin:0px;
+    padding: 0px;
+}
+
+.modal-header-new-task{
+    font: black;
+    border: #ccc solid 3px;
+    width: 100%;
+}
+
+.modal-body-new-task{
+    height: 100%;
+    width: 100%;
+    border: solid #ccc 1px;
+}
+
+form{
+    border: solid black;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}

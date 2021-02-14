@@ -1,12 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './Sticky.css'
+import AddNewTask from './modalforms/AddNewTask' 
+import Modal from 'react-modal'
 
-/*This elements mus come from Backend in very short future*/
 
 function getTaskElements(elements, leftArrow, rightArrow){
-    
     let result = []
-
     for (let element in elements){
         result.push(
             <div className='icon-container'>
@@ -31,23 +30,30 @@ function getTaskElements(elements, leftArrow, rightArrow){
     return result
 }
 
-export default props =>
-   <div className='sticky-notes'>
-        <div className='items'>
-            <div className='note-header'>
-                <div className='note-header-title'>
-                    {props.header}
+function Sticky(props){
+    const [showModalForm, setShowModalForm] = useState(false)
+
+    return (
+        <div className='sticky-notes'>
+            <div className='items'>
+                <div className='note-header'>
+                    <div className='note-header-title'>
+                        {props.header}
+                    </div>
+                    <div className='note-header-icon'>
+                        <a href='#'>
+                            <i className="bi bi-plus-square"/>
+                        </a>
+                    </div>        
                 </div>
-                <div className='note-header-icon'>
-                    <a href="#">
-                        <i className="bi bi-plus-square"></i>
-                    </a>
-                </div>        
-            </div>
-            <div className='content'>
-            {getTaskElements(props.content,
-                            props.leftArrow,
-                            props.rigthArrow)}
+                <div className='content'>
+                {getTaskElements(props.content,
+                                props.leftArrow,
+                                props.rigthArrow)}
+                </div>
             </div>
         </div>
-    </div>
+    )
+}
+export default Sticky
+   
