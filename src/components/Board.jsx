@@ -9,7 +9,8 @@ function content(){
     return ([<p>task1</p>, <p>task2</p>,<p>task3</p>,])
 }
 
-export default props =>
+function Board() {
+    return (
         <section className='container'>
             <div className='board'>
                 <div className='title'> 
@@ -45,3 +46,9 @@ export default props =>
                 </div>
             </div>
         </section>
+
+    )
+}
+
+export default Board
+        

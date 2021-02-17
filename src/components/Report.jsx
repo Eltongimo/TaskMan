@@ -2,6 +2,7 @@ import './Report.css'
 import React, {useEffect, useState} from 'react'
 import axios from 'axios'
 import TaskRow from './TaskRow'
+
 const baseUrl = 'http://localhost:3001/tasks'
 
 
@@ -9,7 +10,7 @@ function GetData(){
     const [rows, setRows] = useState([])
 
     useEffect(() => axios.get(baseUrl)
-                        .then( (response) => setRows(response.data))
+                    .then( (response) => setRows(response.data))
     ,[])
 
     return (

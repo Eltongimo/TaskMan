@@ -5,14 +5,17 @@ import Board from '../components/Board'
 import Menu from '../components/Menu'
 import './Main.css'
 
-import {BrowserRouter as Router} from 'react-router-dom'
-
-export default props =>
-    <div className='main'>
-        <Header/>
-        <div className='main-content'>
-            <Menu/>
-            <Board/>
+function Main() {
+    return (
+        <div className='main'>
+            <Header/>
+                <div className='main-content'>
+                    <Menu/>
+                    <Board/>
+                </div>
+            <Footer/>
         </div>
-        <Footer/>
-    </div>
+    )
+}
+export default Main
+  

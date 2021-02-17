@@ -1,27 +1,55 @@
 .modal-container-new-task{
     height: 50vh;
-    width: 55%;
-    background-color: white;
-    border: solid 3px #ccc;
+    width: 100%;
     margin:0px;
     padding: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 5%;
 }
 
 .modal-header-new-task{
     font: black;
-    border: #ccc solid 3px;
     width: 100%;
+    border-bottom:grey solid 0.1px;
+    margin-bottom: 10px;
+    padding: 0px;
 }
 
 .modal-body-new-task{
     height: 100%;
     width: 100%;
-    border: solid #ccc 1px;
 }
 
-form{
-    border: solid black;
+.task-input-form{
     display: flex;
     flex-direction: column;
+    height: inherit;
+    align-content: flex-end;
+}
+
+.input-row{
+    display: flex;
+    width: 100%;
+}
+
+.text-row{
+   width: 10%;
+   padding: 10px;
+}
+
+.text-input{
+    width: 90%;
     height: 100%;
+    padding: 8px;
+}
+
+.input-form{
+    width: 100%;
+    height: 100%;
+}
+
+input{
+    border-radius: 20px;
 }

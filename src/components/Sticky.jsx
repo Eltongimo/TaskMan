@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import './Sticky.css'
-import AddNewTask from './modalforms/AddNewTask' 
 import Modal from 'react-modal'
-
+import AddNewTaskForm from './modalforms/AddNewTask'
 
 function getTaskElements(elements, leftArrow, rightArrow){
     let result = []
@@ -30,9 +29,9 @@ function getTaskElements(elements, leftArrow, rightArrow){
     return result
 }
 
+
 function Sticky(props){
     const [showModalForm, setShowModalForm] = useState(false)
-
     return (
         <div className='sticky-notes'>
             <div className='items'>
@@ -41,9 +40,19 @@ function Sticky(props){
                         {props.header}
                     </div>
                     <div className='note-header-icon'>
-                        <a href='#'>
+                        <button className='call-modal-button' onClick={() => setShowModalForm(true)}
+                            style={{'border':'none', 'background-color':'white'}}
+                        >
                             <i className="bi bi-plus-square"/>
-                        </a>
+                       </button>
+
+                       <Modal isOpen={showModalForm} 
+                              onRequestClose={() => setShowModalForm(false)}
+                            >
+                                <AddNewTaskForm/>
+                                <button onClick= {() => setShowModalForm(false)}>close</button>
+                        </Modal>
+
                     </div>        
                 </div>
                 <div className='content'>
