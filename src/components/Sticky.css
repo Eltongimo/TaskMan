@@ -99,8 +99,9 @@ a{
 }
 
 .btn-close-modal:hover{
-    border-color:red;
+    border-color:#ff9999;
     transform: scale(1.05);
+    color: #ff9999;
 }    
 
 .btn-submit-modal{
@@ -110,16 +111,19 @@ a{
     border: solid 1.2px; 
 }
 
+.btn-submit-modal:hover{
+    border-color:#32dac3;
+    transform: scale(1.05);
+    color:#32dac3;
+}
+
+
 .modal-form-footer{
     display: flex;
-    border: solid #ccc 2px;
-    padding: 10px;
     flex-direction: row;
     align-items: center;
 }
 
 .footer-btn{
-    border: solid #ccc 2px;
-    width: 50%;
-    padding-left: 150px;
+    padding: 5px
 }

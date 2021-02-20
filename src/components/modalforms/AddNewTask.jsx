@@ -4,9 +4,7 @@ import React from 'react'
 function AddNewTaskForm(){
     
         return (
-
-
-<div className = 'modal-container-new-task'>
+                <div className = 'modal-container-new-task'>
                     <div className = 'modal-header-new-task'>
                         <h1 className='modal-h1-new-task' 
                             style={{'color':'black'}}>
@@ -34,9 +32,17 @@ function AddNewTaskForm(){
                                     placeholder='click to insert Date'/>
                                 </div>
                             </div>
-                        </form>
+
+                            <div className='input-row'>
+                                <div className='text-input'>
+                                    <input type='date' className='input-form'
+                                    placeholder='click to insert Date'/>
+                                </div>
+                            </div>
+                          
+                          </form>
                     </div>
-                </div>
+            </div>
         )
 }
 

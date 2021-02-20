@@ -52,6 +52,20 @@ function Sticky(props){
 
                        <Modal  isOpen={showModalForm} 
                               onRequestClose={() => setShowModalForm(false)}
+                              style={
+                                    {
+                                        overlay:{
+                                            backgroundColor: 'rgb(204, 204, 204,0.9)'
+                                        },
+                                        content:{
+                                            height: '400px',
+                                            left: '50%',
+                                            top: '50%',
+                                            transform: 'translate(-50%, -50%)',
+                                            boxShadow: 'rgba(0, 0, 0, 0.16) 0px 1px 4px'
+                                        }
+                                    } 
+                            }
                         >
                             <AddNewTaskForm/>
                             <div className='modal-form-footer'>
