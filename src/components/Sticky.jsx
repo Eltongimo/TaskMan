@@ -29,6 +29,10 @@ function getTaskElements(elements, leftArrow, rightArrow){
     return result
 }
 
+const modalStyle = {
+    width: '10%'
+}
+
 
 function Sticky(props){
     const [showModalForm, setShowModalForm] = useState(false)
@@ -46,11 +50,18 @@ function Sticky(props){
                             <i className="bi bi-plus-square"/>
                        </button>
 
-                       <Modal isOpen={showModalForm} 
+                       <Modal  isOpen={showModalForm} 
                               onRequestClose={() => setShowModalForm(false)}
-                            >
-                                <AddNewTaskForm/>
-                                <button onClick= {() => setShowModalForm(false)}>close</button>
+                        >
+                            <AddNewTaskForm/>
+                            <div className='modal-form-footer'>
+                                <div className='footer-btn'>
+                                    <button className='btn-submit-modal' onClick= {() => setShowModalForm(false)}>Submit</button>
+                                </div>
+                                <div className='footer-btn'>
+                                   <button className='btn-close-modal' onClick= {() => setShowModalForm(false)}>close</button>
+                                </div>
+                            </div>
                         </Modal>
 
                     </div>        
