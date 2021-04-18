@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import './Sticky.css'
 import Modal from 'react-modal'
 import AddNewTaskForm from './modalforms/AddNewTask'
+import useForm from 'react-hook-form'
 
 function getTaskElements(elements, leftArrow, rightArrow){
     let result = []
@@ -29,13 +30,11 @@ function getTaskElements(elements, leftArrow, rightArrow){
     return result
 }
 
-const modalStyle = {
-    width: '10%'
-}
-
 
 function Sticky(props){
     const [showModalForm, setShowModalForm] = useState(false)
+    const {register, handleSubmit, errors} = useForm()
+
     return (
         <div className='sticky-notes'>
             <div className='items'>
@@ -47,7 +46,7 @@ function Sticky(props){
                         <button className='call-modal-button' onClick={() => setShowModalForm(true)}
                             style={{'border':'none', 'background-color':'white'}}
                         >
-                            <i className="bi bi-plus-square"/>
+                             <i className="bi bi-plus-square"/>
                        </button>
 
                        <Modal  isOpen={showModalForm} 
@@ -57,30 +56,23 @@ function Sticky(props){
                                         overlay:{
                                             backgroundColor: 'rgb(204, 204, 204,0.9)'
                                         },
-                                        content:{
-                                            height: '400px',
-                                            left: '50%',
-                                            top: '50%',
-                                            transform: 'translate(-50%, -50%)',
-                                            boxShadow: 'rgba(0, 0, 0, 0.16) 0px 1px 4px'
-                                        }
+                                        
                                     } 
                             }
                         >
-                            <AddNewTaskForm/>
-                            <div className='modal-form-footer'>
-                                <div className='footer-btn'>
-                                    <button className='btn-submit-modal' onClick= {() => setShowModalForm(false)}>Submit</button>
-                                </div>
-                                <div className='footer-btn'>
-                                   <button className='btn-close-modal' onClick= {() => setShowModalForm(false)}>close</button>
-                                </div>
+                        <div className='modal-form-footer'>
+                            <div className='footer-btn'>
+                                <button className='btn btn-success' onClick= {() => setShowModalForm(false)}>Submit</button>
                             </div>
-                        </Modal>
-
-                    </div>        
-                </div>
-                <div className='content'>
+                            <div style={{'margin': '5px'}}/>
+                            <div className='footer-btn'>
+                                <button className='btn btn-danger' onClick= {() => setShowModalForm(false)}>close</button>
+                            </div>
+                        </div> 
+                    </Modal>
+                </div>        
+            </div>
+            <div className='content'>
                 {getTaskElements(props.content,
                                 props.leftArrow,
                                 props.rigthArrow)}

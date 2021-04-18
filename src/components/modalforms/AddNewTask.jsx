@@ -15,32 +15,36 @@ function AddNewTaskForm(){
                         <form className='task-input-form'>
                             <div className='input-row'>
                                 <div className='text-input'>
+                                    <label>Subject</label>
                                     <input className='input-form' 
-                                    placeholder='Insert Task Name'/>
+                                    />
                                 </div>
                             </div>
+
                             <div className='input-row'>
                                 <div className='text-input'>
+                                    <label>Start Date</label>
                                     <input type='text' className='input-form'
-                                    placeholder='Insert Status'/>
+                                    />
                                 </div>
                             </div>
 
                             <div className='input-row'>
                                 <div className='text-input'>
-                                    <input type='date' className='input-form'
-                                    placeholder='click to insert Date'/>
+                                    <label>Due date</label>
+                                    <input type='text' className='input-form'
+                                    />
                                 </div>
                             </div>
 
                             <div className='input-row'>
                                 <div className='text-input'>
-                                    <input type='date' className='input-form'
-                                    placeholder='click to insert Date'/>
+                                    <label>Description</label>
+                                    <input type='text' className='input-form'
+                                    />
                                 </div>
                             </div>
-                          
-                          </form>
+                        </form>
                     </div>
             </div>
         )

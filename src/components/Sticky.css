@@ -13,7 +13,7 @@ div p{
     margin: 20px 0px 20px 0px;
     width: 15rem;
     height: 50vh;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
     border-radius: 12px;
     overflow: hidden;
 }
@@ -70,6 +70,10 @@ a{
     width: 10%;
 }
 
+.call-modal-button:focus{
+    outline: 0;
+}
+
 .icon-container:hover{
     background: linear-gradient(135deg, #07a7e3 0%, #32dac3 100%);
     cursor: pointer;
@@ -90,40 +94,14 @@ a{
     padding: 5px;
 }
 
-
-.btn-close-modal{
-    width: 200px;
-    background-color: white;
-    border-radius: 100px;
-    border: solid 1.2px;
-}
-
-.btn-close-modal:hover{
-    border-color:#ff9999;
-    transform: scale(1.05);
-    color: #ff9999;
-}    
-
-.btn-submit-modal{
-    width: 200px;
-    background-color: white;
-    border-radius: 100px;
-    border: solid 1.2px; 
-}
-
-.btn-submit-modal:hover{
-    border-color:#32dac3;
-    transform: scale(1.05);
-    color:#32dac3;
-}
-
-
 .modal-form-footer{
     display: flex;
     flex-direction: row;
     align-items: center;
+    height: 50px;
+    width: 200px;
+    align-content: center;
+    margin: 0 auto;
+    margin-top: 50px;
 }
 
-.footer-btn{
-    padding: 5px
-}

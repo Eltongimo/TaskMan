@@ -3,8 +3,35 @@ import './Footer.css'
 
 function Footer(params) {
     return(
-        <footer style={{"color": "white"}}>
-           <span>Developed by Elton Gimo</span>
+        <footer >
+                <div className='container-footer'>
+                    <div className='footer-box'>
+                        <ul>
+                            <li>Contacts</li>
+                        </ul>
+                    </div>
+
+                    <div className='footer-box'>
+                        <ul>
+                            <li>Address</li>
+                        </ul>
+                    </div>
+
+                    <div className='footer-box'>
+                        <ul> 
+                            <li>
+                                Newsletter
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div className='footer-box'>
+                        <ul>
+                            Support
+                        </ul>
+                    </div>
+
+                </div>
         </footer>
     )
 }

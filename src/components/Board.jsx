@@ -22,7 +22,7 @@ function Board() {
                     <Switch>
 
                        <Route path='/report' exact>
-                                <Report/>
+                            <Report/>
                         </Route>
                         
                         <Route path='' exact>
@@ -40,8 +40,7 @@ function Board() {
                                 leftArrow='bi bi-arrow-bar-left'
                                 rigthArrow=''
                             />
-                        </Route>
-                        
+                        </Route>                        
                     </Switch>
                 </div>
             </div>
