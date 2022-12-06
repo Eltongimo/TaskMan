@@ -24,7 +24,7 @@ function Menu() {
                     </li>
 
                     <li>
-                        <Link to="/activities" exact="true">
+                        <Link to="/macroactivity" exact="true">
                             Macro Actividades
                         </Link>
                     </li>

@@ -1,15 +1,11 @@
 import './Board.css'
-import  Sticky from './Sticky'
 import Report from './Report'
 import React from 'react'
 import Projects from  './projectviews/Projects'
 import Charts from './Charts'
-
 import {Switch, Route} from 'react-router-dom'
-
-function content(){
-    return ([<p>task1</p>, <p>task2</p>,<p>task3</p>,])
-}
+import Product from './projectviews/Products'
+import MacroActivity from './projectviews/MacroActivities'
 
 function Board() {
     return (
@@ -21,7 +17,16 @@ function Board() {
                     </Route>
                     <Route path='/projects' exact>
                         <Projects/>
-                    </Route>                        
+                    </Route>     
+                    
+                    <Route path='/products'>
+                        <Product/>
+                    </Route>
+
+                    <Route path='/macroactivity' >
+                        <MacroActivity/>
+                    </Route>
+
                     <Route path='' exact>
                         <Charts />
                     </Route>                        

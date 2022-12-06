@@ -1,3 +1,27 @@
-.conteiner-charts{
-    border: solid 2px red;
+.charts-container{
+    display: flex;
+    flex-direction: column;
+    height: 26rem;
+}
+
+.charts{
+    display: flex;
+    height: 100%;
+}
+
+.bar-chart{
+    width: 50%;
+}
+
+.linechart{
+    width: 50%;
+}
+.charts-header{
+    display: flex;
+    height: 10%;
+    width: 100;
+    font-weight: 500;
+    font-size: larger;
+    border-bottom: solid #ccc .1px;
+    margin-bottom: 10px;
 }

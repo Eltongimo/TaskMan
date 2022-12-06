@@ -5,19 +5,19 @@ import { child, get, getDatabase, ref } from "firebase/database"
 import TaskRow from '../TaskRow'
 
 
-class Projects extends React.Component{
+class MacroActivities extends React.Component{
     
     constructor(props){
         super(props)
-        this.state = this.setState({projects: []})
+        this.state = this.setState({macroActivities: []})
     }
     
     componentDidMount(){
             const dbRef = ref(db)
            
-            get(child(dbRef, `Project`)).then((snapshot) => {
+            get(child(dbRef, `MacroActivity`)).then((snapshot) => {
                     if (snapshot.exists())
-                        this.setState({projects: snapshot.val()})
+                        this.setState({macroActivities: snapshot.val()})
                     else
                         alert('no data to load from db server')
             }).finally(snapshot => {
@@ -31,24 +31,20 @@ class Projects extends React.Component{
         
         if (this.state !== null ){
             for(let key in this.state.projects){
-               values.push( <TaskRow ProjectName = {this.state.projects[key].ProjectName}
-                         LAT = {this.state.projects[key].LAT}
-                         DeadLine = {this.state.projects[key].Deadline}
-                         />)
+               values.push( <TaskRow ProjectName = {this.state.macroActivities[key].Name}
+                        />)
             }
         }
         return( 
         <div className='table-container'>
             <div className='header-container'>
-                <div className='report-header'>LAT</div>
-                <div className='report-header'>Nome do Projecto</div>
-                <div className='report-header'>DeadLine Date</div>
+                <div className='report-header'>Macro Actividade</div>
             </div>
-            {values}
+            {console.log(values)}
         </div>
         )
     }
 
 }
 
-export default Projects
+export default MacroActivities
