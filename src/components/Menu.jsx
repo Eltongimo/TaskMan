@@ -33,11 +33,6 @@ function Menu() {
                             Actividades   
                         </Link>
                     </li>
-                    <li>
-                        <Link to="/report" exact="true">
-                            Tasks   
-                        </Link>
-                    </li>
                 </ul>
             </nav>
         </div>
