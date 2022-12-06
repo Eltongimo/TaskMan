@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import './Sticky.css'
 import Modal from 'react-modal'
 import AddNewTaskForm from './modalforms/AddNewTask'
-import useForm from 'react-hook-form'
 
 function getTaskElements(elements, leftArrow, rightArrow){
     let result = []
@@ -33,8 +32,7 @@ function getTaskElements(elements, leftArrow, rightArrow){
 
 function Sticky(props){
     const [showModalForm, setShowModalForm] = useState(false)
-    const {register, handleSubmit, errors} = useForm()
-
+  
     return (
         <div className='sticky-notes'>
             <div className='items'>

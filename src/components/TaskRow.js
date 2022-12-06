@@ -1,25 +1,19 @@
 import React from 'react'
 import './TaskRow.css'
-
+ 
 function TaskRow(props){
     return (
         <div className='rows-report'>
             <div className='colmns-report'>
                 <ul >
                     <li>
-                        {props.name}
+                        {props.LAT}
                     </li>
                     <li>
-                        {props.status}
+                        {props.ProjectName}
                     </li>
                     <li>
-                        {props.startDate}
-                    </li>
-                    <li>
-                        {props.endDate}
-                    </li>
-                    <li>
-                        {props.performance}
+                        {props.DeadLine}
                     </li>
                 </ul>
             </div>

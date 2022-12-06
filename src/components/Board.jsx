@@ -2,6 +2,7 @@ import './Board.css'
 import  Sticky from './Sticky'
 import Report from './Report'
 import React from 'react'
+import Projects from  './projectviews/Projects'
 
 import {Switch, Route} from 'react-router-dom'
 
@@ -15,7 +16,7 @@ function Board() {
             <div className='board'>
                 <div className='title'> 
                     <i className="bi bi-clipboard"></i>
-                        My Board
+                    Dashboard
                 </div>
 
                 <div className='stiky-notes-container'>
@@ -24,7 +25,9 @@ function Board() {
                        <Route path='/report' exact>
                             <Report/>
                         </Route>
-                        
+                        <Route path='/projects' exact>
+                            <Projects/>
+                        </Route>                        
                         <Route path='' exact>
                             <Sticky header='Items' content={content()}
                                 leftArrow=''
