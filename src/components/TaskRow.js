@@ -3,6 +3,7 @@ import './TaskRow.css'
  
 function TaskRow(props){
     return (
+        
         <div className='rows-report'>
             <div className='colmns-report'>
                 <ul >

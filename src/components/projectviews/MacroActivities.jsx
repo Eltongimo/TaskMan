@@ -1,14 +1,14 @@
 import React from 'react'
 import {db} from '../database/DatabaseHelper'
-import { child, get,ref } from "firebase/database"
+import {useState, useEffect} from 'react'
+import { child, get, getDatabase, ref } from "firebase/database"
 import TaskRow from '../TaskRow'
 
-
-class MacroActivities extends React.Component{
+class MacroActivity extends React.Component{
     
     constructor(props){
         super(props)
-        this.state = this.setState({macroActivities: []})
+        this.state = this.setState({products: []})
     }
     
     componentDidMount(){
@@ -16,35 +16,36 @@ class MacroActivities extends React.Component{
            
             get(child(dbRef, `MacroActivity`)).then((snapshot) => {
                     if (snapshot.exists())
-                        this.setState({macroActivities: snapshot.val()})
+                        this.setState({macroactivities: snapshot.val()})
                     else
                         alert('no data to load from db server')
-                    console.log(this.snapshot.val())
-                }).finally(snapshot => {
+                    console.log(this.state)
+               }).finally(snapshot => {
                 console.log('finished')
             })
         }
 
-        render(){
+    render(){
         
         var values = []
         
         if (this.state !== null ){
-            for(let key in this.state.projects){
-               values.push( <TaskRow ProjectName = {this.state.macroActivities[key].Name}
-                        />)
+            for(let key in this.state.macroactivities){
+               values.push( <TaskRow ProjectName = {this.state.macroactivities[key].Name}
+                         />)
             }
         }
         return( 
         <div className='table-container'>
             <div className='header-container'>
-                <div className='report-header'>Macro Actividade</div>
+                <div className='report-header' style={{width: '100%'}}>Nome</div>
             </div>
             {console.log(values)}
+            {values}
         </div>
         )
     }
 
 }
 
-export default MacroActivities
+export default MacroActivity
