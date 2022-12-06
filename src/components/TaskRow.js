@@ -2,9 +2,12 @@ import React from 'react'
 import './TaskRow.css'
  
 function TaskRow(props){
-    return (
-        
-        <div className='rows-report'>
+   
+    let a = []
+
+    if (props.type !== 'msc'){
+        a.push(
+            <div className='rows-report'>
             <div className='colmns-report'>
                 <ul >
                     <li>
@@ -19,7 +22,20 @@ function TaskRow(props){
                 </ul>
             </div>
         </div>
-    )
+        )
+    }else{
+        
+    a.push(<div className='rows-report'>
+            <div className='colmns-report'>
+                <ul >
+                    <li>
+                        {props.ProjectName}
+                    </li>
+                </ul>
+            </div>
+        </div>)
+    }
+    return a
 }
 
 export default TaskRow

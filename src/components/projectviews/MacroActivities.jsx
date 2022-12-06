@@ -31,14 +31,20 @@ class MacroActivity extends React.Component{
         
         if (this.state !== null ){
             for(let key in this.state.macroactivities){
-               values.push( <TaskRow ProjectName = {this.state.macroactivities[key].Name}
+               values.push( <TaskRow type='mcs' ProjectName = {this.state.macroactivities[key].Name}
                          />)
             }
         }
         return( 
         <div className='table-container'>
             <div className='header-container'>
-                <div className='report-header' style={{width: '100%'}}>Nome</div>
+                <div className='report-header' style={{'width': '100%',
+                                                       'display': 'flex',
+                                                       'textAlign': 'center',
+                                                       'alignContent': 'center'
+
+
+            }}>Nome da Macro Actividade</div>
             </div>
             {console.log(values)}
             {values}

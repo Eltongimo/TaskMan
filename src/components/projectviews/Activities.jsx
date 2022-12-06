@@ -14,8 +14,8 @@ class Activities extends React.Component{
     
     componentDidMount(){
             const dbRef = ref(db)
-           
-            get(child(dbRef,`Activitiy`)).then((snapshot) => {
+            
+            get(child(dbRef,`Activity`)).then((snapshot) => {
                     if (snapshot.exists())
                         this.setState({activities: snapshot.val()})
                     else
