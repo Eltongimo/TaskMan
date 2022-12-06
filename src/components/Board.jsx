@@ -6,6 +6,7 @@ import Charts from './Charts'
 import {Switch, Route} from 'react-router-dom'
 import Product from './projectviews/Products'
 import MacroActivity from './projectviews/MacroActivities'
+import Activities from './projectviews/Activities'
 
 function Board() {
     return (
@@ -23,10 +24,14 @@ function Board() {
                         <Product/>
                     </Route>
 
-                    <Route path='/macroactivity' >
+                    <Route path='/macroactivities' >
                         <MacroActivity/>
                     </Route>
-
+                    
+                    <Route path='/activities' exact>
+                        <Activities/>
+                    </Route>
+                    
                     <Route path='' exact>
                         <Charts />
                     </Route>                        

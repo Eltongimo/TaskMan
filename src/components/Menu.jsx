@@ -24,12 +24,12 @@ function Menu() {
                     </li>
 
                     <li>
-                        <Link to="/macroactivity" exact="true">
+                        <Link to="/macroactivities" exact="true">
                             Macro Actividades
                         </Link>
                     </li>
                     <li>
-                        <Link to="/report" exact="true">
+                        <Link to="/activities" exact="true">
                             Actividades   
                         </Link>
                     </li>

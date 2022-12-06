@@ -1,7 +1,6 @@
 import React from 'react'
 import {db} from '../database/DatabaseHelper'
-import {useState, useEffect} from 'react'
-import { child, get, getDatabase, ref } from "firebase/database"
+import { child, get,ref } from "firebase/database"
 import TaskRow from '../TaskRow'
 
 
@@ -20,12 +19,13 @@ class MacroActivities extends React.Component{
                         this.setState({macroActivities: snapshot.val()})
                     else
                         alert('no data to load from db server')
-            }).finally(snapshot => {
+                    console.log(this.snapshot.val())
+                }).finally(snapshot => {
                 console.log('finished')
             })
         }
 
-    render(){
+        render(){
         
         var values = []
         
