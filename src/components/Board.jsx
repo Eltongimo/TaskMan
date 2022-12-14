@@ -7,6 +7,7 @@ import Product from './projectviews/Products'
 import MacroActivity from './projectviews/MacroActivities'
 import Activities from './projectviews/Activities'
 import './Report.css'
+import './projectviews/Products'
 
 function Board() {
     return (
@@ -28,9 +29,13 @@ function Board() {
                     <Route path='/activities' exact>
                         <Activities/>
                     </Route>
+
+                    <Route path='/products' exact>
+                        <Product/>
+                    </Route>
                     
                     <Route path='' exact>
-                        <Charts />
+                        Home
                     </Route>                        
                 </Switch>
             </div>

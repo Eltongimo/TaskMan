@@ -2,7 +2,7 @@ import React from 'react'
 import './TaskRow.css'
  
 function TaskRow(props){
-   
+
     let a = []
 
     if (props.type !== 'msc'){
@@ -36,6 +36,7 @@ function TaskRow(props){
         </div>)
     }
     return a
+
 }
 
 export default TaskRow

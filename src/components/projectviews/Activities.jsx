@@ -19,7 +19,7 @@ class Activities extends React.Component{
                     if (snapshot.exists())
                         this.setState({activities: snapshot.val()})
                     else
-                        alert('no data to load from db server')
+                        alert('Sem actividades para carregar')
             }).finally(snapshot => {
                 console.log('finished')
             })
@@ -28,12 +28,14 @@ class Activities extends React.Component{
     render(){
         
         var values = []
-        
+        console.log(`Activities ${this.state}`)
+
         if (this.state !== null ){
             for(let key in this.state.activities){
-               values.push( <TaskRow ProjectName = {this.state.projects[key].Name}
-                         LAT = {this.state.projects[key].Description}
-                         DeadLine = {this.state.projects[key].Comments}
+                
+               values.push( <TaskRow ProjectName = {this.state.activities[key].Name}
+                         LAT = {this.state.activities[key].Description}
+                         DeadLine = {this.state.activities[key].Comments}
                          />)
             }
         }

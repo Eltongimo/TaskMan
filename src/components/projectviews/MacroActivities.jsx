@@ -2,37 +2,59 @@ import React from 'react'
 import {db} from '../database/DatabaseHelper'
 import {useState, useEffect} from 'react'
 import { child, get, getDatabase, ref } from "firebase/database"
-import TaskRow from '../TaskRow'
+import '../TaskRow.css'
+import { useParams } from 'react-router-dom'
 
-class MacroActivity extends React.Component{
+
+function MacroActivity(){
     
-    constructor(props){
-        super(props)
-        this.state = this.setState({products: []})
-    }
+    const [macroActivities, setMacroActivities] = useState({mcs: []})
     
-    componentDidMount(){
-            const dbRef = ref(db)
+    useEffect( () => {
+         const dbRef = ref(db)
            
             get(child(dbRef, `MacroActivity`)).then((snapshot) => {
-                    if (snapshot.exists())
-                        this.setState({macroactivities: snapshot.val()})
-                    else
-                        alert('no data to load from db server')
-                    console.log(this.state)
-               }).finally(snapshot => {
-                console.log('finished')
-            })
-        }
+                    if (snapshot.exists()){
+                        const mcs = snapshot.val()
+                        let macroA = []
+                        for(let key in mcs){
+                            if (mcs[key].ProductKey === document.URL.split('=')[1])
+                                macroA.push(mcs[key])
+                        }
+                        setMacroActivities({mcs: macroA})
+                    }
+                    else{
+                     alert('no data to load from db server')
+                    }
+                })
+            },[]
+    )
 
-    render(){
+    function buildTableforMcs(){
         
         var values = []
         
-        if (this.state !== null ){
-            for(let key in this.state.macroactivities){
-               values.push( <TaskRow type='mcs' ProjectName = {this.state.macroactivities[key].Name}
-                         />)
+        if (macroActivities !== null ){
+            for(let data in macroActivities.mcs){
+               values.push( 
+                <button               
+                    style={{background: 'transparent',
+                        border: 'none',
+                        width: '100%',
+                        outline: 'none',
+                    }}>
+                    <div className='rows-report'>
+                        <div className='colmns-report'>
+                            <ul >
+                                <li>
+                                    {macroActivities.mcs[data].Name}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </button>
+                
+               )
             }
         }
         return( 
@@ -46,12 +68,11 @@ class MacroActivity extends React.Component{
 
             }}>Nome da Macro Actividade</div>
             </div>
-            {console.log(values)}
-            {values}
+                 {values}
         </div>
         )
     }
-
+    return buildTableforMcs()
 }
 
 export default MacroActivity

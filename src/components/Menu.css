@@ -32,3 +32,16 @@ nav ul li:hover{
     border-radius: 10px;
     font-size: 1.5rem;
 }
+
+.button-menu{
+    background-color: transparent;
+    border: none;
+    width: 100%;
+    height: 100%;
+}
+
+.button-menu:active{
+    background: linear-gradient(135deg, #07a7e3 0%, #32dac3 100%);
+    border-radius: 10px;
+    font-size: 1.5rem;   
+}
