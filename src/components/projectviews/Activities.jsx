@@ -1,7 +1,6 @@
 import React from 'react'
 import {db} from '../database/DatabaseHelper'
-import {useState, useEffect} from 'react'
-import { child, get, getDatabase, ref } from "firebase/database"
+import { child, get, ref } from "firebase/database"
 import TaskRow from '../TaskRow'
 
 
@@ -17,9 +16,20 @@ class Activities extends React.Component{
             
             get(child(dbRef,`Activity`)).then((snapshot) => {
                     if (snapshot.exists())
-                        this.setState({activities: snapshot.val()})
-                    else
+                    {
+                        let acts = []
+                        const vals = snapshot.val()
+
+                        for (let a in vals){
+                            console.log(vals[a])
+                            if (document.URL.split('=')[1] == vals[a].MacroActivityKey){
+                                acts.push(vals[a])
+                            }
+                        }
+                    }            
+                    else{
                         alert('Sem actividades para carregar')
+                    }
             }).finally(snapshot => {
                 console.log('finished')
             })
