@@ -8,6 +8,8 @@ import MacroActivity from './projectviews/MacroActivities'
 import Activities from './projectviews/Activities'
 import './Report.css'
 import './projectviews/Products'
+import Home from './Home'
+import Lat from './projectviews/LAT'
 
 function Board() {
     return (
@@ -33,10 +35,15 @@ function Board() {
                     <Route path='/products' exact>
                         <Product/>
                     </Route>
-                    
+
+                    <Route path='/lats' exact>
+                        <Lat/>    
+                    </Route>  
+
                     <Route path='' exact>
-                        Home
-                    </Route>                        
+                        <Home/>
+                    </Route>  
+                      
                 </Switch>
             </div>
         </section>
