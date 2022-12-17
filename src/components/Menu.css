@@ -9,10 +9,8 @@ nav{
     height: 100%;
     align-content: flex-start;
     align-items: baseline;
-/*    box-shadow: rgba(64, 65, 66, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
-*/
-box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
-border-radius: 10px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    border-radius: 10px;
 }
 
 nav ul{
@@ -25,12 +23,12 @@ nav ul{
 
 nav ul li{
     padding: 10px;
+    text-align: start;
 }
 
 nav ul li:hover{
-    background: linear-gradient(135deg, #07a7e3 0%, #32dac3 100%);
-    border-radius: 10px;
-    font-size: 1.5rem;
+    background: #ececec;
+    font-size: 1.1rem;
 }
 
 .button-menu{
@@ -44,4 +42,10 @@ nav ul li:hover{
     background: linear-gradient(135deg, #07a7e3 0%, #32dac3 100%);
     border-radius: 10px;
     font-size: 1.5rem;   
+}
+
+.link{
+    width: 5rem;
+    height: 100%;
+    text-decoration: none;
 }

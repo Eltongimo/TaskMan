@@ -47,10 +47,6 @@
     padding: 2px;
 }
 
-.element:hover{
-    background-color:  #ccc;
-}
-
 .element-container{
     display:flex;
     flex-direction: row;
@@ -61,7 +57,7 @@
 }
 
 .element-container:hover{
-    background-color: #ccc;
+    background-color: #ececec;
 }
 
 .percentage{

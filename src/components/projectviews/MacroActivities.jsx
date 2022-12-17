@@ -31,17 +31,24 @@ function MacroActivity(){
     )
 
    function handleButtonEvent(e){
-       
-        let productKey = e.target.id
+      
+       let productKey = e.target.id
+       let key  = productKey.split('.')
 
-        console.log(e.target)
-        
-        let key  = productKey.split('.')
+       if (key[0] === 'delete'){
+        alert('deleting')
+        }
+        else if (key[0] === 'update'){
+            alert('updating')
+        }   
+        else{
+    
         history.push({
-         pathname: '/activities',
-         search: `?key=${key[1]}`,
-       })
-     }
+                pathname: '/activities',
+                search: `?key=${key[1]}`,
+            })
+        }
+    }
  
     function buildTableforMcs(){
         
@@ -65,6 +72,12 @@ function MacroActivity(){
                                 <li id={`${count++}.${macroActivities.mcs[data].Key}`}>
                                     {macroActivities.mcs[data].Name}
                                 </li>
+                                <li id={`${count++}.${macroActivities.mcs[data].Key}`} >
+                                 <i class="bi bi-trash" id={`delete.${count++}.${macroActivities.mcs[data].Key}`} />
+                                </li>
+                                <li id={`${count++}.${macroActivities.mcs[data].Key}`}>
+                                    <i class="bi bi-pencil" id={`update.${count++}.${macroActivities.mcs[data].Key}`}/>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -75,13 +88,9 @@ function MacroActivity(){
         return( 
         <div className='table-container'>
             <div className='header-container'>
-                <div className='report-header' style={{'width': '100%',
-                                                       'display': 'flex',
-                                                       'textAlign': 'center',
-                                                       'alignContent': 'center'
-
-
-            }}>Nome da Macro Actividade</div>
+                <div className='report-header'>Nome da Macro Actividade</div>
+                <div className='report-header'>Apagar</div>
+                <div className='report-header'>Actualizar</div>
             </div>
                  {values}
         </div>

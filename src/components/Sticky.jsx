@@ -74,7 +74,7 @@ function Sticky(props){
                 <div className='total-products'>
                     Total : {props.fullProds.length}
                 </div>
-               <button id={props.header} type="button" class="btn btn-outline-dark" onClick={showAllProductOnLAT}>Ver Mais</button>
+               <button id={props.Key} type="button" class="btn btn-outline-dark" onClick={showAllProductOnLAT}>Ver Mais</button>
             </div>
         </div>
     )

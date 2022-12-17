@@ -10,16 +10,20 @@ import './Report.css'
 import './projectviews/Products'
 import Home from './Home'
 import Lat from './projectviews/LAT'
+import { useHistory } from 'react-router-dom/cjs/react-router-dom'
 
 function Board() {
+
     return (
         <section className='container'>
+            <div className='title' id='title'>
+                <i class="bi bi-arrow-left" style={{cursor: 'pointer'}} />
+            </div>
             <div className='board'>
                 <Switch>
                     <Route path='/projects' exact>
                         <Projects/>
                     </Route>     
-                    
                     <Route path='/products'>
                         <Product/>
                     </Route>

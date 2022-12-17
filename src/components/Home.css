@@ -3,4 +3,5 @@
     height: 100%;
     padding: 5px;
     flex-direction: row;
+    overflow: scroll;
 }

@@ -40,9 +40,10 @@ function Lat (){
         let prodArray = []
     
         for(let p in prods.projects){
-    
-            if (prods.projects[p].Area.split(' ')[0] === document.URL.split('=')[1].split('%')[0]){
+            
+            if (prods.projects[p].LatKey === document.URL.split('=')[1]){
                 prodArray.push(prods.projects[p])
+                console.log(true)
              }
         }
         return prodArray

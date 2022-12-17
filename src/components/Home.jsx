@@ -55,6 +55,7 @@ function Home  (){
                 <Stricky header={lats[key].Description}
                        products={prods}        
                        fullProds = {fullProdsArray}
+                       Key={lats[key].Key}
             />)
     }
 

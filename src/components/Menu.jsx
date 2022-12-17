@@ -5,76 +5,41 @@ import { Button } from 'bootstrap'
 
 function Menu(props) {
 
+
+    const menuKeys = ['menu-home', 'menu-projects']
     let a = []
 
-    if (props.isLogged){
-        a.push(
-            <div className='navigation'>
-            <nav >
-                <ul>
-                    <li>
-                        <button>
-                            <Link to="/" exact="true"> 
-                                Home
-                            </Link>
-                        </button>
-                    </li>
-                    <li>
-                        <button>
-                            <Link to="/projects" exact="true">
-                                Projects
-                            </Link>
-                        </button>
-                    </li>
-                    <li>
-                        <button>
-                            <Link to="/products" exact="true">
-                                Productos
-                            </Link>
-                        </button>
-                    </li>
+    function activeBackGroud(e){
+        
+        const selectedId = e.target.id
 
-                    <li>
-                        <button>
-                            <Link to="/macroactivities" exact="true">
-                                Macro Actividades
-                            </Link>
-                        </button>
-                       </li>
-                    <li>
-                        <button>
-                            <Link to="/activities" exact="true">
-                                Actividades   
-                            </Link>
-                        </button>
-                    </li>
-                </ul>
-            </nav>
-         </div>
-        )
-    }else{
-        a.push(
+        for (let key in menuKeys){
+            
+            if ( menuKeys[key] === selectedId){
+                document.getElementById(selectedId).parentElement.style.backgroundColor = '#00c6ff'
+            }else{
+                document.getElementById(menuKeys[key]).parentElement.style.backgroundColor = 'transparent'
+            }
+        }
+
+    }
+      a.push(
             <div className='navigation'>
                 <nav >
                     <ul>
-                        <li>
-                            <button className='button-menu'>
-                                <Link to="/" exact="true"> 
-                                    Home
-                                </Link>
-                            </button>
+                        <li  className='home'>
+                            <Link id={menuKeys[0]} onClick={activeBackGroud}  className='link' to="/" exact="true"> 
+                                Home
+                            </Link>
                         </li>
-                        <li>
-                            <button className='button-menu'>
-                                <Link to="/projects" exact="true">
-                                    Projects
-                                </Link>
-                            </button>
+                        <li  className='projects'>
+                            <Link id={menuKeys[1]} onClick={activeBackGroud} className='link' to="/projects" exact="true" >
+                                Projects
+                            </Link>
                         </li>
                     </ul>
             </nav>
         </div>)
-    }
 
     return a
 }

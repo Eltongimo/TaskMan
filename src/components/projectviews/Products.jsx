@@ -27,11 +27,20 @@ function Product (){
        
        let productKey = e.target.id
        let key  = productKey.split('.')
-       
-       history.push({
-        pathname: '/macroactivities',
-        search: `?key=${key[1]}`,
-      })
+
+       if (key[0] === 'delete'){
+        alert('deleting')
+        }
+        else if (key[0] === 'update'){
+            alert('updating')
+        }   
+        else{
+        
+            history.push({
+                pathname: '/macroactivities',
+                search: `?key=${key[1]}`,
+            })
+        }
     }
 
     function buildTable(){
@@ -61,6 +70,12 @@ function Product (){
                             <li id={`${count++}.${products.projects[key].Key}`}>
                                 {products.projects[key].Status}
                             </li>
+                            <li id={`${count++}.${products.projects[key].Key}`} >
+                                 <i class="bi bi-trash" id={`delete.${count++}.${products.projects[key].Key}`} />
+                            </li>
+                            <li id={`${count++}.${products.projects[key].Key}`}>
+                                  <i class="bi bi-pencil" id={`update.${count++}.${products.projects[key].Name}`}/>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -74,6 +89,8 @@ function Product (){
                 <div className='report-header'>Area</div>
                 <div className='report-header'>Nome do Producto</div>
                 <div className='report-header'>Estado</div>
+                <div className='report-header'>Apagar</div>
+                <div className='report-header'>Actualizar</div>
             </div>
             {values}
         </div>
