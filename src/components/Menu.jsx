@@ -6,7 +6,7 @@ import { Button } from 'bootstrap'
 function Menu(props) {
 
 
-    const menuKeys = ['menu-home', 'menu-projects']
+    const menuKeys = ['dahboard','menu-home', 'menu-projects','newsletter']
     let a = []
 
     function activeBackGroud(e){
@@ -27,16 +27,27 @@ function Menu(props) {
             <div className='navigation'>
                 <nav >
                     <ul>
-                        <li  className='home'>
+                        <li className='home'>
                             <Link id={menuKeys[0]} onClick={activeBackGroud}  className='link' to="/" exact="true"> 
                                 Home
                             </Link>
                         </li>
+                        <li  className='home'>
+                            <Link id={menuKeys[1]} onClick={activeBackGroud}  className='link' to="/dashboard" exact="true"> 
+                                Dashboard
+                            </Link>
+                        </li>
                         <li  className='projects'>
-                            <Link id={menuKeys[1]} onClick={activeBackGroud} className='link' to="/projects" exact="true" >
+                            <Link id={menuKeys[2]} onClick={activeBackGroud} className='link' to="/projects" exact="true" >
                                 Projects
                             </Link>
                         </li>
+                        <li className='home'>
+                            <Link id={menuKeys[3]} onClick={activeBackGroud}  className='link' to="newsletter" exact="true"> 
+                                NewsLetter
+                            </Link>
+                        </li>
+                       
                     </ul>
             </nav>
         </div>)

@@ -7,7 +7,6 @@
     height: 70vh;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
     border-radius: 12px;
-    overflow: hidden;
 }
 
 .sticky-notes:hover{
@@ -22,6 +21,7 @@
     flex-direction: row;
     width: 100%;
     border-bottom: solid 0.01px #ccc;
+    margin-bottom: 10px;
 }
 
 .note-header-title{
@@ -68,7 +68,10 @@
 
 .general-percentage{
     font-weight: 600;
+    width: 50%;
+    height: 25px;
     padding: 2px;
+    text-align: right;
 }
 
 .sticky-footer{

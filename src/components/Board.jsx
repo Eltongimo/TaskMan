@@ -1,23 +1,26 @@
 import './Board.css'
 import React from 'react'
 import Projects from  './projectviews/Projects'
-import Charts from './Charts'
 import {Switch, Route} from 'react-router-dom'
 import Product from './projectviews/Products'
 import MacroActivity from './projectviews/MacroActivities'
 import Activities from './projectviews/Activities'
 import './Report.css'
 import './projectviews/Products'
-import Home from './Home'
+import Dashboard from './Dashboard'
 import Lat from './projectviews/LAT'
 import { useHistory } from 'react-router-dom/cjs/react-router-dom'
+import Home from './Home'
 
 function Board() {
 
     return (
         <section className='container'>
             <div className='title' id='title'>
-                <i class="bi bi-arrow-left" style={{cursor: 'pointer'}} />
+                <i class="bi bi-arrow-left" style={{cursor: 'pointer',
+                                                    marginRight: '20px'
+            }} />
+                <input type='tex' class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Procurar.."></input>
             </div>
             <div className='board'>
                 <Switch>
@@ -44,8 +47,12 @@ function Board() {
                         <Lat/>    
                     </Route>  
 
+                    <Route path='/dashboard' exact>
+                        <Dashboard/>
+                    </Route>  
+
                     <Route path='' exact>
-                        <Home/>
+                        <Home />
                     </Route>  
                       
                 </Switch>

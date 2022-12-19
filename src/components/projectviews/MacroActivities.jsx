@@ -4,6 +4,7 @@ import {useState, useEffect} from 'react'
 import { child, get, getDatabase, ref } from "firebase/database"
 import '../TaskRow.css'
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min'
+import Modal from 'react-modal'
 
 function MacroActivity(){
     
@@ -49,7 +50,6 @@ function MacroActivity(){
             })
         }
     }
- 
     function buildTableforMcs(){
         
         var values = []
@@ -92,7 +92,7 @@ function MacroActivity(){
                 <div className='report-header'>Apagar</div>
                 <div className='report-header'>Actualizar</div>
             </div>
-                 {values}
+                {values}
         </div>
         )
     }
