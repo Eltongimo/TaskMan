@@ -11,8 +11,19 @@ import Dashboard from './Dashboard'
 import Lat from './projectviews/LAT'
 import { useHistory } from 'react-router-dom/cjs/react-router-dom'
 import Home from './Home'
+import NewsLetter from './projectviews/NewsLetter'
+import Carousel from './projectviews/Carousel'
 
 function Board() {
+
+    function add(e){
+
+        const varToadd= document.URL.split('/')[1]
+
+        if (varToadd === 'newsletter'){
+
+        }
+    }
 
     return (
         <section className='container'>
@@ -21,6 +32,7 @@ function Board() {
                                                     marginRight: '20px'
             }} />
                 <input type='tex' class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Procurar.."></input>
+                <button type="button" class="btn btn-light" onClick={add}>Adicionar</button>
             </div>
             <div className='board'>
                 <Switch>
@@ -51,10 +63,26 @@ function Board() {
                         <Dashboard/>
                     </Route>  
 
+                    <Route path='/newsletter' exact>
+                        <NewsLetter/>
+                    </Route>
+                    
+                    <Route path='/relatorios' exact>
+                        Relatorios
+                    </Route>
+
+                    <Route path='/usuarios' exact>
+                        Usuarios
+                    </Route>
+
+                    <Route path='/carousel' exact>
+                        <Carousel/>
+                    </Route>
+                      
                     <Route path='' exact>
                         <Home />
                     </Route>  
-                      
+
                 </Switch>
             </div>
         </section>

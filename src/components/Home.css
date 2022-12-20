@@ -2,6 +2,7 @@
     display: grid; 
     grid-template-rows: 4fr;
     grid-template-columns: 1fr 2fr;
+    padding: 15px;
 }
 
 .image{

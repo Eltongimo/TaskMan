@@ -41,6 +41,15 @@ function Header() {
                               ></i>    
                          </a>
                     </div>
+                    <div>
+                         <label id='welcome' style={{
+                              color: 'white',
+                              fontSize: '1rem',
+                              padding: '10px',
+                              fontWeight: '500'
+
+                         }}/>
+                    </div>
                </div>
           </header>
      )
