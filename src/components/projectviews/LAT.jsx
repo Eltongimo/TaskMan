@@ -75,9 +75,6 @@ function Lat (){
                         <div className='colmns-report'>
                         <ul >
                             <li >
-                                {prods[index].Area}
-                            </li>
-                            <li >
                                 {prods[index].Name}
                             </li>
                             <li >
@@ -95,7 +92,6 @@ function Lat (){
         return( 
         <div className='table-container'>
             <div className='header-container'>
-                <div className='report-header'>Area</div>
                 <div className='report-header'>Nome do Producto</div>
                 <div className='report-header'>Estado</div>
                 <div className='report-header'>%</div>

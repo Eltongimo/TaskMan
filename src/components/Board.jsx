@@ -13,16 +13,32 @@ import { useHistory } from 'react-router-dom/cjs/react-router-dom'
 import Home from './Home'
 import NewsLetter from './projectviews/NewsLetter'
 import Carousel from './projectviews/Carousel'
+import AddProjectForm from './forms/AddProject'
+import AddProducts from './forms/AddProducts'
+
 
 function Board() {
+    const history = useHistory()
 
     function add(e){
 
-        const varToadd= document.URL.split('/')[1]
 
-        if (varToadd === 'newsletter'){
+        var linkToAdd = document.URL.split('/')[3]
 
+        if (linkToAdd === 'projects'){
+            history.push({
+                pathname: '/addproject',
+            })
+        }else if (document.URL.split('/')[3].split('?')[0] === 'products'){
+            history.push({
+                pathname: '/addproducts',
+                search: `?key=${document.URL.split('/')[3].split('=')[1]}`,
+            })
         }
+    }
+
+    function back(){
+        window.history.back()
     }
 
     return (
@@ -30,7 +46,7 @@ function Board() {
             <div className='title' id='title'>
                 <i class="bi bi-arrow-left" style={{cursor: 'pointer',
                                                     marginRight: '20px'
-            }} />
+            }} onClick={back}/>
                 <input type='tex' class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Procurar.."></input>
                 <button type="button" class="btn btn-light" onClick={add}>Adicionar</button>
             </div>
@@ -59,6 +75,10 @@ function Board() {
                         <Lat/>    
                     </Route>  
 
+                    <Route path='/addproject' exact>
+                        <AddProjectForm/>
+                    </Route>  
+
                     <Route path='/dashboard' exact>
                         <Dashboard/>
                     </Route>  
@@ -78,11 +98,14 @@ function Board() {
                     <Route path='/carousel' exact>
                         <Carousel/>
                     </Route>
+
+                    <Route path='/addproducts' exact>
+                        <AddProducts />
+                    </Route>  
                       
                     <Route path='' exact>
                         <Home />
                     </Route>  
-
                 </Switch>
             </div>
         </section>

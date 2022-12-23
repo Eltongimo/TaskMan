@@ -1,7 +1,7 @@
 import React from 'react'
 import {db} from '../database/DatabaseHelper'
 import {useState, useEffect} from 'react'
-import { child, get, getDatabase, ref } from "firebase/database"
+import { child, get, ref } from "firebase/database"
 import TaskRow from '../TaskRow'
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min'
 

@@ -11,12 +11,9 @@ function Projects (){
     
     const [projects, setProjects]  = useState({projs: []})
     const history = useHistory()
-
     
     function handleButtonEvent(e){
        
-        console.log(e.target)
-
         let productKey = e.target.id
         let key  = productKey.split('.')
         

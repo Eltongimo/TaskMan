@@ -5,7 +5,7 @@ import {useState, useEffect} from 'react'
 import { child, get, ref } from "firebase/database"
 import TaskRow from '../TaskRow'
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min'
-
+/*
 function NewsLetter (){
     const [products, setProducts] = useState({products:  []}) 
  
@@ -88,9 +88,9 @@ function NewsLetter (){
      return buildTable()
  
  }
- 
+ */
 
-function ModalNewsLetterForm(props){
+function NewsLetter(props){
 
     return (
         <div className='newsletter-container'>

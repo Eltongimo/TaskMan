@@ -29,6 +29,7 @@ function Menu(props) {
             <div className='navigation'>
                 <nav >
                     <ul>
+
                         <li className='home'>
                             <Link id={menuKeys[0]} onClick={activeBackGroud}  className='link' to="/" exact="true"> 
                                 Home
