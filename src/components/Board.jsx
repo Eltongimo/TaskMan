@@ -15,6 +15,7 @@ import NewsLetter from './projectviews/NewsLetter'
 import Carousel from './projectviews/Carousel'
 import AddProjectForm from './forms/AddProject'
 import AddProducts from './forms/AddProducts'
+import AddMacroActivities from './forms/AddMacroActivities'
 
 
 function Board() {
@@ -34,7 +35,13 @@ function Board() {
                 pathname: '/addproducts',
                 search: `?key=${document.URL.split('/')[3].split('=')[1]}`,
             })
+        }else if (document.URL.split('/')[3].split('?')[0] === 'macroactivities'){
+                history.push({
+                    pathname: '/addmacroactivities',
+                    search: `?key=${document.URL.split('/')[3].split('=')[1]}`,
+                })
         }
+
     }
 
     function back(){
@@ -82,6 +89,10 @@ function Board() {
                     <Route path='/dashboard' exact>
                         <Dashboard/>
                     </Route>  
+
+                    <Route path='/addmacroactivities' exact>
+                        <AddMacroActivities/>
+                    </Route>
 
                     <Route path='/newsletter' exact>
                         <NewsLetter/>
