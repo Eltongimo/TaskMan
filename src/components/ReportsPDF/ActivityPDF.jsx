@@ -68,11 +68,9 @@ function ActivityPDF(acts,mcs){
         pageSize: 'A4',
         pageMargins: [15, 50, 15, 40],
         header: [title],
-        content: [ {
-                        text: `Relatorio das actividades da macro actividade ${mcs.Name} com actividades descritas na tabela abaixo`,
-                        margin: [0,0,0,35]
-                    }
-        ,details],
+        content: [ 
+                    details
+                ],
         footer: [footer]
     }
 
