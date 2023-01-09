@@ -9,59 +9,30 @@ import './Report.css'
 import './projectviews/Products'
 import Dashboard from './Dashboard'
 import Lat from './projectviews/LAT'
-import { useHistory } from 'react-router-dom/cjs/react-router-dom'
 import Home from './Home'
 import NewsLetter from './projectviews/NewsLetter'
 import Carousel from './projectviews/Carousel'
 import AddProjectForm from './forms/AddProject'
 import AddProducts from './forms/AddProducts'
 import AddMacroActivities from './forms/AddMacroActivities'
-
+import AddActivity from './forms/AddActivitiy'
+import AddNewsLetter from './forms/AddNewsLetter'
+import Users from './projectviews/Users'
+import AddUser from './forms/AddUser'
+import Reports from './projectviews/Reports'
 
 function Board() {
-    const history = useHistory()
-
-    function add(e){
-
-
-        var linkToAdd = document.URL.split('/')[3]
-
-        if (linkToAdd === 'projects'){
-            history.push({
-                pathname: '/addproject',
-            })
-        }else if (document.URL.split('/')[3].split('?')[0] === 'products'){
-            history.push({
-                pathname: '/addproducts',
-                search: `?key=${document.URL.split('/')[3].split('=')[1]}`,
-            })
-        }else if (document.URL.split('/')[3].split('?')[0] === 'macroactivities'){
-                history.push({
-                    pathname: '/addmacroactivities',
-                    search: `?key=${document.URL.split('/')[3].split('=')[1]}`,
-                })
-        }
-
-    }
-
-    function back(){
-        window.history.back()
-    }
 
     return (
         <section className='container'>
-            <div className='title' id='title'>
-                <i class="bi bi-arrow-left" style={{cursor: 'pointer',
-                                                    marginRight: '20px'
-            }} onClick={back}/>
-                <input type='tex' class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Procurar.."></input>
-                <button type="button" class="btn btn-light" onClick={add}>Adicionar</button>
-            </div>
             <div className='board'>
                 <Switch>
                     <Route path='/projects' exact>
                         <Projects/>
                     </Route>     
+                    <Route path='/adduser' exact>
+                        <AddUser/>
+                    </Route>
                     <Route path='/products'>
                         <Product/>
                     </Route>
@@ -76,6 +47,10 @@ function Board() {
 
                     <Route path='/products' exact>
                         <Product/>
+                    </Route>
+
+                    <Route path='/addactivities' exact>
+                        <AddActivity/>
                     </Route>
 
                     <Route path='/lats' exact>
@@ -98,12 +73,16 @@ function Board() {
                         <NewsLetter/>
                     </Route>
                     
+                    <Route path='/addnewsletter' exact>
+                        <AddNewsLetter/>
+                    </Route>
+
                     <Route path='/relatorios' exact>
-                        Relatorios
+                        <Reports/>
                     </Route>
 
                     <Route path='/usuarios' exact>
-                        Usuarios
+                        <Users/>
                     </Route>
 
                     <Route path='/carousel' exact>

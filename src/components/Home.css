@@ -1,12 +1,18 @@
 .homeContainer{
     display: grid; 
-    grid-template-rows: 4fr;
-    grid-template-columns: 1fr 2fr;
-    padding: 15px;
+    grid-template-rows: 2fr;
+    grid-template-columns: 5fr;
+    padding: 10px;
+}
+
+.carousel-home{
+    height: 18rem;
+    border: solid 0.01px #ccc;
 }
 
 .image{
 }
 
 .text{
+
 }

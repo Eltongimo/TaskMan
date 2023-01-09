@@ -17,39 +17,14 @@ function Header() {
                <div className='logo'>
                     <h1>POMAR</h1>
                </div>
-               <div className='icons'>
-                    <div className='information-icon'>
-                         <a href='/notification'>
-                              <i class="bi bi-info-circle-fill"
-                              style={{'cursor':'pointer','fontSize': '2rem', 'color': 'white'}}
-                              ></i>  
-                         </a>
-                    </div>
+               <div>
+                    <label id='welcome' style={{
+                         color: 'white',
+                         fontSize: '1rem',
+                         padding: '10px',
+                         fontWeight: '500'
 
-                    <div className='notification-icon'>
-                         <a href='/notification'>
-                              <i class="bi bi-bell-fill"
-                              style={{'cursor':'pointer','fontSize': '2rem', 'color': 'white'}}
-                              ></i>     
-                         </a>
-                    </div>
-
-                    <div className='account-icon'>
-                         <a href='/account'>
-                              <i class="bi bi-person-fill"
-                              style={{'cursor':'pointer','fontSize': '2rem', 'color': 'white'}}
-                              ></i>    
-                         </a>
-                    </div>
-                    <div>
-                         <label id='welcome' style={{
-                              color: 'white',
-                              fontSize: '1rem',
-                              padding: '10px',
-                              fontWeight: '500'
-
-                         }}/>
-                    </div>
+                    }}/>
                </div>
           </header>
      )

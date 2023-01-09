@@ -1,5 +1,5 @@
 section{
-    background-color: white;
+    display:flex;
     flex-direction: column;
     width:100%;
     height: 100vh;
@@ -10,7 +10,7 @@ section{
     overflow: scroll;
 }
 
-section .board{
+.board{
     width: 100%;
     height: 100%;
     align-items: center;

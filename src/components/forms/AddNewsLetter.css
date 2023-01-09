@@ -1,0 +1,14 @@
+form{
+    width: 100%;
+}
+
+.title-newsletter{
+    display:flex;
+    flex-direction: row;
+    border-bottom: solid #ccc 0.001rem;
+    padding: 10px;
+}
+
+.newsletter-title{
+    width: 90%;
+}

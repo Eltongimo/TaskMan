@@ -3,6 +3,7 @@ import './Home.css'
 import {db} from './database/DatabaseHelper'
 import {useState, useEffect} from 'react'
 import { child, get,ref } from "firebase/database"
+import Carousel from './projectviews/Carousel'
 
 function Home(){
     const [user, setUser ] = useState({})
@@ -38,6 +39,7 @@ function Home(){
                 document.getElementById('welcome').innerHTML = `${typedUser.username}, Bem vindo  ao POMAR!`
                 enableMenus()
                 clearForm()
+                window.scrollTo({ top: 0});    
                 return 
             }
         }    
@@ -60,11 +62,23 @@ function Home(){
 
     return (<div className='homeContainer'>
 
+        <div className='carousel-home'>
+            <Carousel/>
+
+        </div>
+    
         <div className='image' style={{textAlign: 'justify', padding: '10px'}}> 
             <b>Informação sobre o Projectos</b>
             <p/>
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-            
+
+            <ul>
+                <li>
+                  Lorem Ipsum is simply dummy text of the printing and typesetting industry. PageMaker including versions of Lorem Ipsum.
+                </li>
+                <li>
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s
+                 </li>
+            </ul>
         </div>
         <div className='text' style={{textAlign: 'justify', padding: '10px'}}>
             <b>Informação sobre o Pomar</b>
@@ -77,36 +91,36 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
 
 </p>
 
-<button type="button" onClick={clearForm} class="btn btn-outline-primary" data-toggle="modal" data-target="#exampleModal">
+<button type="button" onClick={clearForm} className="btn btn-outline-primary" data-toggle="modal" data-target="#exampleModal">
   Login
 </button>
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Login</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
+    <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="false">
+    <div className="modal-dialog" role="document">
+        <div className="modal-content">
+        <div className="modal-header">
+            <h5 className="modal-title" id="exampleModalLabel">Login</h5>
+            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                   <span aria-hidden="true">&times;</span>
             </button>
         </div>
-        <div class="modal-body">
-        <form>
-            <div class="form-group">
-                <label for="exampleInputEmail1">Username</label>
-                <input type="email" id='username' onChange={getUsername} class="form-control" aria-describedby="emailHelp" placeholder="Usermane"/>
-            </div>
-            <div class="form-group">
-                <label for="exampleInputPassword1">Password</label>
-                <input type="password" id='password' onChange= {getPassword} class="form-control" placeholder="Password"/>
-            </div>
-        </form>
-            </div>
-                <div class="modal-footer">
-                    <button type="button" id='closemodal' class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                    <button type="button" class="btn btn-primary" onClick={login}>Entrar</button>
+        <div className="modal-body">
+            <form>
+                <div className="form-group">
+                    <label >Username</label> 
+                    <input type="email" id='username' onChange={getUsername} className="form-control" aria-describedby="emailHelp" placeholder="Usermane"/>
                 </div>
+                <div className="form-group">
+                    <label >Password</label>
+                    <input type="password" id='password' onChange= {getPassword} className="form-control" placeholder="Password"/>
+                </div>
+            </form>
+        </div>
+            <div className="modal-footer">
+                <button type="button" id='closemodal' className="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                <button type="button" className="btn btn-primary" onClick={login}>Entrar</button>
             </div>
         </div>
+    </div>
     </div>    
 </div>)
 }

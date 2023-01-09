@@ -1,12 +1,12 @@
 import React from 'react'
 import './AddProject.css'
 import {db} from '../database/DatabaseHelper'
-import { child, get, ref,set } from "firebase/database"
-import { useEffect,useState } from 'react'
+import { ref,set } from "firebase/database"
+import { useState } from 'react'
 import {v4 as uuidv4} from 'uuid';
 
 function AddProjectForm(){
-
+    
     const [project, setProject] = useState({     
             ProjectName: '',
             Objective: '',
@@ -27,6 +27,7 @@ function AddProjectForm(){
         
         set(ref(db, 'Project/' + uuidv4()), project);
         document.getElementById('closemodal').click()
+        
     }
 
     function setProjectName(e){
@@ -171,8 +172,23 @@ function AddProjectForm(){
         })
     }
 
+    function back(e){
+        window.history.back()
+    }
+
     return (
         <div className='form-container'>
+
+            <div className='title'> 
+                <div className='back-icon'>
+                    <i className="bi bi-arrow-left" style={{cursor: 'pointer',
+                                                                    marginRight: '20px'
+                        }} onClick={back}/>
+                </div>
+                <div className='form-title'>
+                    Adicionar Projecto
+                </div>
+            </div>
             <div className="form-group">
                 <label for="exampleInputEmail1">Nome do Projecto</label>
                 <input type="text" onChange={setProjectName} className="form-control" aria-describedby="emailHelp" />
@@ -218,29 +234,29 @@ function AddProjectForm(){
                 <input type="text" onChange={setPartnerOrganizarions} className="form-control" aria-describedby="emailHelp" />
             </div>
           
-            <button type="button"  class="btn btn-outline-primary" data-toggle="modal" data-target="#exampleModal">
+            <button type="button"  className="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
                 Gravar Projecto         </button>
-            <button type="button" className="btn btn-light">Descartar</button>
+            <button type="button" className="btn btn-secondary">Descartar</button>
 
-            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Confirmação</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <div className="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div className="modal-dialog" role="document">
+                <div className="modal-content">
+                <div className="modal-header">
+                    <h5 className="modal-title" id="exampleModalLabel">Confirmação</h5>
+                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
+                <div className="modal-body">
                 <form>
-                    <div class="form-group">
+                    <div className="form-group">
                         <label for="exampleInputEmail1">Submeter Projecto ?</label>
                     </div>
                 </form>
                     </div>
-                        <div class="modal-footer">
-                            <button type="button" id='closemodal' class="btn btn-secondary" data-dismiss="modal">Não</button>
-                            <button type="button" class="btn btn-primary" onClick={saveProject}>Sim</button>
+                        <div className="modal-footer">
+                            <button type="button" id='closemodal' className="btn btn-secondary" data-dismiss="modal">Não</button>
+                            <button type="button" className="btn btn-primary" onClick={saveProject}>Sim</button>
                         </div>
                     </div>
                 </div>

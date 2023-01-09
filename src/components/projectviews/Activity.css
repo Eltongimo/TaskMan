@@ -1,0 +1,16 @@
+.modal-details-row{
+    flex-direction: column;
+    display:flex;
+}
+
+.modal-details-row label{
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 3px;
+}
+
+.activity-detail{
+    padding: 10px;
+    width: 100%;
+    border: solid #ccc 0.0001px;
+}

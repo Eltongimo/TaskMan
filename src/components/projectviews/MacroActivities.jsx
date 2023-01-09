@@ -73,10 +73,10 @@ function MacroActivity(){
                                     {macroActivities.mcs[data].Name}
                                 </li>
                                 <li id={`${count++}.${macroActivities.mcs[data].Key}`} >
-                                 <i class="bi bi-trash" id={`delete.${count++}.${macroActivities.mcs[data].Key}`} />
+                                 <i className="bi bi-trash" id={`delete.${count++}.${macroActivities.mcs[data].Key}`} />
                                 </li>
                                 <li id={`${count++}.${macroActivities.mcs[data].Key}`}>
-                                    <i class="bi bi-pencil" id={`update.${count++}.${macroActivities.mcs[data].Key}`}/>
+                                    <i className="bi bi-pencil" id={`update.${count++}.${macroActivities.mcs[data].Key}`}/>
                                 </li>
                             </ul>
                         </div>
@@ -85,15 +85,38 @@ function MacroActivity(){
                 )
             }
         }
+
+        function add(){
+            history.push({
+                pathname: '/addmacroactivities',
+                search: `?key=${document.URL.split('/')[3].split('=')[1]}`,
+            })
+        }
+
+        function back()
+        {
+            window.history.back()
+        }
+
         return( 
-        <div className='table-container'>
-            <div className='header-container'>
-                <div className='report-header'>Nome da Macro Actividade</div>
-                <div className='report-header'>Apagar</div>
-                <div className='report-header'>Actualizar</div>
+        <div>
+             <div className='title' id='title'>
+              <i className="bi bi-arrow-left" style={{cursor: 'pointer',
+                                                         marginRight: '20px'
+                }} onClick={back}/>
+                <input type='tex' className="form-control" id="search" aria-describedby="emailHelp" placeholder="Procurar.."></input>
+                <button type="button" className="btn btn-light" id='addbutton' onClick={add}>Adicionar</button>
             </div>
-                {values}
-        </div>
+           
+            <div className='table-container'>
+                <div className='header-container'>
+                    <div className='report-header'>Nome da Macro Actividade</div>
+                    <div className='report-header'>Apagar</div>
+                    <div className='report-header'>Actualizar</div>
+                </div>
+                    {values}
+            </div>
+        </div>        
         )
     }
     return buildTableforMcs()

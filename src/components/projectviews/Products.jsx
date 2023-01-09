@@ -71,10 +71,10 @@ function Product (){
                                 {products.projects[key].Status}
                             </li>
                             <li id={`${count++}.${products.projects[key].Key}`} >
-                                 <i class="bi bi-trash" id={`delete.${count++}.${products.projects[key].Key}`} />
+                                 <i className="bi bi-trash" id={`delete.${count++}.${products.projects[key].Key}`} />
                             </li>
                             <li id={`${count++}.${products.projects[key].Key}`}>
-                                  <i class="bi bi-pencil" id={`update.${count++}.${products.projects[key].Name}`}/>
+                                  <i className="bi bi-pencil" id={`update.${count++}.${products.projects[key].Name}`}/>
                             </li>
                         </ul>
                     </div>
@@ -83,16 +83,38 @@ function Product (){
             )
             }
         }
+
+        function add(e){
+            history.push({
+                pathname: '/addproducts',
+                search: `?key=${document.URL.split('/')[3].split('=')[1]}`,
+            })
+        }
+
+        function back(e){
+            window.history.back()
+        }
+
         return( 
-        <div className='table-container'>
-            <div className='header-container'>
-                <div className='report-header'>Area</div>
-                <div className='report-header'>Nome do Producto</div>
-                <div className='report-header'>Estado</div>
-                <div className='report-header'>Apagar</div>
-                <div className='report-header'>Actualizar</div>
+        <div>
+            <div className='title' id='title'>
+              <i className="bi bi-arrow-left" style={{cursor: 'pointer',
+                                                         marginRight: '20px'
+                }} onClick={back}/>
+                <input type='tex' className="form-control" id="search" aria-describedby="emailHelp" placeholder="Procurar.."></input>
+                <button type="button" className="btn btn-light" id='addbutton' onClick={add}>Adicionar</button>
             </div>
-            {values}
+            
+            <div className='table-container'>
+                <div className='header-container'>
+                    <div className='report-header'>Area</div>
+                    <div className='report-header'>Nome do Producto</div>
+                    <div className='report-header'>Estado</div>
+                    <div className='report-header'>Apagar</div>
+                    <div className='report-header'>Actualizar</div>
+                </div>
+                {values}
+            </div>
         </div>
         )
     }

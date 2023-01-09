@@ -90,13 +90,23 @@ function AddProducts(){
 
     return (
         <div className='form-container'>
+              <div className='title'> 
+                <div className='back-icon'>
+                    <i className="bi bi-arrow-left" style={{cursor: 'pointer',
+                                                                    marginRight: '20px'
+                        }} onClick={back}/>
+                </div>
+                <div className='form-title'>
+                    Adicionar Producto
+                </div>
+            </div>
             <div className="form-group">
                 <label for="exampleInputEmail1">Nome do Producto</label>
                 <input type="text" onChange={setProductName} className="form-control" aria-describedby="emailHelp" />
             </div>
             <div className="form-group">
                 <label for="exampleInputEmail1">LAT</label>
-                <select class="form-select" onChange={setArea} aria-label="Default select example">
+                <select className="form-select" onChange={setArea} aria-label="Default select example">
                     <option selected value="Urbanização e Regeneração Urbana">Urbanização e Regeneração Urbana</option>
                     <option value="Recursos Hídricos e Resiliência">Recursos Hídricos e Resiliência</option>
                     <option value="Ambiente e Resíduos Sólidos">Ambiente e Resíduos Sólidos</option>
@@ -107,7 +117,7 @@ function AddProducts(){
     
             <div className="form-group">
                 <label for="exampleInputEmail1">Estado do Producto</label>
-                <select class="form-select" aria-label="Default select example" onChange={setStatus}>
+                <select className="form-select" aria-label="Default select example" onChange={setStatus}>
                     <option selected value="Não Iniciado">Não Iniciado</option>
                     <option value="Em progresso">Em progresso</option>
                     <option value="Cancelado">Cancelado</option>
@@ -115,29 +125,29 @@ function AddProducts(){
                 </select>
             </div>
         
-            <button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+            <button type="button"  className="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
                 Gravar Producto   </button>
             <button type="button"  onClik={back} className="btn btn-secundary">Descartar</button>
 
-            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Confirmação</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <div className="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div className="modal-dialog" role="document">
+                <div className="modal-content">
+                <div className="modal-header">
+                    <h5 className="modal-title" id="exampleModalLabel">Confirmação</h5>
+                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
+                <div className="modal-body">
                 <form>
-                    <div class="form-group">
+                    <div className="form-group">
                         <label for="exampleInputEmail1">Submeter Producto ?</label>
                     </div>
                 </form>
                     </div>
-                        <div class="modal-footer">
-                            <button type="button" id='closemodal' class="btn btn-secondary" data-dismiss="modal">Não</button>
-                            <button type="button" onClick={saveProduct} class="btn btn-primary">Sim</button>
+                        <div className="modal-footer">
+                            <button type="button" id='closemodal' className="btn btn-secondary" data-dismiss="modal">Não</button>
+                            <button type="button" onClick={saveProduct} className="btn btn-primary">Sim</button>
                         </div>
                     </div>
                 </div>
