@@ -18,16 +18,10 @@ function Footer(params) {
                     </div>
 
                     <div className='footer-box'>
-                        <ul> 
-                            <li>
-                                Newsletter
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div className='footer-box'>
                         <ul>
-                            Support
+                            <li>
+                                Support
+                            </li>
                         </ul>
                     </div>
 

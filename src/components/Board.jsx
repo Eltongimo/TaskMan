@@ -20,6 +20,7 @@ import AddNewsLetter from './forms/AddNewsLetter'
 import Users from './projectviews/Users'
 import AddUser from './forms/AddUser'
 import Reports from './projectviews/Reports'
+import ReadNewsNetter from './projectviews/ReadNewsLetter'
 
 function Board() {
 
@@ -35,6 +36,10 @@ function Board() {
                     </Route>
                     <Route path='/products'>
                         <Product/>
+                    </Route>
+
+                    <Route path='/readnewsletter' exact>
+                        <ReadNewsNetter />
                     </Route>
 
                     <Route path='/macroactivities' >

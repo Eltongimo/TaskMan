@@ -31,21 +31,7 @@ function NewsLetter (){
         }
       });
     
-    function NewsletterPDF(props){
-        return (
-            <Document>
-                <Page>
-                    <Text style={styles.header} >
-                        {props.header}
-                    </Text>
-                    <Text style={styles.body} >
-                        {props.body}
-                    </Text>
-                </Page>
-            </Document>
-        )
-    }
-     useEffect( () => {
+      useEffect( () => {
          const dbRef = ref(db)
          listAll(listOfImages).then((response) => {
             response.items.forEach(item => getDownloadURL(item).then(url =>{
@@ -67,11 +53,16 @@ function NewsLetter (){
         let productKey = e.target.id
         let key  = productKey.split('.')
  
-        if (key[0] === 'delete'){
-         alert('deleting')
+         if (key[0] === 'delete'){
+            alert('deleting')
          }
          else if (key[0] === 'update'){
              alert('updating')
+         }else{
+            history.push({
+                pathname: '/readnewsletter',
+                search: `?key=${key[1]}`
+            })
          }
      }
  
@@ -109,69 +100,20 @@ function NewsLetter (){
                                     <li id={`${count++}.${newsLetter.newsLetters[key].Key}`}>
                                         <i className="bi bi-pencil" id={`update.${count++}.$${newsLetter.newsLetters[key].Key}`} />
                                     </li>
-                                    <li className='project-icons' data-toggle="modal" id={`${count}`} >
-                                        <i className="bi bi-info" data-toggle="modal" data-target={`#exampleModal${count}`}
-                                            style={{fontSize: '1.3rem'}}
-                                        />
-                                    </li>
                                 </ul>
                             </div>
                         </div>
                     </button>
-                    <div className="modal fade" id={`exampleModal${count}`} tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div className="modal-dialog" role="document">
-                            <div className="modal-content">
-                                <div className="modal-header">
-                                    <h5 className="modal-title" id="exampleModalLabel">Newsletter</h5>
-                                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div className="modal-body">
-                                    <form>
-                                        <ul >
-                                            <li className='modal-details-row'>
-                                                <label style={{textAlign: 'justify'}}>Titulo </label> 
-                                                <div className='activity-detail' style={{ 
-                                                    border: 'solid #ccc 0.001px', textAlign: 'justify', padding: '10px', 
-                                                    fontWeight: '400'
-                                                }}>{newsLetter.newsLetters[key].Title} </div> 
-                                            </li> 
-                                            
-                                            <li className='modal-details-row'>
-                                                <label style={{fontWeight: '400', marginTop: '10px'}}> Texto </label> 
-                                                <div className='activity-detail'
-                                                    style={{border: 'solid #ccc 0.001px', textAlign: 'justify', padding: '10px', fontWeight: '400'}}
-                                                > {newsLetter.newsLetters[key].Body}  </div> 
-                                            </li> 
-                                        </ul>
-                                        {imageList.map(url => {
-                                            <img src={`${url}`} />
-                                        })}
-                                    </form>
-                                </div>
-                                <div className="modal-footer">
-                                    <PDFDownloadLink 
-                                        document={NewsletterPDF({header: newsLetter.newsLetters[key].Title, body: newsLetter.newsLetters[key].Body})}
-                                        filename='newsletter'
-                                        >
-                                            {({loading}) => (loading ? <button type="button" id='closemodal' className="btn btn-secondary" >Carregando documento</button>
-                                                :                                     <button type="button" id='closemodal' className="btn btn-secondary" >Baixar Newsletter</button>
-                                                ) }
-
-                                    </PDFDownloadLink>
-                         
-                                </div>
-                               </div>
-                        </div>
-                    </div>
-                </div>)
+                </div>
+                )
             }
          }
 
          function add(e){
+
+            const key = e.terget.id.split('.')
             history.push({
-                pathname: '/addnewsletter'
+                pathname: '/addnewsletter',
               })
          }
 
@@ -186,7 +128,6 @@ function NewsLetter (){
                  <div className='report-header'>Titulo</div>
                  <div className='report-header'>Apagar</div>
                  <div className='report-header'>Actualizar</div>
-                 <div className='report-header'>Ler</div>
                </div>
              {values}
          </div>

@@ -70,7 +70,6 @@ function Projects (){
                                 </li>
                                 <li className='project-icons' id={`${count++}.${projects.projs[key].Key}`}>
                                     <i className="bi bi-pencil" id={`update.${count++}.${projects.projs[key].Key}`}
-                                        
                                     />
                                 </li>
                             </ul>

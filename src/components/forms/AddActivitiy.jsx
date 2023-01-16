@@ -421,7 +421,7 @@ function AddActivity(){
     
     return (
         <div className='form-container'>
-                  <div className='title'> 
+                 <div className='title'> 
                 <div className='back-icon'>
                     <i className="bi bi-arrow-left" style={{cursor: 'pointer',
                                                                     marginRight: '20px'
@@ -543,7 +543,6 @@ function AddActivity(){
                     </div>
                 </div>
             </div>    
-
     </div>
     )
 }

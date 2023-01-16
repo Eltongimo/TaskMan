@@ -5,6 +5,7 @@ import TaskRow from '../TaskRow'
 import {useState,useEffect} from 'react'
 import { useHistory } from 'react-router-dom/cjs/react-router-dom'
 import './Activity.css'
+import ActivitySinglePDF from '../ReportsPDF/ActivitySinglePDF'
 
 function Activities (){
     
@@ -49,6 +50,13 @@ function Activities (){
          } 
    }
 
+   // create single page report with details from acticit
+   function createPDF(e){
+
+        ActivitySinglePDF(activity.activities[e.target.id.split('.')[1]])
+    
+    }
+
 
     function buildTable (){
         
@@ -80,17 +88,31 @@ function Activities (){
                                     <li id={`${count++}.${activity.activities[key].Key}`}>
                                         {activity.activities[key].Name}
                                     </li>
+                                    
                                     <li className='project-icons' id={`${count++}.${activity.activities[key].Key}`}>
-                                        <i className="bi bi-trash" id={`delete.${count++}.${activity.activities[key].Key}`} />
+                                        <i className="bi bi-pencil" id={`update.${count++}.${activity.activities[key].Key}`}
+                                          />
                                     </li>
+
                                     <li className='project-icons' id={`${count++}.${activity.activities[key].Key}`}>
-                                        <i className="bi bi-pencil" id={`update.${count++}.${activity.activities[key].Key}`}/>
+                                        <i className="bi bi-trash" id={`delete.${count++}.${activity.activities[key].Key}`} 
+                                          
+                                        />
                                     </li>
                                     
-                                    <li className='project-icons' data-toggle="modal" id={`${console.log(count)}`} >
+                                    <li className='project-icons' data-toggle="modal" id={`${count}`} >
                                         <i className="bi bi-info" data-toggle="modal" data-target={`#exampleModal${count}`}
-                                            style={{fontSize: '1.3rem'}}
+                                          
                                         />
+                                    </li>
+                                    <li id={`${count + 1}.${key}`}>
+                                        <i class="bi bi-file-earmark-arrow-down" style={{
+                                                fontSize: '1.3rem',
+                                                color: 'blue'
+                                            }}
+                                            onClick={createPDF}
+                                            id={`${count + 10}.${key}`}
+                                        />   
                                     </li>
                                 </ul>
                             </div>
@@ -202,13 +224,13 @@ function Activities (){
                 <div className='report-header'>Editar</div>
                 <div className='report-header'>Apagar</div>
                 <div className='report-header'>Mostrar</div>
+                <div className='report-header'>Relatorio</div>
                 
                 <i className="bi bi-info-circle-fill"
                               style={{'cursor':'pointer','fontSize': '2rem', 'color': 'white'}}
                               />  
             </div>
             {values}
-            {console.log(activity)}
         </div>
         )
     }

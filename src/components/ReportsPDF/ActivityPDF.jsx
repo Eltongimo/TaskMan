@@ -1,19 +1,17 @@
 import pdfMake from 'pdfmake/build/pdfmake'
 import pdfFonts from 'pdfmake/build/vfs_fonts'
-import { act } from 'react-dom/test-utils'
 
 function ActivityPDF(acts,mcs){
 
     pdfMake.vfs = pdfFonts.pdfMake.vsf
     
-
-    function getTableRows(acts){
+    function getTableRows(){
 
         let a = []
 
         for (let index in acts ){
             
-            a.push(['Nome', acts[index].Name])
+            a.push(['Actividade', acts[index].Name])
             a.push(['Descrição', acts[index].Description])
             a.push(['Lugar', acts[index].Location])
             a.push(['Inicio', acts[index].StartTime])
@@ -27,29 +25,27 @@ function ActivityPDF(acts,mcs){
             a.push(['Esperado', acts[index].Waited])
             a.push(['Etereogenidade', acts[index].Heterogenity])
             a.push(['Proximos Passos', acts[index].NextSteps])
-            a.push(['Comentarios', acts[index].Comments])
+            a.push(['Comentarios', acts[index].Comments]) 
             a.push([' ', ' '])  
         }
-
         return a
     }
-
     const title = [{
-        text: 'Relatorio de Actividades',
+        text:[`Relatorio de Actividade`],
         fontSize: 15,
         bold: true,
         margin: [15,20,0,45],
         justify: 'center'
     }]
-
+    
     const details = [
 		{
-        style: 'tableExample',
+            style: 'tableExample',
 			table: {
-            	body: getTableRows(acts),
-                fillColor: 'black',
-                widths: [120, '*']
-            }
+                body: getTableRows(),
+                widths: [120, '*'],
+			},
+            layout: 'headerLineOnly'
 		}
     ]
     
@@ -68,9 +64,7 @@ function ActivityPDF(acts,mcs){
         pageSize: 'A4',
         pageMargins: [15, 50, 15, 40],
         header: [title],
-        content: [ 
-                    details
-                ],
+        content: [details],
         footer: [footer]
     }
 

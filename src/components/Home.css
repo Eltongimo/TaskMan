@@ -10,9 +10,8 @@
     border: solid 0.01px #ccc;
 }
 
-.image{
-}
-
-.text{
+li button{
+    background-color: transparent;
+    border: #ccc solid 0.2px;
 
 }

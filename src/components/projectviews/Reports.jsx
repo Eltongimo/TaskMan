@@ -24,6 +24,13 @@ function Reports(){
                 alert('Verifique a conexão com a internet')
             })
 
+            get(child(dbRef, 'Activity')).then( snapshot => {
+
+                if (snapshot.exists()){
+                    setActivities({acts: snapshot.val()})
+                }
+                console.log(activities)
+            })
         }
     ,[])
 
@@ -36,6 +43,9 @@ function Reports(){
                 a.push(activities.acts[index])
             }
         }
+        
+        console.log(a)
+
         return a
     }
 
@@ -104,7 +114,6 @@ function Reports(){
                 <div className='header-container'>
                     <div className='report-header'>Nr</div>
                     <div className='report-header'>Macro Actividade</div>
-                    <div className ='report-header'>Actividades</div>
                     <div className='report-header'>Baixar Relatorio</div>
                 </div>
                 {
