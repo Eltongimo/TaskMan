@@ -67,9 +67,22 @@ function Dashboard  (){
             />)
     }
 
+    function back (e){
+        window.history.back()
+    }
     return (
-        <div className='home-container'>
-            {cards}
+        <div  style={{
+            border: 'solid #ccc red '
+        }}>
+             <div className='title' id='title'>
+              <i className="bi bi-arrow-left" style={{cursor: 'pointer',
+                                                         marginRight: '20px'
+                                                     }} 
+                onClick={back}/>
+            </div>
+                <div className='home-container'>
+                    {cards}
+                </div>
         </div>
     )
 }

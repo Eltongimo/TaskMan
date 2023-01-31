@@ -59,7 +59,7 @@ function Sticky(props){
         <div className='sticky-notes'>
             <div className='items'>
                 <div className='note-header'>
-                    <div className='note-header-title'>
+                    <div className='note-header-title' >
                         {props.header}
                     </div>
                     <div className='general-percentage'>

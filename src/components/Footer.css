@@ -1,7 +1,7 @@
 footer{
-    background: #00c6ff;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #0072ff, #00c6ff);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #0072ff, #00c6ff); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: #001489;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #001489, #001489);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #001489, #001489); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     
     box-shadow: rgba(64, 65, 66, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
     display:flex;
@@ -32,4 +32,9 @@ footer span{
     width: 25%;
     height: 100%;
     margin-right: 20px;
+}
+
+
+.footer-box ul li {
+    color: white;
 }

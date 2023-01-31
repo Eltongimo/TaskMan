@@ -1,13 +1,14 @@
 import pdfMake from 'pdfmake/build/pdfmake'
 import pdfFonts from 'pdfmake/build/vfs_fonts'
 
+
 function ActivitySinglePDF(act){
 
     pdfMake.vfs = pdfFonts.pdfMake.vsf
 
     function createTable(){
         let a = []
-        a.push(['Actividade', act.Name])
+        a.push(['Actividade', act.Name])    
         a.push(['Descrição', act.Description])
         a.push(['Lugar', act.Location])
         a.push(['Inicio', act.StartTime])

@@ -96,7 +96,8 @@ function Product (){
         }
 
         return( 
-        <div>
+        <div className='product-container'
+        >
             <div className='title' id='title'>
               <i className="bi bi-arrow-left" style={{cursor: 'pointer',
                                                          marginRight: '20px'

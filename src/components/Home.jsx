@@ -5,15 +5,16 @@ import {useState, useEffect} from 'react'
 import { child, get,ref } from "firebase/database"
 import Carousel from './projectviews/Carousel'
 import logo from '../assets/logo/logo.png'
-
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min'
 
 function Home(){
     const [user, setUser ] = useState({})
-    const [projects, setProjects] = useState({
-        
-    })
+    const [projects, setProjects] = useState({})
     const [typedUser, setTypedUser] = useState({})
-
+    const [aboutPomar, setAboutPomar] = useState({})
+    const history = useHistory()
+    
+    
     function getUsername(e){
         setTypedUser({username: e.target.value, password:typedUser.password})
     }
@@ -22,9 +23,24 @@ function Home(){
         setTypedUser({username: typedUser.username, password: e.target.value})
     }
 
+
+    function editContent(e){
+        history.push({
+            pathname: '/edithomecontent',
+          })
+    }
+
     useEffect( () => {
         const dbRef = ref(db)
-           
+            get(child(dbRef,'HomeContent')).then((snapshot) => {
+
+                if (snapshot.exists())
+                 for (let key in snapshot.val()){
+                    setAboutPomar({About: snapshot.val()[key].About})        
+                 }
+                }
+            )
+
             get(child(dbRef, `User`)).then((snapshot) => {
                     if (snapshot.exists())
                         setUser({users: snapshot.val()})
@@ -45,7 +61,6 @@ function Home(){
 
             if ( user.users[u].Username === typedUser.username && user.users[u].Password === typedUser.password){
                 e.target.isVisible = false
-                document.getElementById('closemodal').click()
                 document.getElementById('welcome').innerHTML = `${typedUser.username}, Bem vindo  ao POMAR!`
                 enableMenus()
                 clearForm()
@@ -62,6 +77,9 @@ function Home(){
         document.getElementsByClassName('newsletter')[0].hidden = false
         document.getElementsByClassName('relatorios')[0].hidden = false
         document.getElementsByClassName('usuarios')[0].hidden = false
+        document.getElementsByClassName('navigation')[0].hidden = false
+        document.getElementsByClassName('conteudo')[0].hidden = false
+   
     }
 
     function clearForm(){
@@ -80,8 +98,8 @@ function Home(){
                             <div className="modal-dialog" role="document">
                                 <div className="modal-content">
                                     <div className="modal-header">
-                                        <h5 className="modal-title" id="exampleModalLabel">Projecto  {projects.p[key].ProjectName}</h5>
-                                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                        <h5 className="modal-title" id="exampleModalLabel">Projecto{projects.p[key].ProjectName}</h5>
+                                        <button type="button" id='closebutton' className="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
@@ -121,64 +139,61 @@ function Home(){
         return a
     }
 
-    return (<div className='homeContainer'>
+    return (
+        
+        <div className='homeContainer'>
 
-        <div className='carousel-home'>
-            <Carousel/>
-        </div>
-    
-        <div className='image' style={{textAlign: 'justify', padding: '10px'}}> 
-            <b>Projectos</b>
-            <p/>
-            <ul>
-                {loadprojects()}
-            </ul>
-        </div>
-        <div className='text' style={{textAlign: 'justify', padding: '10px'}}>
-            <b>Informação sobre o Pomar</b>
-            <p/>
-        Contrary to popular belief, Lorem Ipsum is not simply random text. 
-        It has roots in a piece of classical Latin literature from 45 BC, 
-        making it over 2000 years old. Richard McClintock, a Latin professor at 
-        Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words,
+            <div className='carousel-home'>
+                <Carousel/>
+            </div>
+        
+            <div className='image' style={{textAlign: 'justify', padding: '10px'}}> 
+                <b>Projectos</b>
+                <p/>
+                <ul>
+                    {loadprojects()} 
+                </ul>
+            </div>
+            <div className='text' style={{textAlign: 'justify', padding: '10px'}}>
+                <b>Informação sobre o Pomar</b>
+                <p>
+                    {aboutPomar.About}
+                </p>
 
-<p>Desenvolvido por Eltonug
+            <button type="button" onClick={clearForm} className="btn btn-outline-primary" data-toggle="modal" data-target="#exampleModal">
+                Login
+            </button>
 
-</p>
-
-<button type="button" onClick={clearForm} className="btn btn-outline-primary" data-toggle="modal" data-target="#exampleModal">
-  Login
-</button>
-    <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="false">
-        <div className="modal-dialog" role="document">
-            <div className="modal-content">
-                <div className="modal-header">
-                    <h5 className="modal-title" id="exampleModalLabel">Login</h5>
-                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+            <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="false">
+                <div className="modal-dialog" role="document">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title" id="exampleModalLabel">Login</h5>
+                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    <div className="modal-body">
+                        <form>
+                            <div className="form-group">
+                                <label >Username</label> 
+                                <input type="email" id='username' onChange={getUsername} className="form-control" aria-describedby="emailHelp" placeholder="Usermane"/>
+                            </div>
+                            <div className="form-group">
+                                <label >Password</label>
+                                <input type="password" id='password' onChange= {getPassword} className="form-control" placeholder="Password"/>
+                            </div>
+                        </form>
+                    </div>
+                    <div className="modal-footer">
+                        <button type="button" id='closemodal' className="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        <button type="button" className="btn btn-primary" onClick={login}>Entrar</button>
+                    </div>
+                    </div>
                 </div>
-            <div className="modal-body">
-                <form>
-                    <div className="form-group">
-                        <label >Username</label> 
-                        <input type="email" id='username' onChange={getUsername} className="form-control" aria-describedby="emailHelp" placeholder="Usermane"/>
-                    </div>
-                    <div className="form-group">
-                        <label >Password</label>
-                        <input type="password" id='password' onChange= {getPassword} className="form-control" placeholder="Password"/>
-                    </div>
-                </form>
+            </div>    
             </div>
-            <div className="modal-footer">
-                <button type="button" id='closemodal' className="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                <button type="button" className="btn btn-primary" onClick={login}>Entrar</button>
-            </div>
-            </div>
-        </div>
-    </div>    
-    </div>
-</div>)
+        </div>)
 }
 
 export default Home

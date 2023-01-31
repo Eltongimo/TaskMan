@@ -1,0 +1,8 @@
+.card-content{
+    display: flex;
+    border: solid whitesmoke 0.01px;
+    border-radius: 10px;
+    margin-bottom: 2px;
+    padding: 10px;
+    text-decoration: none;
+}

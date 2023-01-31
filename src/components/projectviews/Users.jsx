@@ -3,6 +3,7 @@ import React from 'react'
 import {db} from '../database/DatabaseHelper'
 import { child, get, getDatabase, ref } from "firebase/database"
 import { useHistory } from 'react-router-dom/cjs/react-router-dom'
+import './Users.css'
 
 function Users(){
 
@@ -79,7 +80,7 @@ function Users(){
         }
         
         return( 
-        <div >
+        <div className='users-container'>
             <div className='title' id='title'>
                 <input type='tex' className="form-control" id="search" aria-describedby="emailHelp" placeholder="Procurar.."></input>
                 <button type="button" className="btn btn-light" id='addbutton' onClick={add}>Adicionar</button>

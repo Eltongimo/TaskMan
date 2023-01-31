@@ -21,6 +21,8 @@ import Users from './projectviews/Users'
 import AddUser from './forms/AddUser'
 import Reports from './projectviews/Reports'
 import ReadNewsNetter from './projectviews/ReadNewsLetter'
+import ShowDashboard from './ShowDashboard'
+import EditHomeContent from './projectviews/EditHomeContent'
 
 function Board() {
 
@@ -31,6 +33,14 @@ function Board() {
                     <Route path='/projects' exact>
                         <Projects/>
                     </Route>     
+
+                    <Route path='/edithomecontent'>
+                        <EditHomeContent/>
+                    </Route>
+                    
+                    <Route path='/showdashboard' exact>
+                        <ShowDashboard/>
+                    </Route>
                     <Route path='/adduser' exact>
                         <AddUser/>
                     </Route>

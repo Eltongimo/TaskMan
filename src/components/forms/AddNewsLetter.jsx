@@ -15,6 +15,10 @@ function AddNewsLetter(){
         File: null 
     })
 
+    const [formElements, setFormElements ] = useState([
+        {Titulo:  '', Corpo: '', Imagem: null },
+    ])
+    
     function back(e){
         window.history.back()
     }
@@ -48,7 +52,7 @@ function AddNewsLetter(){
                 alert('Newsletter adicionado com sucesso')
             }
         )
-        set(ref(db, 'NewsLetter/' + uuidv4()), newsLetter);
+        set(ref(db, 'NewsLetter/' + uuidv4()), newsLetter)
         document.getElementById('closemodal').click()
         window.history.back()
     }
@@ -63,6 +67,31 @@ function AddNewsLetter(){
         })
     }
 
+
+    const  handleFormChange = (event, index) => {
+        const data = [...formElements]
+
+        data[index][event.target.name] = event.target.value
+     //   console.log(data[index][event.target.name])
+       
+        setFormElements(data)
+        console.log(formElements)
+    }
+
+    const removeField = (element) => {
+        let data = [...formElements]
+        const index = element.target.id
+
+        data.splice(index,1)
+
+        setFormElements(data)
+    }
+
+    function addField(e){
+        let element =  {Titulo: '', Corpo: '', Imagem: null}
+        setFormElements([...formElements,element])
+    }
+    
     return (
         <div>
             <div className='title-newsletter'> 
@@ -77,23 +106,43 @@ function AddNewsLetter(){
             </div>
             <div id='newsletter-content'>
                 <form>
-                    <div className="form-group">
-                        <label for="exampleFormControlInput1">Titulo</label>
-                        <input type="email"  onChange={setTitle} className="form-control" id="exampleFormControlInput1" placeholder="Titulo do Newsletter"/>
-                    </div>
-                    <div className="form-group" style={{'margin-top': '20px'}}>
-                        <label for="exampleFormControlTextarea1" style={{'font-weight': '400'}}>Corpo</label>
-                        <textarea className="form-control" onChange={setBody} id="exampleFormControlTextarea1" rows="10"></textarea>
-                    </div>
-                    <div className="form-group">
-                        <label for="exampleInputEmail1">Carregar Fotografia</label>
-                        <input type="file" accept='image/*' onChange={setFile} className="form-control" aria-describedby="emailHelp" />
-                    </div>
+                    {formElements.map((element, index) => {
+                       return ( <div key={index} style={{border: 'solid #ccc 0.1px', marginBottom: '10px'}}>
+            
+                            <div className="form-group" style={{display: 'flex', flexDirection: 'column'}}>
+
+                                  <button type="button" id={index} onClick={removeField} style={{width: '10%', marginBottom: '15px', marginLeft: '90%'}}className="btn btn-outline-secondary">
+                                        Apagar 
+                                  </button>
+                                <p>
+                                     <label for="exampleFormControlInput1">Titulo</label>
+                                </p>
+                               
+                                {/*<input type="email"  onChange={setTitle} onChange={event => handleFormChange(event, index)} className="form-control" id="exampleFormControlInput1" placeholder="Titulo do Newsletter"/>*/}
+                                <input type="email" value={element.Titulo} name='titulo' onChange={event => handleFormChange(event, index)} className="form-control" id="exampleFormControlInput1" placeholder="Titulo do Newsletter"/>
+                      
+                            </div>
+                            <div className="form-group" style={{'margin-top': '20px'}}>
+                                <label for="exampleFormControlTextarea1" style={{'font-weight': '400'}}>Corpo</label>
+                                {/*<textarea className="form-control" onChange={setBody} onChange={event => handleFormChange(event, index)} id="exampleFormControlTextarea1" rows="10"></textarea> */}
+                                <textarea name='corpo' value={element.Corpo} className="form-control" onChange={event => handleFormChange(event, index)} id="exampleFormControlTextarea1" rows="10"></textarea>
+                            </div>
+                            <div className="form-group">
+                                <label for="exampleInputEmail1">Carregar Fotografia</label>
+                             {/*<input type="file" accept='image/*' onChange={setFile} className="form-control" aria-describedby="emailHelp" /> */}
+                                <input name='ficheiro' value={element.Imagem} type="file" accept='image/*' onChange={event => handleFormChange(event, index)} className="form-control" aria-describedby="emailHelp" />
+                            </div>
+                        </div> )         
+                    })}
                 
                     <div className='buttons-container' style={{'margin-top': '20px'}}>
-                    <button type="button"  className="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                        Gravar Newsletter 
-                    </button>
+                        <button type="button"  className="btn btn-secondary" onClick={addField}>
+                            Adicionar Campo 
+                        </button>
+            
+                        <button type="button"  className="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                            Gravar Newsletter 
+                        </button>
                     <button type="button" className="btn btn-secundary">Descartar</button>
                     </div>
                 </form>
@@ -104,7 +153,7 @@ function AddNewsLetter(){
                         <div className="modal-header">
                             <h5 className="modal-title" id="exampleModalLabel">Confirmação</h5>
                             <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
+                               <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div className="modal-body">
@@ -121,7 +170,6 @@ function AddNewsLetter(){
                             </div>
                         </div>
                     </div>    
-
             </div>
         </div>
     )

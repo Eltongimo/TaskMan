@@ -8,7 +8,7 @@ function Menu(props) {
 
     const [menuVisible, setMenuVisibility ] = useState(true)
 
-    const menuKeys = ['home','dahboard','menu-projects','newsletter','relatorios','usuarios']
+    const menuKeys = ['home','dahboard','menu-projects','newsletter','relatorios','usuarios','conteudo']
     let a = []
 
     function activeBackGroud(e){
@@ -18,25 +18,27 @@ function Menu(props) {
         for (let key in menuKeys){
             
             if ( menuKeys[key] === selectedId){
-                document.getElementById(selectedId).parentElement.style.backgroundColor = '#00c6ff'
+                document.getElementById(selectedId).parentElement.style.backgroundColor = '#001489'
+                document.getElementById(selectedId).style.color = 'white'
             }else{
                 document.getElementById(menuKeys[key]).parentElement.style.backgroundColor = 'transparent'
+                document.getElementById(menuKeys[key]).style.color = 'black'
+
             }
         }
 
     }
       a.push(
-            <div className='navigation'>
+            <div className='navigation' hidden='true'>
                 <nav >
                     <ul>
-
                         <li className='home'>
-                            <Link id={menuKeys[0]} onClick={activeBackGroud}  className='link' to="/" exact="true"> 
+                            <Link id={menuKeys[0]} onClick={activeBackGroud}  className='link' to="/" exact="true" defaultChecked> 
                                 Home
                             </Link>
                         </li>
                         <li  className='dashboard' hidden = {menuVisible} >
-                            <Link id={menuKeys[1]} onClick={activeBackGroud}  className='link' to="/dashboard" exact="true"> 
+                            <Link id={menuKeys[1]} onClick={activeBackGroud}  className='link' to="/showdashboard" exact="true"> 
                                 Dashboard
                             </Link>
                         </li>
@@ -58,6 +60,11 @@ function Menu(props) {
                         <li className='usuarios' hidden={menuVisible}>
                             <Link id={menuKeys[5]} onClick={activeBackGroud}  className='link' to='/usuarios' exact="true"> 
                                 Usuarios
+                            </Link>
+                        </li>
+                        <li className='conteudo' hidden={menuVisible}>
+                            <Link id={menuKeys[6]} onClick={activeBackGroud}  className='link' to='/edithomecontent' exact="true"> 
+                                Gerir Conteudo
                             </Link>
                         </li>
                     </ul>

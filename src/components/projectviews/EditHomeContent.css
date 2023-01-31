@@ -1,0 +1,25 @@
+.back-icon{
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    font-size: 1.3rem;
+    font-weight: 500;
+}
+
+.about-pomar{
+    padding: 10px;
+    font-size: 1.2rem;
+    font-weight: 400;
+    margin-bottom: 10px;
+}
+
+.upload-pic{
+    padding: 10px;
+    font-size: 1.2rem;
+    font-weight: 400;
+    margin-bottom: 10px;    
+}
+
+.submit-info{
+    padding: 10px;
+}

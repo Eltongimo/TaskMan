@@ -1,6 +1,6 @@
 .table-container{
     width: 100%;
-    height: 60vh;
+    height: 40rem;
     padding: 10px;
     overflow-y: scroll;
 }
@@ -16,8 +16,7 @@
     flex-direction: row;
     flex-wrap: nowrap;
     padding: 10px;
-    border: solid #ccc 0.2px;
-    border-radius: 20px;
+    border-radius: 15px;
     text-align: center;
 }
 
@@ -41,7 +40,9 @@
 
 .rows-report:hover{
     cursor: pointer ;
-    transform: scale(1.02);
+    /*transform: scale(1.02); */
+    border: solid #001489 0.1px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
 
 .rows-report{

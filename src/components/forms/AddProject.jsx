@@ -224,16 +224,26 @@ function AddProjectForm(){
                 <input type="text" onChange={setSpecificObjective} className="form-control" aria-describedby="emailHelp" />
             </div>
 
+{/*
             <div className="form-group">
                 <label for="exampleInputEmail1">Pessoal Envolvolvido</label>
                 <input type="text" onChange={setPeopleInvolved} className="form-control" aria-describedby="emailHelp" />
             </div>
-
+                    */}
             <div className="form-group">
-                <label for="exampleInputEmail1">Organizacoes Parceiras</label>
+                <label for="exampleInputEmail1">Implementadores</label>
                 <input type="text" onChange={setPartnerOrganizarions} className="form-control" aria-describedby="emailHelp" />
             </div>
           
+            <div className="form-group">
+                <label for="exampleInputEmail1">Parceiros</label>
+                <input type="text" onChange={setPartnerOrganizarions} className="form-control" aria-describedby="emailHelp" />
+            </div>
+            
+            <div className="form-group">
+                <label for="exampleInputEmail1">Financiadores</label>
+                <input type="text" onChange={setPartnerOrganizarions} className="form-control" aria-describedby="emailHelp" />
+            </div>
             <button type="button"  className="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
                 Gravar Projecto         </button>
             <button type="button" className="btn btn-secondary">Descartar</button>
