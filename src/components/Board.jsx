@@ -23,6 +23,8 @@ import Reports from './projectviews/Reports'
 import ReadNewsNetter from './projectviews/ReadNewsLetter'
 import ShowDashboard from './ShowDashboard'
 import EditHomeContent from './projectviews/EditHomeContent'
+import UpdateProject from './updateForms/UpdateProject'
+import UpdateProduct from './updateForms/UpdateProducts'
 
 function Board() {
 
@@ -33,6 +35,14 @@ function Board() {
                     <Route path='/projects' exact>
                         <Projects/>
                     </Route>     
+
+                    <Route path='/updateproduct'>
+                        <UpdateProduct/>
+                    </Route>
+                    
+                    <Route path='/updateproject'>
+                        <UpdateProject/>
+                    </Route>
 
                     <Route path='/edithomecontent'>
                         <EditHomeContent/>

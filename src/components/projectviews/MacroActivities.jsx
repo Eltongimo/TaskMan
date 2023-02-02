@@ -1,7 +1,7 @@
 import React from 'react'
 import {db} from '../database/DatabaseHelper'
 import {useState, useEffect} from 'react'
-import { child, get, getDatabase, ref } from "firebase/database"
+import { child, get, getDatabase, ref, remove,update } from "firebase/database"
 import '../TaskRow.css'
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min'
 import Modal from 'react-modal'
@@ -20,7 +20,7 @@ function MacroActivity(){
                         let macroA = []
                         for(let key in mcs){
                             if (mcs[key].ProductKey === document.URL.split('=')[1])
-                                macroA.push(mcs[key])
+                                macroA.push({Key: key, data: mcs[key]})
                         }
                         setMacroActivities({mcs: macroA})
                     }
@@ -31,56 +31,84 @@ function MacroActivity(){
             },[]
     )
 
+    function deleteMacroActivity(e){
+        remove(ref(db, `MacroActivity/${e.target.value}`)).then(()=> {
+            alert('Macro Actividade Apagada com Sucesso ')
+        }).catch(() => {
+            alert('Erro ao eliminar Macro Actividade')
+        })
+        document.getElementById('closemodal').click() 
+        window.history.back()
+    }
+
    function handleButtonEvent(e){
       
        let productKey = e.target.id
        let key  = productKey.split('.')
-
-       if (key[0] === 'delete'){
-        alert('deleting')
-        }
-        else if (key[0] === 'update'){
-            alert('updating')
-        }   
-        else{
-    
-        history.push({
-                pathname: '/activities',
-                search: `?key=${key[1]}`,
-            })
-        }
-    }
-    function buildTableforMcs(){
+ 
+        /*if (key[2] !== undefined)
         
-        var values = []
-        let count = 0
+          history.push({
+                    pathname: '/activities',
+                    search: `?key=${key[1]}`,
+                })
+    */
+    }
 
-        if (macroActivities !== null ){
-            for(let data in macroActivities.mcs){
-               values.push( 
-                <button               
-                    style={{background: 'transparent',
-                        border: 'none',
-                        width: '100%',
-                        outline: 'none',
-                    }}
-                    onClick={handleButtonEvent}
-                 >
-                    <div className='rows-report' id={`${count++}.${macroActivities.mcs[data].Key}`}>
-                        <div className='colmns-report' id={`${count++}.${macroActivities.mcs[data].Key}`} >
-                            <ul id={`${count++}.${macroActivities.mcs[data].Key}`} >
-                                <li id={`${count++}.${macroActivities.mcs[data].Key}`}>
-                                    {macroActivities.mcs[data].Name}
-                                </li>
-                                <li id={`${count++}.${macroActivities.mcs[data].Key}`} >
-                                 <i className="bi bi-trash" id={`delete.${count++}.${macroActivities.mcs[data].Key}`} />
-                                </li>
-                                <li id={`${count++}.${macroActivities.mcs[data].Key}`}>
-                                    <i className="bi bi-pencil" id={`update.${count++}.${macroActivities.mcs[data].Key}`}/>
-                                </li>
-                            </ul>
-                        </div>
+    function buildTableforMcs(){
+    
+    var values = []
+    let count = 0
+    if (macroActivities !== null ){
+        for(let data in macroActivities.mcs){
+        
+            values.push( 
+            <button               
+                style={{background: 'transparent',
+                    border: 'none',
+                    width: '100%',
+                    outline: 'none',
+                }}
+                onClick={handleButtonEvent}
+                >
+                <div className='rows-report' id={`${count++}.${macroActivities.mcs[data].Key}`}>
+                    <div className='colmns-report' id={`${count++}.${macroActivities.mcs[data].Key}`} >
+                        <ul id={`${count++}.${macroActivities.mcs[data].data.Key}`} >
+                            <li id={`${count++}.${macroActivities.mcs[data].data.Key}`}>
+                                {macroActivities.mcs[data].data.Name}
+                            </li>
+                            <li id={`${count++}.${macroActivities.mcs[data].Key}`} >
+                                <i className="bi bi-trash"   data-toggle="modal" data-target={`#exampleModal${count}`}/>
+                            </li>
+                            <li id={`${count++}.${macroActivities.mcs[data].Key}`}>
+                                <i className="bi bi-pencil" id={`update.${count++}.${macroActivities.mcs[data].Key}`}/>
+                            </li>
+                        </ul>
                     </div>
+                </div>
+                <div className="modal fade" id={`exampleModal${count}`} tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div className="modal-dialog" role="document">
+                            <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title" id="exampleModalLabel">Confirmação</h5>
+                                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div className="modal-body">
+                            <form>
+                                <div className="form-group" >
+                                    <label style={{textAlign: 'left'}} for="exampleInputEmail1">Apagar Macro Acrividade ?</label>
+                                </div>
+                            </form>
+                                </div>
+                                    <div className="modal-footer">
+                                        <button type="button" id='closemodal' className="btn btn-secondary" data-dismiss="modal">Não</button>
+                                        <button type="button" value= {macroActivities.mcs[data].Key} onClick={deleteMacroActivity} className="btn btn-primary">Sim</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>    
                 </button>
                 )
             }

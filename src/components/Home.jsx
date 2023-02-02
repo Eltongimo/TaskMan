@@ -62,6 +62,7 @@ function Home(){
             if ( user.users[u].Username === typedUser.username && user.users[u].Password === typedUser.password){
                 e.target.isVisible = false
                 document.getElementById('welcome').innerHTML = `${typedUser.username}, Bem vindo  ao POMAR!`
+                document.getElementById('closemodal').click()
                 enableMenus()
                 clearForm()
                 return 
@@ -169,7 +170,7 @@ function Home(){
                     <div className="modal-content">
                         <div className="modal-header">
                             <h5 className="modal-title" id="exampleModalLabel">Login</h5>
-                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                            <button type="button" className="closebutton" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>

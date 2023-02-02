@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import {db} from '../database/DatabaseHelper'
-import { child, get, getDatabase, ref } from "firebase/database"
+import { child, get, getDatabase, ref, remove } from "firebase/database"
 import './Projects.css'
 import { useHistory } from 'react-router-dom/cjs/react-router-dom'
 import { useState } from 'react'
@@ -15,19 +15,41 @@ function Projects (){
         let productKey = e.target.id
         let key  = productKey.split('.')
         
+        
         if (key[0] === 'delete'){
-            alert('deleting')
+
         }
         else if (key[0] === 'update'){
-            alert('updating')
+            history.push({
+                pathname: '/updateproject',
+                search: `?key=${key[2]}`,
+              })
         }   
-        else{
+        else if (key[1] !== undefined){
             history.push({
                 pathname: '/products',
                 search: `?key=${key[1]}`,
               })
         }    
      }
+
+     function deleteProject(e){
+
+        document.getElementById(`closemodal${e.target.id}`).click()
+        
+        remove(ref(db, `Project/${e.target.value}`)).then(() => {
+            const dbRef = ref(db)
+            get(child(dbRef, `Project`)).then((snapshot) => {
+                if (snapshot.exists())
+                    setProjects({projs: snapshot.val()})
+        
+            })
+            alert('Projecto eliminado com sucesso')
+        
+        }).catch(() => {
+            alert('Erro ao eliminar o projecto')
+        })
+    }
  
     useEffect( () => {
         const dbRef = ref(db)
@@ -39,19 +61,20 @@ function Projects (){
                     alert('no data to load from db server')
         }
         )},[])
-    
+
     function buildTable(){
         var values = []
         let count = 0
         if (projects !== null ){
             for(let key in projects.projs){
                values.push(
-                <button onClick={handleButtonEvent}
+                <button 
                     style={{background: 'transparent',
                             border: 'none',
                             width: '100%',
                             outline: 'none',
                         }}
+                        onClick={handleButtonEvent}
                 >
                     <div className='rows-report' id={`${count++}.${projects.projs[key].Key}`}>
                         <div className='colmns-report'id={`${count++}.${projects.projs[key].Key}`} >
@@ -66,14 +89,40 @@ function Projects (){
                                     {projects.projs[key].TypeOfActivity}
                                 </li>
                                 <li className='project-icons' id={`${count++}.${projects.projs[key].Key}`}>
-                                    <i className="bi bi-trash" id={`delete.${count++}.${projects.projs[key].Key}`} />
+                                    <i className="bi bi-pencil" id={`update.${count++}.${key}`}
+                                    />
                                 </li>
                                 <li className='project-icons' id={`${count++}.${projects.projs[key].Key}`}>
-                                    <i className="bi bi-pencil" id={`update.${count++}.${projects.projs[key].Key}`}
-                                    />
+                                    <i className="bi bi-trash" id={`delete.${count}.${projects.projs[key].Key}`} data-toggle="modal" data-target={`#exampleModal${count}`} 
+                                    />    
                                 </li>
                             </ul>
                         </div>
+
+                        <div className="modal fade" id={`exampleModal${count}`} tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div className="modal-dialog" role="document">
+                                <div className="modal-content">
+                                <div className="modal-header">
+                                    <h5 className="modal-title" id="exampleModalLabel">Confirmação</h5>
+                                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div className="modal-body">
+                                <form>
+                                    <div className="form-group" >
+                                        <label style={{textAlign: 'left'}} for="exampleInputEmail1">Apagar Projecto ?</label>
+                                    </div>
+                                </form>
+                                    </div>
+                                        <div className="modal-footer">
+                                            <button type="button" id={`closemodal${count}`} className="btn btn-secondary" data-dismiss="modal">Não</button>
+                                            <button type="button" value={key} id={count} onClick={deleteProject} className="btn btn-primary">Sim</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>    
+
                     </div>
                 </button>
                )    
@@ -97,8 +146,8 @@ function Projects (){
                 <div className='report-header'>Nr</div>
                 <div className='report-header'>Nome do Projecto</div>
                 <div className='report-header'>Tipo de Actividade</div>
-                <div className='report-header'>Apagar</div>
                 <div className='report-header'>Actualizar</div>
+                <div className='report-header'>Apagar</div>
             </div>
                 {values}
             </div>

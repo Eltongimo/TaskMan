@@ -5,6 +5,7 @@ import { useEffect } from 'react'
 import {db} from '../database/DatabaseHelper'
 import {set,ref,get,child} from 'firebase/database'
 import {v4 as uuidv4} from 'uuid';
+import { consoleOrigin } from 'firebase-tools/lib/api'
 
 function AddProducts(){
 
@@ -27,7 +28,8 @@ function AddProducts(){
                     setLats({lats: snapshot.val()})
                 }
              }
-        )},[])
+        )},
+    [])
     
     function setProductName(e){
         setProduct({
@@ -52,7 +54,7 @@ function AddProducts(){
     }   
 
     function setArea(e){
-        console.log(e.target.value)
+
         setProduct({
             Area: e.target.value,
             LatKey: product.LatKey,
@@ -66,6 +68,7 @@ function AddProducts(){
     function saveProduct (e){
 
         for (let key in lat.lats){
+       
             if (lat.lats[key].Description === product.Area ){
                 setProduct({
                     Area: product.Area,
@@ -79,7 +82,8 @@ function AddProducts(){
             }
         }
         
-        set(ref(db, 'Product/' + uuidv4()), product);
+        set(ref(db, 'Product/' + uuidv4(),product))
+
         document.getElementById('closemodal').click()
         back()
     }

@@ -1,19 +1,18 @@
 import React from 'react'
 import {db} from '../database/DatabaseHelper'
-import { child, get, ref } from "firebase/database"
+import { child, get, ref, remove, update} from "firebase/database"
 import TaskRow from '../TaskRow'
 import {useState,useEffect} from 'react'
 import { useHistory } from 'react-router-dom/cjs/react-router-dom'
 import './Activity.css'
 import ActivitySinglePDF from '../ReportsPDF/ActivitySinglePDF'
+import Projects from './Projects'
 
 function Activities (){
     
-        const [activity, setActivity ] = useState({activities: []})
-        const history =  useHistory()
+    const [activity, setActivity ] = useState({activities: []})
+    const history =  useHistory()
         
-
-    
     useEffect(() => {
             const dbRef = ref(db)
             
@@ -43,11 +42,11 @@ function Activities (){
         let key  = productKey.split('.')
  
         if (key[0] === 'delete'){
-         alert('deleting')
-         }
-         else if (key[0] === 'update'){
-             alert('updating')
-         } 
+            // alert('deleting')
+        }
+        else if (key[0] === 'update'){
+          // alert('updating')
+        } 
    }
 
    // create single page report with details from acticit
@@ -58,6 +57,19 @@ function Activities (){
     }
 
 
+    function deleteActivity(e){
+    
+        remove(ref(db, `Activity/${e.target.value}`)).then(
+            () => {
+                document.getElementById('closemodal').click()
+                window.history.back()
+                alert('Actividade Apagada com sucesso')
+            }
+        ).catch(() => {
+            alert('Erro ao apagar a actividade')
+        })
+    }
+
     function buildTable (){
         
         var values = []
@@ -65,6 +77,7 @@ function Activities (){
         if (activity.activities !== null ){
             let count = 0
             let index = 0
+            let deleteIndex = count + 1000
 
             for(let key in activity.activities){
 
@@ -95,16 +108,13 @@ function Activities (){
                                     </li>
 
                                     <li className='project-icons' id={`${count++}.${activity.activities[key].Key}`}>
-                                        <i className="bi bi-trash" id={`delete.${count++}.${activity.activities[key].Key}`} 
-                                          
-                                        />
+                                        <i className="bi bi-trash" id={`delete.${count++}.${activity.activities[key].Key}`} data-toggle="modal" data-target={`#exampleModal${count}`} />
                                     </li>
-                                    
+                                    {/*
                                     <li className='project-icons' data-toggle="modal" id={`${count}`} >
                                         <i className="bi bi-info" data-toggle="modal" data-target={`#exampleModal${count}`}
-                                          
                                         />
-                                    </li>
+                        </li> */}
                                     <li id={`${count + 1}.${key}`}>
                                         <i class="bi bi-file-earmark-arrow-down" style={{
                                                 fontSize: '1.3rem',
@@ -118,6 +128,26 @@ function Activities (){
                             </div>
                         </div>
                     </button>
+                
+                    <div className="modal fade" id={`exampleModal${count}`} tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div className="modal-dialog" role="document">
+                            <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title" id="exampleModalLabel">Confirmação </h5>
+                                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div className="modal-body">
+                                 <p>Apagar Actividade ?</p>
+                                 <button type="button" id='closemodal' className="btn btn-secondary" data-dismiss="modal">Não</button>
+                                 <button type='button' className='btn btn-primary' value= {key} onClick={deleteActivity}> Sim</button>
+                            </div>
+                        </div>
+                    </div>
+                </div >
+                    
+                    {/* 
                     <div className="modal fade" id={`exampleModal${count}`} tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div className="modal-dialog" role="document">
                             <div className="modal-content">
@@ -128,70 +158,71 @@ function Activities (){
                                 </button>
                             </div>
                             <div className="modal-body">
-                            <form>
-                                <ul >
-                                    <li className='modal-details-row'>
-                                        <label>Actividade </label> <div className='activity-detail'>{activity.activities[key].Name} </div> 
-                                    </li> 
-                                    
-                                    <li className='modal-details-row'>
-                                        <label>Descrição </label> <div className='activity-detail'>{activity.activities[key].Description} </div> 
-                                    </li> 
-                                    <li className='modal-details-row'>
-                                        <label>Lugar </label> <div className='activity-detail'>{activity.activities[key].Location} </div> 
-                                    </li> 
-                                    <li className='modal-details-row'>
-                                        <label>Data de Inicio </label> <div className='activity-detail'>{activity.activities[key].StartTime} </div> 
-                                    </li> 
-                                    <li className='modal-details-row'>
-                                        <label>Data Final </label> <div className='activity-detail'>{activity.activities[key].DeadLine} </div> 
-                                    </li> 
-                                    <li className='modal-details-row'>
-                                        <label>Hora </label> <div className='activity-detail'>{activity.activities[key].Time} </div> 
-                                    </li > 
-                                    
-                                    <li className='modal-details-row'>
-                                        <label>Duração </label> <div className='activity-detail'>{activity.activities[key].Duration} </div> 
-                                    </li> 
-                                    
-                                    <li className='modal-details-row'>
-                                        <label>Homens </label>  <div className='activity-detail'>{activity.activities[key].Men} </div> 
-                                    </li > 
-                                    
-                                    <li className='modal-details-row'>
-                                        <label>Mulher </label> <div className='activity-detail'>{activity.activities[key].Women} </div> 
-                                    </li> 
-                                    
-                                    <li className='modal-details-row'>
-                                        <label>Meninos </label> <div className='activity-detail'>{activity.activities[key].Boys} </div> 
-                                    </li> 
-                                    
-                                    <li className='modal-details-row'>
-                                        <label>Meninas </label> <div className='activity-detail'>{activity.activities[key].Girls} </div> 
-                                    </li> 
-                                    
-                                    <li className='modal-details-row'>
-                                        <label>Esperado </label>  <div className='activity-detail'>{activity.activities[key].Waited} </div> 
-                                    </li> 
-                                    
-                                    <li className='modal-details-row'>
-                                        <label>Etereonidade </label> <div className='activity-detail'>{activity.activities[key].Heterogenity} </div> 
-                                    </li> 
-                                    
-                                    <li className='modal-details-row'>
-                                        <label>Proximos passos </label> <div className='activity-detail'>{activity.activities[key].NextSteps} </div> 
-                                    </li> 
-                                    
-                                    <li className='modal-details-row'>
-                                        <label>Comentarios </label>  <div className='activity-detail'>{activity.activities[key].Comments} </div> 
-                                    </li> 
-                                </ul>
-                                </form>
-                                </div>
+                                <form>
+                                        <ul >
+                                            <li className='modal-details-row'>
+                                                <label>Actividade </label> <div className='activity-detail'>{activity.activities[key].Name} </div> 
+                                            </li> 
+                                            
+                                            <li className='modal-details-row'>
+                                                <label>Descrição </label> <div className='activity-detail'>{activity.activities[key].Description} </div> 
+                                            </li> 
+                                            <li className='modal-details-row'>
+                                                <label>Lugar </label> <div className='activity-detail'>{activity.activities[key].Location} </div> 
+                                            </li> 
+                                            <li className='modal-details-row'>
+                                                <label>Data de Inicio </label> <div className='activity-detail'>{activity.activities[key].StartTime} </div> 
+                                            </li> 
+                                            <li className='modal-details-row'>
+                                                <label>Data Final </label> <div className='activity-detail'>{activity.activities[key].DeadLine} </div> 
+                                            </li> 
+                                            <li className='modal-details-row'>
+                                                <label>Hora </label> <div className='activity-detail'>{activity.activities[key].Time} </div> 
+                                            </li > 
+                                            
+                                            <li className='modal-details-row'>
+                                                <label>Duração </label> <div className='activity-detail'>{activity.activities[key].Duration} </div> 
+                                            </li> 
+                                            
+                                            <li className='modal-details-row'>
+                                                <label>Homens </label>  <div className='activity-detail'>{activity.activities[key].Men} </div> 
+                                            </li > 
+                                            
+                                            <li className='modal-details-row'>
+                                                <label>Mulher </label> <div className='activity-detail'>{activity.activities[key].Women} </div> 
+                                            </li> 
+                                            
+                                            <li className='modal-details-row'>
+                                                <label>Meninos </label> <div className='activity-detail'>{activity.activities[key].Boys} </div> 
+                                            </li> 
+                                            
+                                            <li className='modal-details-row'>
+                                                <label>Meninas </label> <div className='activity-detail'>{activity.activities[key].Girls} </div> 
+                                            </li> 
+                                            
+                                            <li className='modal-details-row'>
+                                                <label>Esperado </label>  <div className='activity-detail'>{activity.activities[key].Waited} </div> 
+                                            </li> 
+                                            
+                                            <li className='modal-details-row'>
+                                                <label>Etereonidade </label> <div className='activity-detail'>{activity.activities[key].Heterogenity} </div> 
+                                            </li> 
+                                            
+                                            <li className='modal-details-row'>
+                                                <label>Proximos passos </label> <div className='activity-detail'>{activity.activities[key].NextSteps} </div> 
+                                            </li> 
+                                            
+                                            <li className='modal-details-row'>
+                                                <label>Comentarios </label>  <div className='activity-detail'>{activity.activities[key].Comments} </div> 
+                                            </li> 
+                                        </ul>
+                                    </form>
                                 </div>
                             </div>
                         </div>
-                </div>
+                    </div>
+                                                */}
+                    </div>
                 )
             }
         }
@@ -219,11 +250,11 @@ function Activities (){
             </div>
            
             <div className='header-container'>
-                 <div className='report-header'>Nr</div>
+                <div className='report-header'>Nr</div>
                 <div className='report-header'>Actividade</div>
                 <div className='report-header'>Editar</div>
                 <div className='report-header'>Apagar</div>
-                <div className='report-header'>Mostrar</div>
+          {/*      <div className='report-header'>Mostrar</div>*/}
                 <div className='report-header'>Relatorio</div>
                 
                 <i className="bi bi-info-circle-fill"

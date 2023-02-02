@@ -25,14 +25,12 @@ function Carousel(){
         let img = []
 
         for (let element in images){
-            console.log(images[element])
             img.push(
                 <div className="carousel-item active">
                     <img className="d-block w-100" height={300} src={images[element]} alt="Slide"/>
                 </div>
             ) 
         }
-        console.log(img)
         return img
     }
 

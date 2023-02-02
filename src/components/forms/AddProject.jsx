@@ -9,172 +9,229 @@ function AddProjectForm(){
     
     const [project, setProject] = useState({     
             ProjectName: '',
-            Objective: '',
             DeadLine: '',
             GeneralObjective: '',
             Key: uuidv4(),
             OperatorName: '',
-            PartnerOrganizations: '',
             PeopleInvolved: '',
             Result: '',
             SpecificObjective: '',
-            TypeOfActivity: ''
+            TypeOfActivity: '',
+            Implementadores: '',
+            Parceiros: '',
+            Financiadores: ''
 
     })
-
-    
-    function saveProject(e){
-        
-        set(ref(db, 'Project/' + uuidv4()), project);
-        document.getElementById('closemodal').click()
-        
-    }
 
     function setProjectName(e){
         setProject({
                     ProjectName: e.target.value,
-                    Objective: project.Objective,
                     DeadLine: project.DeadLine,
                     GeneralObjective: project.GeneralObjective,
                     Key: project.Key,
                     OperatorName: project.OperatorName,
-                    PartnerOrganizations: project.PartnerOrganizations,
                     PeopleInvolved: project.PeopleInvolved,
                     Result: project.Result,
                     SpecificObjective: project.SpecificObjective,
-                    TypeOfActivity: project.TypeOfActivity
+                    TypeOfActivity: project.TypeOfActivity,
+                    Implementadores: project.Implementadores,
+                    Parceiros: project.Parceiros,
+                    Financiadores: project.Financiadores
         })
     }
 
     function setObjective(e){
         setProject({
             ProjectName: project.ProjectName,
-            Objective: e.target.value,
             DeadLine: project.DeadLine,
-            GeneralObjective: project.GeneralObjective,
+            GeneralObjective: e.target.value,
             Key: project.Key,
             OperatorName: project.OperatorName,
-            PartnerOrganizations: project.PartnerOrganizations,
             PeopleInvolved: project.PeopleInvolved,
             Result: project.Result,
             SpecificObjective: project.SpecificObjective,
-            TypeOfActivity: project.TypeOfActivity
-
+            TypeOfActivity: project.TypeOfActivity,
+            Implementadores: project.Implementadores,
+            Parceiros: project.Parceiros,
+            Financiadores: project.Financiadores
         })
     }
 
     function setResult(e){
-        setProject({ProjectName: e.target.value,
-            Objective: project.Objective,
+        setProject({
+            ProjectName: project.ProjectName,
             DeadLine: project.DeadLine,
             GeneralObjective: project.GeneralObjective,
             Key: project.Key,
             OperatorName: project.OperatorName,
-            PartnerOrganizations: project.PartnerOrganizations,
             PeopleInvolved: project.PeopleInvolved,
             Result: e.target.value,
             SpecificObjective: project.SpecificObjective,
-            TypeOfActivity: project.TypeOfActivity
+            TypeOfActivity: project.TypeOfActivity,
+            Implementadores: project.Implementadores,
+            Parceiros: project.Parceiros,
+            Financiadores: project.Financiadores
+
         })
     }
 
     function setOperatorName(e){
-        setProject({ProjectName: e.target.value,
-            Objective: e.target.value,
+        setProject({
+            ProjectName: project.ProjectName,
             DeadLine: project.DeadLine,
             GeneralObjective: project.GeneralObjective,
             Key: project.Key,
             OperatorName: e.target.value,
-            PartnerOrganizations: project.PartnerOrganizations,
             PeopleInvolved: project.PeopleInvolved,
             Result: project.Result,
             SpecificObjective: project.SpecificObjective,
-            TypeOfActivity: project.TypeOfActivity
+            TypeOfActivity: project.TypeOfActivity,
+            Implementadores: project.Implementadores,
+            Parceiros: project.Parceiros,
+            Financiadores: project.Financiadores
         })
     }
 
     function setTypeOfActivity(e){
-        setProject({ProjectName: e.target.value,
-            Objective: e.target.value,
+        setProject({
+            ProjectName: project.ProjectName,
             DeadLine: project.DeadLine,
             GeneralObjective: project.GeneralObjective,
             Key: project.Key,
             OperatorName: project.OperatorName,
-            PartnerOrganizations: project.PartnerOrganizations,
             PeopleInvolved: project.PeopleInvolved,
             Result: project.Result,
             SpecificObjective: project.SpecificObjective,
-            TypeOfActivity: e.target.value
+            TypeOfActivity: e.target.value,
+            Implementadores: project.Implementadores,
+            Parceiros: project.Parceiros,
+            Financiadores: project.Financiadores
         })
     }
 
     function setSpecificObjective(e){
         setProject({
             ProjectName: project.ProjectName,
-            Objective: project.Objective,
             DeadLine: project.DeadLine,
             GeneralObjective: project.GeneralObjective,
             Key: project.Key,
             OperatorName: project.OperatorName,
-            PartnerOrganizations: project.PartnerOrganizations,
             PeopleInvolved: project.PeopleInvolved,
             Result: project.Result,
             SpecificObjective: e.target.value,
-            TypeOfActivity: project.TypeOfActivity
+            TypeOfActivity: project.TypeOfActivity,
+            Implementadores: project.Implementadores,
+            Parceiros: project.Parceiros,
+            Financiadores: project.Financiadores
         })
     }
 
     function setPeopleInvolved(e){
         setProject({
             ProjectName: project.ProjectName,
-            Objective: project.Objective,
             DeadLine: project.DeadLine,
             GeneralObjective: project.GeneralObjective,
             Key: project.Key,
             OperatorName: project.OperatorName,
-            PartnerOrganizations: project.PartnerOrganizations,
             PeopleInvolved: e.target.value,
             Result: project.Result,
             SpecificObjective: project.SpecificObjective,
-            TypeOfActivity: project.TypeOfActivity
+            TypeOfActivity: project.TypeOfActivity,
+            Implementadores: project.Implementadores,
+            Parceiros: project.Parceiros,
+            Financiadores: project.Financiadores
+
         })
     }
 
-    function setPartnerOrganizarions(e){
-        setProject({
-            ProjectName: project.ProjectName,
-            Objective: project.Objective,
-            DeadLine: project.DeadLine,
-            GeneralObjective: project.GeneralObjective,
-            Key: project.Key,
-            OperatorName: project.OperatorName,
-            PartnerOrganizations: e.target.value,
-            PeopleInvolved: project.PeopleInvolved,
-            Result: project.Result,
-            SpecificObjective: project.SpecificObjective,
-            TypeOfActivity: project.TypeOfActivity
-        })
-    }
-
+    
     function setDeadLine(e){
         setProject({
             ProjectName: project.ProjectName,
-            Objective: project.Objective,
             DeadLine: e.target.value,
             GeneralObjective: project.GeneralObjective,
             Key: project.Key,
             OperatorName: project.OperatorName,
-            PartnerOrganizations: e.target.value,
             PeopleInvolved: project.PeopleInvolved,
             Result: project.Result,
             SpecificObjective: project.SpecificObjective,
-            TypeOfActivity: project.TypeOfActivity
+            TypeOfActivity: project.TypeOfActivity,
+            Implementadores: project.Implementadores,
+            Parceiros: project.Parceiros,
+            Financiadores: project.Financiadores
+        })
+    }
+
+    function setImplementadores(e){
+        setProject({
+            ProjectName: project.ProjectName,
+            DeadLine: project.DeadLine,
+            GeneralObjective: project.GeneralObjective,
+            Key: project.Key,
+            OperatorName: project.OperatorName,
+            PeopleInvolved: project.PeopleInvolved,
+            Result: project.Result,
+            SpecificObjective: project.SpecificObjective,
+            TypeOfActivity: project.TypeOfActivity,
+            Implementadores: e.target.value,
+            Parceiros: project.Parceiros,
+            Financiadores: project.Financiadores
+        })
+    }
+
+    
+    function setParceiros(e){
+        setProject({
+            ProjectName: project.ProjectName,
+            DeadLine: project.DeadLine,
+            GeneralObjective: project.GeneralObjective,
+            Key: project.Key,
+            OperatorName: project.OperatorName,
+            PeopleInvolved: project.PeopleInvolved,
+            Result: project.Result,
+            SpecificObjective: project.SpecificObjective,
+            TypeOfActivity: project.TypeOfActivity,
+            Implementadores: project.Implementadores,
+            Parceiros: e.target.value,
+            Financiadores: project.Financiadores
+        })
+    }
+
+    
+    function setFinanciadores(e){
+        setProject({
+            ProjectName: project.ProjectName,
+            DeadLine: project.DeadLine,
+            GeneralObjective: project.GeneralObjective,
+            Key: project.Key,
+            OperatorName: project.OperatorName,
+            PeopleInvolved: project.PeopleInvolved,
+            Result: project.Result,
+            SpecificObjective: project.SpecificObjective,
+            TypeOfActivity: project.TypeOfActivity,
+            Implementadores: project.Implementadores,
+            Parceiros: project.Parceiros,
+            Financiadores: e.target.value
         })
     }
 
     function back(e){
         window.history.back()
     }
+
+    function submitProject(e){
+
+        console.log(project)
+
+        set(ref(db, 'Project/' + uuidv4()), project).then(() => {
+            alert('Projecto adicionado com sucesso')
+        }).catch(() => {
+            alert('Erro ao adicionar o Projecto')
+        })
+        document.getElementById('closemodal').click()
+        back()
+    }
+
 
     return (
         <div className='form-container'>
@@ -232,17 +289,17 @@ function AddProjectForm(){
                     */}
             <div className="form-group">
                 <label for="exampleInputEmail1">Implementadores</label>
-                <input type="text" onChange={setPartnerOrganizarions} className="form-control" aria-describedby="emailHelp" />
+                <input type="text" onChange={setImplementadores} className="form-control" aria-describedby="emailHelp" />
             </div>
           
             <div className="form-group">
                 <label for="exampleInputEmail1">Parceiros</label>
-                <input type="text" onChange={setPartnerOrganizarions} className="form-control" aria-describedby="emailHelp" />
+                <input type="text" onChange={setParceiros} className="form-control" aria-describedby="emailHelp" />
             </div>
             
             <div className="form-group">
                 <label for="exampleInputEmail1">Financiadores</label>
-                <input type="text" onChange={setPartnerOrganizarions} className="form-control" aria-describedby="emailHelp" />
+                <input type="text" onChange={setFinanciadores} className="form-control" aria-describedby="emailHelp" />
             </div>
             <button type="button"  className="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
                 Gravar Projecto         </button>
@@ -266,7 +323,7 @@ function AddProjectForm(){
                     </div>
                         <div className="modal-footer">
                             <button type="button" id='closemodal' className="btn btn-secondary" data-dismiss="modal">Não</button>
-                            <button type="button" className="btn btn-primary" onClick={saveProject}>Sim</button>
+                            <button type="button" className="btn btn-primary" onClick={submitProject}>Sim</button>
                         </div>
                     </div>
                 </div>

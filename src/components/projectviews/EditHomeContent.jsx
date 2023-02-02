@@ -50,14 +50,22 @@ function EditHomeContent(){
             })
     }
 
+    function submitText(e){
+        set(ref(db, 'HomeContent/' + uuidv4()), aboutPomar).then(()=>
+            {
+                alert('Texto alterado com sucesso')
+            }
+        )
+  
+    }
     function submit(e){
-        
+
         if (image !== null){
             uploadBytes( refStorage(Storage,`HomeContent/${aboutPomar.Key}`),image)
+            .then(() => {
+                alert('Imagem adicionada com Sucesso')
+            })
         }
-
-        set(ref(db, 'HomeContent/' + uuidv4()), aboutPomar)
-        back()
     }
 
     function setAboutPomar(e){
@@ -65,7 +73,7 @@ function EditHomeContent(){
     }
 
     function setFile(e){
-        setImages(e.target.files)
+        setImages(e.target.files[0])
     }
 
     return (
@@ -81,6 +89,11 @@ function EditHomeContent(){
                 <label for="exampleInputEmail1">Sobre o Pomar</label>
                 <textarea rows='10' type='text' onChange={setAboutPomar} 
                     className="form-control" aria-describedby="emailHelp"  value={aboutPomar.About}/>
+                <div className='submit-info'>
+                    <button className='btn btn-primary' onClick={submitText}>
+                        Gravar Texto
+                    </button>
+                </div>
             </div>
             <div className='upload-pic'>
                 <label for="exampleInputEmail1">Carregar Imagem</label>
@@ -88,7 +101,7 @@ function EditHomeContent(){
             </div>
             <div className='submit-info'>
                 <button className='btn btn-primary' onClick={submit}>
-                    Gravar
+                    Gravar Imagem
                 </button>
             </div>
         </div>

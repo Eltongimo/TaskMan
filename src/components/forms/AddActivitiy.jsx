@@ -19,22 +19,29 @@ function AddActivity(){
         Description: '',
         Duration: '',
         Girls: '',
-        Heterogenity:'',
+        Heterogenity:'Sim',
         Location: '',
         Men: '',
         NextSteps: '',
         StartTime: '',
         Time: '',
         Total: '',
-        Waited: '',
+        Waited: 'Sim',
         Women: '',
         User: ''
     })
 
     function saveActivity(e){
-        set(ref(db, 'Activity/' + uuidv4()), activity);
+
+        activity.Total = parseInt(activity.Men) + parseInt(activity.Boys) + parseInt(activity.Women) + parseInt(activity.Girls)
+
+        set(ref(db, 'Activity/' + uuidv4()), activity).then(()=>
+            {
+                alert('Actividade Salva com Sucesso')
+            }
+        )
         document.getElementById('closemodal').click()
-        window.history.back()
+        back()
     }
 
     function setName(e){
@@ -465,7 +472,7 @@ function AddActivity(){
         
         <div className="form-group">
             <label for="exampleInputEmail1">Duração</label>
-            <input type="date"  onChange={setDuration} className="form-control" aria-describedby="emailHelp" />
+            <input type="text"  onChange={setDuration} className="form-control" aria-describedby="emailHelp" />
         </div>
 
         
