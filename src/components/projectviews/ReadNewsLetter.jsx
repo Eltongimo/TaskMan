@@ -7,18 +7,13 @@ import { useHistory } from 'react-router-dom/cjs/react-router-dom.min'
 function ReadNewsNetter(){
 
     const [newsletter, setnewsLetter] = useState({})
-    const newsletterkey = document.URL.split('=')[1]
 
     useEffect( () => {
         const dbRef = ref(db)
         
-        get(child(dbRef, `NewsLetter`)).then((snapshot) => {
+        get(child(dbRef, `NewsLetter/${document.URL.split('=')[1]}`)).then((snapshot) => {
                 if (snapshot.exists()){
-
-                    for (let key in snapshot.val() ){
-                      if( snapshot.val()[key].Key === newsletterkey)
-                        setnewsLetter(snapshot.val()[key])
-                    }
+                        setnewsLetter(snapshot.val())
                 }
             }
         )},[])
@@ -27,23 +22,43 @@ function ReadNewsNetter(){
             window.history.back()
         }
 
-        return (
-            <div className='container'>
-                    <div className='title' id='title'>
-                        <i className="bi bi-arrow-left" style={{cursor: 'pointer',
-                                                                    marginRight: '20px'
-                        }} onClick={back}/>
+        function buildNewsLetter(){
+            
+            let values = []
+
+            for (let key in newsletter){
+
+                values.push(
+
+                    <div>
+                        <div className='title' style={{fontWeight: '500',marginTop: '15px' }}>
+                            {newsletter[key].Title}
+                        </div>
+
+                        <div className='body'>
+                            {newsletter[key].Body}
+                        </div>
+                        <div className='images'>
+                            
+                        </div>
                     </div>
-                
-                <div className='title'>
-                    {newsletter.Title}
-                </div>
-                <div className='body'>
-                        {newsletter.Body}
-                </div>
-            </div>
-        
-        )
+                )
+            }
+
+            return values
+        }
+     
+        return (
+                    <div className='container'>
+                        <div className='title' id='title'>
+                            <i className="bi bi-arrow-left" style={{cursor: 'pointer',
+                                                                marginRight: '20px'
+                            }} onClick={back}/>
+                        </div>
+                        {buildNewsLetter()}        
+                    </div>
+            )
+     
 }
 
 export default ReadNewsNetter

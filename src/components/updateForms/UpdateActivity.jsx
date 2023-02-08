@@ -1,12 +1,11 @@
 import React from 'react'
 import { useState } from 'react'
 import {v4 as uuidv4} from 'uuid';
-import {ref,set} from 'firebase/database'
+import {ref,set,child,get,update} from 'firebase/database'
 import {db} from '../database/DatabaseHelper'
+import { useEffect } from 'react'
 
-import './AddActivitiy.css'
-
-function AddActivity(){
+function UpdateActivity(){
 
     const [activity, setActivity] = useState({
         Key: uuidv4(),
@@ -31,15 +30,24 @@ function AddActivity(){
         User: ''
     })
 
-    function saveActivity(e){
+    
+    useEffect (() => {
+
+        const dbRef = ref(db)
+
+        get(child(dbRef,`Activity/${document.URL.split('=')[1]}`)).then( (snapshot => {
+            setActivity(snapshot.val())
+        }))
+
+    },[])
+
+    function UpdateActivity(e){
 
         activity.Total = parseInt(activity.Men) + parseInt(activity.Boys) + parseInt(activity.Women) + parseInt(activity.Girls)
 
-        console.log(activity)
-
-        set(ref(db, 'Activity/' + uuidv4()), activity).then(()=>
+        update(ref(db, `Activity/${document.URL.split('=')[1]}`), activity).then(()=>
             {
-                alert('Actividade Salva com Sucesso')
+                alert('Actividade actualizada com Sucesso')
             }
         )
         document.getElementById('closemodal').click()
@@ -104,7 +112,7 @@ function AddActivity(){
             Boys: activity.Boys,
             Comments: activity.Comments,
             DeadLine: activity.DeadLine,
-            Description: activity.Description,
+            Description: e.target.value,
             Duration: activity.Duration,
             Girls: activity.Girls,
             Heterogenity: activity.Heterogenity,
@@ -398,31 +406,6 @@ function AddActivity(){
         })
     }
 
-    function setNextSteps(e){
-        setActivity({
-            Name: activity.Name,
-            Boys: activity.Boys,
-            Comments: activity.Comments,
-            DeadLine: activity.DeadLine,
-            Description: activity.Description,
-            Duration: activity.Duration,
-            Girls: activity.Girls,
-            Heterogenity: activity.Heterogenity,
-            Id: activity.Id,
-            Key: activity.Key,
-            Location: activity.Location,
-            MacroActivityKey: activity.MacroActivityKey,
-            Men: activity.Men,
-            NextSteps: e.target.value,
-            StartTime: activity.StartTime,
-            Time: activity.Time,
-            Total: activity.Total,
-            Waited: activity.Waited,
-            Women: activity.Women,
-            User: activity.User,
-        })
-    }
-
     function setFile(e){
         setActivity({
             Name: activity.Name,
@@ -448,10 +431,35 @@ function AddActivity(){
         })
     }
 
+    function setNextSteps(e){
+        setActivity({
+            Name: activity.Name,
+            Boys: activity.Boys,
+            Comments: activity.Comments,
+            DeadLine: activity.DeadLine,
+            Description: activity.Description,
+            Duration: activity.Duration,
+            Girls: activity.Girls,
+            Heterogenity: activity.Heterogenity,
+            Id: activity.Id,
+            Key: activity.Key,
+            Location: activity.Location,
+            MacroActivityKey: activity.MacroActivityKey,
+            Men: activity.Men,
+            NextSteps: e.target.value,
+            StartTime: activity.StartTime,
+            Time: activity.Time,
+            Total: activity.Total,
+            Waited: activity.Waited,
+            Women: activity.Women,
+            User: activity.User,
+        })
+    }
+
     function back(e){
         window.history.back()
     }
-    
+        
     return (
         <div className='form-container'>
                  <div className='title'> 
@@ -461,75 +469,75 @@ function AddActivity(){
                         }} onClick={back}/>
                 </div>
                 <div className='form-title'>
-                    Adicionar Actividade
+                    Actualizar Actividade
                 </div>
             </div>
       
         <div className="form-group">
             <label for="exampleInputEmail1">Nome da actividade</label>
-            <input type="text"  onChange= {setName} className="form-control" aria-describedby="emailHelp" />
+            <input type="text" value={activity.Name} onChange= {setName} className="form-control" aria-describedby="emailHelp" />
         </div>
         <div className="form-group">
             <label for="exampleInputEmail1">Breve descrição da actividade</label>
-            <input type="text"  onChange={setDescription} className="form-control" aria-describedby="emailHelp" />
+            <input type="text"  value={activity.Description} onChange={setDescription} className="form-control" aria-describedby="emailHelp" />
         </div>
         
         <div className="form-group">
             <label for="exampleInputEmail1">Lugar</label>
-            <input type="text" onChange={setLugar} className="form-control" aria-describedby="emailHelp" />
+            <input type="text" value={activity.Location} onChange={setLugar} className="form-control" aria-describedby="emailHelp" />
         </div>
 
         <div className="form-group">
             <label for="exampleInputEmail1">Data de Inicio</label>
-            <input type="date"  onChange={setStartTime}className="form-control" aria-describedby="emailHelp" />
+            <input type="date"  value={activity.StartTime} onChange={setStartTime}className="form-control" aria-describedby="emailHelp" />
         </div>
         
         <div className="form-group">
             <label for="exampleInputEmail1">Data final</label>
-            <input type="date"  onChange={setFinalDate}className="form-control" aria-describedby="emailHelp" />
+            <input type="date" value={activity.DeadLine} onChange={setFinalDate}className="form-control" aria-describedby="emailHelp" />
         </div>
         
         <div className="form-group">
             <label for="exampleInputEmail1">Hora</label>
-            <input type="time" onChange={setTime} className="form-control" aria-describedby="emailHelp" />
+            <input type="time" value={activity.Time} onChange={setTime} className="form-control" aria-describedby="emailHelp" />
         </div>
 
         
         <div className="form-group">
             <label for="exampleInputEmail1">Duração</label>
-            <input type="text"  onChange={setDuration} className="form-control" aria-describedby="emailHelp" />
+            <input type="text"  value={activity.Duration} onChange={setDuration} className="form-control" aria-describedby="emailHelp" />
         </div>
 
-        
         <div className="form-group">
             <label for="exampleInputEmail1">Homens</label>
-            <input type="text" onChange={setMen} className="form-control" aria-describedby="emailHelp" />
+            <input type="text" value={activity.Men} onChange={setMen} className="form-control" aria-describedby="emailHelp" />
         </div>
 
         
         <div className="form-group">
             <label for="exampleInputEmail1">Mulheres</label>
-            <input type="text"  onChange={setWoman} className="form-control" aria-describedby="emailHelp" />
+            <input type="text"  value={activity.Women} onChange={setWoman} className="form-control" aria-describedby="emailHelp" />
         </div>
 
         <div className="form-group">
             <label for="exampleInputEmail1">Meninos</label>
-            <input type="text"  onChange={setBoys} className="form-control" aria-describedby="emailHelp" />
+            <input type="text"  value={activity.Boys} onChange={setBoys} className="form-control" aria-describedby="emailHelp" />
         </div>
 
         <div className="form-group">
             <label for="exampleInputEmail1">Meninas</label>
-            <input type="text" onChange={setGirls} className="form-control" aria-describedby="emailHelp" />
+            <input type="text" value={activity.Girls} onChange={setGirls} className="form-control" aria-describedby="emailHelp" />
         </div>
 
         <div className="form-group">
             <label for="exampleInputEmail1">Comentarios</label>
-            <input type="text"  onChange={setComments}className="form-control" aria-describedby="emailHelp" />
+            <input type="text"  value={activity.Comments} onChange={setComments}className="form-control" aria-describedby="emailHelp" />
         </div>
 
+        
         <div className="form-group">
             <label for="exampleInputEmail1">Proximos Passos</label>
-            <input type="text"  onChange={setNextSteps}className="form-control" aria-describedby="emailHelp" />
+            <input type="text"  value={activity.NextSteps} onChange={setNextSteps}className="form-control" aria-describedby="emailHelp" />
         </div>
 
         <div className="form-group">
@@ -552,10 +560,7 @@ function AddActivity(){
             <label for="exampleInputEmail1">Carregar ficheiro</label>
             <input type="file" onChange={setFile} className="form-control" aria-describedby="emailHelp" />
         </div>
-        <button type="button"  className="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                Gravar Actividade         </button>
-
-        <button type="button" className="btn btn-secondary">Limpar</button>
+        <button type="button"  className="btn btn-primary" data-toggle="modal" data-target="#exampleModal"> Actualizar Actividade  </button>
 
         <div className="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div className="modal-dialog" role="document">
@@ -569,13 +574,13 @@ function AddActivity(){
                 <div className="modal-body">
                 <form>
                     <div className="form-group">
-                        <label for="exampleInputEmail1">Submeter Actividade ?</label>
+                        <label for="exampleInputEmail1">Actializar Actividade ?</label>
                     </div>
                 </form>
                     </div>
                         <div className="modal-footer">
                             <button type="button" id='closemodal' className="btn btn-secondary" data-dismiss="modal">Não</button>
-                            <button type="button" className="btn btn-primary" onClick={saveActivity}>Sim</button>
+                            <button type="button" className="btn btn-primary" onClick={UpdateActivity}> Sim </button>
                         </div>
                     </div>
                 </div>
@@ -584,4 +589,4 @@ function AddActivity(){
     )
 }
 
-export default AddActivity
+export default UpdateActivity

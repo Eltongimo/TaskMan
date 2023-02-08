@@ -221,8 +221,6 @@ function AddProjectForm(){
 
     function submitProject(e){
 
-        console.log(project)
-
         set(ref(db, 'Project/' + uuidv4()), project).then(() => {
             alert('Projecto adicionado com sucesso')
         }).catch(() => {

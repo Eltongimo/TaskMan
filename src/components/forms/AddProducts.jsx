@@ -5,7 +5,6 @@ import { useEffect } from 'react'
 import {db} from '../database/DatabaseHelper'
 import {set,ref,get,child} from 'firebase/database'
 import {v4 as uuidv4} from 'uuid';
-import { consoleOrigin } from 'firebase-tools/lib/api'
 
 function AddProducts(){
 
@@ -67,9 +66,15 @@ function AddProducts(){
 
     function saveProduct (e){
 
+        
+        console.log(lat)
+
         for (let key in lat.lats){
-       
+            console.log(lat.lats[key].Description === product.Area)
+
             if (lat.lats[key].Description === product.Area ){
+ 
+                console.log(lat.lats[key].Key)
                 setProduct({
                     Area: product.Area,
                     LatKey: lat.lats[key].Key,
@@ -82,9 +87,15 @@ function AddProducts(){
             }
         }
         
-        set(ref(db, 'Product/' + uuidv4(),product))
+        const id = uuidv4()
 
-        document.getElementById('closemodal').click()
+        set(ref(db, 'Product/' + uuidv4()), product).then(() => {
+            alert('Producto adicionado com sucesso')
+        }).catch(() => {
+            alert('Erro ao adicionar o Product')
+        })
+
+        document.getElementById(`closemodal`).click()
         back()
     }
 
@@ -158,6 +169,7 @@ function AddProducts(){
             </div>    
         </div>
     )
+    
 }
 
 export default AddProducts

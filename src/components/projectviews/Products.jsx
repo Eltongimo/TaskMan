@@ -23,28 +23,25 @@ function Product (){
         }
     ,[])
 
-    function handleButtonEvent(e){
+    function gotoMcs(e){
        
-       let productKey = e.target.id
-       let key  = productKey.split('.')
-
-        if (key[0] === 'update'){
-            history.push({
-                pathname: '/updateproduct',
-                search: `?key=${key[2]}`,
-            })
-        }   
-        else if (key[2] !== undefined){
-            history.push({
-                pathname: '/macroactivities',
-                search: `?key=${key[1]}`,
-            })
-        }
+        history.push({
+            pathname: '/macroactivities',
+            search: `?key=${e.target.id.split('.')[1]}`,
+        })
+   
     }
 
+    function updateProduct(e){
+
+        history.push({
+            pathname: '/updateproduct',
+            search: `?key=${e.target.id.split('.')[2]}`,
+        })
+    }
     function deleteProduct(e){
 
-        document.getElementById(`closemodal${e.target.id}`).click()
+        document.getElementById(`${e.target.id}`).click()
 
         remove(ref(db, `Product/${e.target.value}`)).then(() => {
             alert('Producto removido com sucesso')
@@ -59,7 +56,7 @@ function Product (){
         })
 
     }
-
+    
     function buildTable(){
         
         var values = []
@@ -68,7 +65,7 @@ function Product (){
         if (products !== null ){
             for(let key in products.projects){
                values.push(
-                <button onClick={handleButtonEvent}
+                <button 
                     style={{background: 'transparent',
                             border: 'none',
                             width: '100%',
@@ -81,17 +78,17 @@ function Product (){
                             <li id={`${count++}.${products.projects[key].Key}`} >
                                 {products.projects[key].Area}
                             </li>
-                            <li id={`${count++}.${products.projects[key].Key}`}>
+                            <li id={`${count++}.${products.projects[key].Key}`} onClick={gotoMcs}>
                                 {products.projects[key].Name}
                             </li>
                             <li id={`${count++}.${products.projects[key].Key}`}>
                                 {products.projects[key].Status}
                             </li>
-                            <li id={`${count++}.${key}`}>
+                            <li id={`${count++}.${key}`} onClick={updateProduct}>
                                   <i className="bi bi-pencil" id={`update.${count++}.${key}`}/>
                             </li>
-                            <li id={`${count++}.${products.projects[key].Key}`} >
-                                 <i className="bi bi-trash" id={`delete.${count++}.${products.projects[key].Key}`} data-toggle="modal" data-target={`#exampleModal${count}`}/>
+                            <li id={`delete.${count}.${products.projects[key].Key}`} data-toggle="modal" data-target={`#exampleModal${count}`}>
+                                 <i className="bi bi-trash" />
                             </li>
                         </ul>
                     </div>
@@ -114,7 +111,7 @@ function Product (){
                             </form>
                                 </div>
                                     <div className="modal-footer">
-                                        <button type="button" id={`closemodal${count}`} className="btn btn-secondary" data-dismiss="modal">Não</button>
+                                        <button type="button" id={`${count}`} className="btn btn-secondary" data-dismiss="modal">Não</button>
                                         <button type="button" value ={key} id={count} onClick={deleteProduct} className="btn btn-primary">Sim</button>
                                     </div>
                                 </div>

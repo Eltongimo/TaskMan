@@ -63,8 +63,10 @@ function Home(){
                 e.target.isVisible = false
                 document.getElementById('welcome').innerHTML = `${typedUser.username}, Bem vindo  ao POMAR!`
                 document.getElementById('closemodal').click()
+                document.getElementById('newsletterhome').hidden = true
                 enableMenus()
                 clearForm()
+                
                 return 
             }
         }    
@@ -148,7 +150,7 @@ function Home(){
                 <Carousel/>
             </div>
         
-            <div className='image' style={{textAlign: 'justify', padding: '10px'}}> 
+            <div className='image' style={{textAlign: 'justify', padding: '10px', marginTop: '15px'}}> 
                 <b>Projectos</b>
                 <p/>
                 <ul>

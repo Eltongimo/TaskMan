@@ -1,5 +1,4 @@
 import React from 'react'
-import './NewsLetter.css'
 import {db} from '../database/DatabaseHelper'
 import {useState, useEffect} from 'react'
 import { child, get, ref,remove,update, } from "firebase/database"
@@ -8,7 +7,7 @@ import { useHistory } from 'react-router-dom/cjs/react-router-dom.min'
 import { getDownloadURL, listAll, ref as storageRef } from 'firebase/storage'
 import {Storage} from '../database/Storage'
 
-function NewsLetter (){
+function NewsLetterHome (){
     const [newsLetter, setnewsLetter] = useState({newsLetters:  []}) 
     const [imageList, setImageList] = useState([])
     const listOfImages = storageRef(Storage, 'Newsletter/')
@@ -80,10 +79,6 @@ function NewsLetter (){
                                     }}>
                             <div className="card card-container" style={{width: '18rem', marginTop: '10px'}}>
                             {/*    <img src={imageList} className="card-img-top" alt="..."/> */}
-                            <div style={{display: 'flex', flexDirection: 'row',width: '100%',padding: '10px'}}>
-                                    <button type='button' className='btn btn-danger' data-toggle="modal" data-target={`#exampleModal${key}`} > Apagar </button> 
-                                    <button type='button' className='btn btn-secondary' > Editar </button>
-                            </div>
                                 <div className="card-body">
                                     <h5 className="card-title" style={{textAlign: 'justify'}}>{newsLetter[key][innerKey].Title}</h5>
                                     <p className="card-text" style={{textAlign: 'justify'}}>
@@ -92,29 +87,6 @@ function NewsLetter (){
                                     <a className="btn btn-primary" onClick={seeMore} id={`${count++}.${key}`}>Ver Mais</a>
                                 </div>
                             </div>
-                            <div className="modal fade" id={`exampleModal${key}`} tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div className="modal-dialog" role="document">
-                                <div className="modal-content">
-                                <div className="modal-header">
-                                    <h5 className="modal-title" id="exampleModalLabel">Confirmação</h5>
-                                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div className="modal-body">
-                                <form>
-                                    <div className="form-group" >
-                                        <label style={{textAlign: 'left'}} for="exampleInputEmail1">Apagar Newsletter ?</label>
-                                    </div>
-                                </form>
-                                    </div>
-                                        <div className="modal-footer">
-                                            <button type="button" id={`closemodal${count}`} className="btn btn-secondary" data-dismiss="modal">Não</button>
-                                            <button type="button" value ={key} id={count} onClick={deleteNewsLetter} className="btn btn-primary">Sim</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>  
                     </button>
                     )
                 }
@@ -130,10 +102,6 @@ function NewsLetter (){
 
          return( 
          <div className='table-container'>
-            <div className='title' id='title'>
-                <input type='tex' className="form-control" id="search" aria-describedby="emailHelp" placeholder="Procurar.."></input>
-                <button type="button" className="btn btn-light" id='addbutton' onClick={add}>Adicionar</button>
-            </div>
             {values}
          </div>
          ) 
@@ -142,4 +110,4 @@ function NewsLetter (){
     return buildTable()
  }
 
-export default NewsLetter
+export default NewsLetterHome

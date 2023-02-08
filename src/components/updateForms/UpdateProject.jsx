@@ -7,12 +7,10 @@ function UpdateProject(){
     
     const [project, setProject] = useState({     
             ProjectName: '',
-            Objective: '',
             DeadLine: '',
             GeneralObjective: '',
             Key: '  ',
             OperatorName: '',
-            PartnerOrganizations: '',
             PeopleInvolved: '',
             Result: '',
             SpecificObjective: '',
@@ -25,12 +23,10 @@ function UpdateProject(){
     function setProjectName(e){
         setProject({
                     ProjectName: e.target.value,
-                    Objective: project.Objective,
                     DeadLine: project.DeadLine,
                     GeneralObjective: project.GeneralObjective,
                     Key: project.Key,
                     OperatorName: project.OperatorName,
-                    PartnerOrganizations: project.PartnerOrganizations,
                     PeopleInvolved: project.PeopleInvolved,
                     Result: project.Result,
                     SpecificObjective: project.SpecificObjective,
@@ -44,12 +40,10 @@ function UpdateProject(){
     function setObjective(e){
         setProject({
             ProjectName: project.ProjectName,
-            Objective: e.target.value,
             DeadLine: project.DeadLine,
-            GeneralObjective: project.GeneralObjective,
+            GeneralObjective: e.target.value,
             Key: project.Key,
             OperatorName: project.OperatorName,
-            PartnerOrganizations: project.PartnerOrganizations,
             PeopleInvolved: project.PeopleInvolved,
             Result: project.Result,
             SpecificObjective: project.SpecificObjective,
@@ -61,13 +55,12 @@ function UpdateProject(){
     }
 
     function setResult(e){
-        setProject({ProjectName: e.target.value,
-            Objective: project.Objective,
+        setProject({
+            ProjectName: project.ProjectName,
             DeadLine: project.DeadLine,
             GeneralObjective: project.GeneralObjective,
             Key: project.Key,
             OperatorName: project.OperatorName,
-            PartnerOrganizations: project.PartnerOrganizations,
             PeopleInvolved: project.PeopleInvolved,
             Result: e.target.value,
             SpecificObjective: project.SpecificObjective,
@@ -80,13 +73,13 @@ function UpdateProject(){
     }
 
     function setOperatorName(e){
-        setProject({ProjectName: e.target.value,
-            Objective: e.target.value,
+        setProject(
+        {
+            ProjectName: project.ProjectName,
             DeadLine: project.DeadLine,
             GeneralObjective: project.GeneralObjective,
             Key: project.Key,
             OperatorName: e.target.value,
-            PartnerOrganizations: project.PartnerOrganizations,
             PeopleInvolved: project.PeopleInvolved,
             Result: project.Result,
             SpecificObjective: project.SpecificObjective,
@@ -98,13 +91,12 @@ function UpdateProject(){
     }
 
     function setTypeOfActivity(e){
-        setProject({ProjectName: e.target.value,
-            Objective: e.target.value,
+        setProject({
+            ProjectName: project.ProjectName,
             DeadLine: project.DeadLine,
             GeneralObjective: project.GeneralObjective,
             Key: project.Key,
             OperatorName: project.OperatorName,
-            PartnerOrganizations: project.PartnerOrganizations,
             PeopleInvolved: project.PeopleInvolved,
             Result: project.Result,
             SpecificObjective: project.SpecificObjective,
@@ -118,12 +110,10 @@ function UpdateProject(){
     function setSpecificObjective(e){
         setProject({
             ProjectName: project.ProjectName,
-            Objective: project.Objective,
             DeadLine: project.DeadLine,
             GeneralObjective: project.GeneralObjective,
             Key: project.Key,
             OperatorName: project.OperatorName,
-            PartnerOrganizations: project.PartnerOrganizations,
             PeopleInvolved: project.PeopleInvolved,
             Result: project.Result,
             SpecificObjective: e.target.value,
@@ -137,12 +127,10 @@ function UpdateProject(){
     function setDeadLine(e){
         setProject({
             ProjectName: project.ProjectName,
-            Objective: project.Objective,
             DeadLine: e.target.value,
             GeneralObjective: project.GeneralObjective,
             Key: project.Key,
             OperatorName: project.OperatorName,
-            PartnerOrganizations: e.PartnerOrganizations,
             PeopleInvolved: project.PeopleInvolved,
             Result: project.Result,
             SpecificObjective: project.SpecificObjective,
@@ -156,12 +144,10 @@ function UpdateProject(){
     function setImplementadores(e){
         setProject({
             ProjectName: project.ProjectName,
-            Objective: project.Objective,
             DeadLine: project.DeadLine,
             GeneralObjective: project.GeneralObjective,
             Key: project.Key,
             OperatorName: project.OperatorName,
-            PartnerOrganizations: e.target.value,
             PeopleInvolved: project.PeopleInvolved,
             Result: project.Result,
             SpecificObjective: project.SpecificObjective,
@@ -176,12 +162,10 @@ function UpdateProject(){
     function setParceiros(e){
         setProject({
             ProjectName: project.ProjectName,
-            Objective: project.Objective,
             DeadLine: project.DeadLine,
             GeneralObjective: project.GeneralObjective,
             Key: project.Key,
             OperatorName: project.OperatorName,
-            PartnerOrganizations: e.target.value,
             PeopleInvolved: project.PeopleInvolved,
             Result: project.Result,
             SpecificObjective: project.SpecificObjective,
@@ -196,12 +180,10 @@ function UpdateProject(){
     function setFinanciadores(e){
         setProject({
             ProjectName: project.ProjectName,
-            Objective: project.Objective,
             DeadLine: project.DeadLine,
             GeneralObjective: project.GeneralObjective,
             Key: project.Key,
             OperatorName: project.OperatorName,
-            PartnerOrganizations: e.target.value,
             PeopleInvolved: project.PeopleInvolved,
             Result: project.Result,
             SpecificObjective: project.SpecificObjective,
@@ -218,6 +200,7 @@ function UpdateProject(){
 
     function updateProject(e){
 
+
         update(ref(db, `Project/${e.target.value}` ), project).then(() => {
             alert('Projecto Actualizado com sucesso')
         }).catch(() => {
@@ -227,15 +210,29 @@ function UpdateProject(){
         back()
     }
 
+    useEffect( () => {
+            const dbRef = ref(db)
+            
+            get(child(dbRef, `Project`)).then((snapshot) => {
+                    if (snapshot.exists()){
+                        for (let key in snapshot.val()){
+                            if ( key === document.URL.split('=')[1]){
+                                setProject(snapshot.val()[key])
+                            }
+                        }
+                    }
+                })
+                setKey()
+            }
+        ,[])
+
     function setKey(){
         setProject({
             ProjectName: project.ProjectName,
-            Objective: project.Objective,
             DeadLine: project.DeadLine,
             GeneralObjective: project.GeneralObjective,
             Key: project.Key,
             OperatorName: project.OperatorName,
-            PartnerOrganizations: project.PartnerOrganizations,
             PeopleInvolved: project.PeopleInvolved,
             Result: project.Result,
             SpecificObjective: project.SpecificObjective,

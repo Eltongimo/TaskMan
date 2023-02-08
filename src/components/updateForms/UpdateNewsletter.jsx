@@ -16,7 +16,7 @@ function AddNewsLetter(){
     })
 
     const [formElements, setFormElements ] = useState([
-        {Title:  '', Body: '', Imagem: null },
+        {Titulo:  '', Corpo: '', Imagem: null },
     ])
     
     function back(e){
@@ -42,20 +42,19 @@ function AddNewsLetter(){
     }
 
     function saveNewsLetter(e){
-        
+
         if (newsLetter.File !== null){
             uploadBytes( refStorage(Storage,`Newsletter/${newsLetter.Key}`),newsLetter.File)
         }
 
-        set(ref(db, 'NewsLetter/' + uuidv4()), formElements).then(
+        set(ref(db, 'NewsLetter/' + uuidv4()), newsLetter).then(
             ()=> {
                 alert('Newsletter adicionado com sucesso')
             }
         )
-
+        set(ref(db, 'NewsLetter/' + uuidv4()), newsLetter)
         document.getElementById('closemodal').click()
         window.history.back()
-            
     }
 
     function setFile(e){
@@ -71,9 +70,12 @@ function AddNewsLetter(){
 
     const  handleFormChange = (event, index) => {
         const data = [...formElements]
+
         data[index][event.target.name] = event.target.value
+     //   console.log(data[index][event.target.name])
+       
         setFormElements(data)
-        console.log(data)
+        console.log(formElements)
     }
 
     const removeField = (element) => {
@@ -86,7 +88,7 @@ function AddNewsLetter(){
     }
 
     function addField(e){
-        let element =  {Title: '', Body: '', Imagem: null}
+        let element =  {Titulo: '', Corpo: '', Imagem: null}
         setFormElements([...formElements,element])
     }
     
@@ -113,22 +115,22 @@ function AddNewsLetter(){
                                         Apagar 
                                   </button>
                                 <p>
-                                     <label for="exampleFormControlInput1">Title</label>
+                                     <label for="exampleFormControlInput1">Titulo</label>
                                 </p>
                                
-                                {/*<input type="email"  onChange={setTitle} onChange={event => handleFormChange(event, index)} className="form-control" id="exampleFormControlInput1" placeholder="Title do Newsletter"/>*/}
-                                <input type="text" name='Title' onChange={event => handleFormChange(event, index)} className="form-control" id="exampleFormControlInput1" placeholder="Title do Newsletter"/>
+                                {/*<input type="email"  onChange={setTitle} onChange={event => handleFormChange(event, index)} className="form-control" id="exampleFormControlInput1" placeholder="Titulo do Newsletter"/>*/}
+                                <input type="email" value={element.Titulo} name='titulo' onChange={event => handleFormChange(event, index)} className="form-control" id="exampleFormControlInput1" placeholder="Titulo do Newsletter"/>
                       
                             </div>
                             <div className="form-group" style={{'margin-top': '20px'}}>
-                                <label for="exampleFormControlTextarea1" style={{'font-weight': '400'}}>Body</label>
+                                <label for="exampleFormControlTextarea1" style={{'font-weight': '400'}}>Corpo</label>
                                 {/*<textarea className="form-control" onChange={setBody} onChange={event => handleFormChange(event, index)} id="exampleFormControlTextarea1" rows="10"></textarea> */}
-                                <textarea type="text" name='Body' className="form-control" onChange={event => handleFormChange(event, index)} id="exampleFormControlTextarea1" rows="10" placeholder='Body do Newsletter'/>
+                                <textarea name='corpo' value={element.Corpo} className="form-control" onChange={event => handleFormChange(event, index)} id="exampleFormControlTextarea1" rows="10"></textarea>
                             </div>
                             <div className="form-group">
                                 <label for="exampleInputEmail1">Carregar Fotografia</label>
                              {/*<input type="file" accept='image/*' onChange={setFile} className="form-control" aria-describedby="emailHelp" /> */}
-                                <input name='ficheiro' type="file" accept='image/*' onChange={event => handleFormChange(event, index)} className="form-control" aria-describedby="emailHelp" />
+                                <input name='ficheiro' value={element.Imagem} type="file" accept='image/*' onChange={event => handleFormChange(event, index)} className="form-control" aria-describedby="emailHelp" />
                             </div>
                         </div> )         
                     })}

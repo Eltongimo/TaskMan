@@ -22,12 +22,14 @@ function Activities (){
                         let acts = []
                         const vals = snapshot.val()
 
-                     /*   for (let a in vals){
+                      for (let a in vals){
                             if (document.URL.split('=')[1] == vals[a].MacroActivityKey){
                                 acts.push(vals[a])
                             }
-                        }*/
+                        } 
+                        
                         setActivity({activities: vals})
+                        console.log(activity)
                     }            
                     else{
                         alert('Sem actividades para carregar')
@@ -45,7 +47,10 @@ function Activities (){
             // alert('deleting')
         }
         else if (key[0] === 'update'){
-          // alert('updating')
+            history.push({
+                pathname: '/updateactivity',
+                search: `?key=${key[2]}`,
+            })    
         } 
    }
 
@@ -61,9 +66,25 @@ function Activities (){
     
         remove(ref(db, `Activity/${e.target.value}`)).then(
             () => {
-                document.getElementById('closemodal').click()
-                window.history.back()
+                document.getElementById(`closemodal${e.target.id}`).click()
                 alert('Actividade Apagada com sucesso')
+                
+                const dbRef = ref(db)
+
+                get(child(dbRef,`Activity`)).then((snapshot) => {
+                    if (snapshot.exists())
+                    {
+                        let acts = []
+                        const vals = snapshot.val()
+
+                      for (let a in vals){
+                            if (document.URL.split('=')[1] == vals[a].MacroActivityKey){
+                                acts.push(vals[a])
+                            }
+                        } 
+                        setActivity({activities: vals})
+                    }            
+                })
             }
         ).catch(() => {
             alert('Erro ao apagar a actividade')
@@ -93,28 +114,28 @@ function Activities (){
                         <div className='rows-report' id={`${count++}.${activity.activities[key].Key}`}>
                             <div className='colmns-report'id={`${count++}.${activity.activities[key].Key}`} >
                                 <ul id={`${count++}.${activity.activities[key].Key}`}>
-
+                                    {/*
                                     <li id={`${count++}.${activity.activities[key].Key}`}>
                                         {++index}
-                                    </li>
+                                    </li> */}
                                    
                                     <li id={`${count++}.${activity.activities[key].Key}`}>
                                         {activity.activities[key].Name}
                                     </li>
                                     
                                     <li className='project-icons' id={`${count++}.${activity.activities[key].Key}`}>
-                                        <i className="bi bi-pencil" id={`update.${count++}.${activity.activities[key].Key}`}
+                                        <i className="bi bi-pencil" id={`update.${count++}.${key}`}
                                           />
                                     </li>
 
                                     <li className='project-icons' id={`${count++}.${activity.activities[key].Key}`}>
                                         <i className="bi bi-trash" id={`delete.${count++}.${activity.activities[key].Key}`} data-toggle="modal" data-target={`#exampleModal${count}`} />
                                     </li>
-                                    {/*
-                                    <li className='project-icons' data-toggle="modal" id={`${count}`} >
-                                        <i className="bi bi-info" data-toggle="modal" data-target={`#exampleModal${count}`}
+                                
+                                    <li className='project-icons' id={`${count}`} >
+                                        <i className="bi bi-info" data-toggle="modal" data-target={`#exampleModal${key}`}
                                         />
-                        </li> */}
+                                    </li> 
                                     <li id={`${count + 1}.${key}`}>
                                         <i class="bi bi-file-earmark-arrow-down" style={{
                                                 fontSize: '1.3rem',
@@ -139,16 +160,18 @@ function Activities (){
                                 </button>
                             </div>
                             <div className="modal-body">
-                                 <p>Apagar Actividade ?</p>
-                                 <button type="button" id='closemodal' className="btn btn-secondary" data-dismiss="modal">Não</button>
-                                 <button type='button' className='btn btn-primary' value= {key} onClick={deleteActivity}> Sim</button>
+                                 Apagar Actividade ?
+                            </div>
+                            <div className='modal-footer'>
+                                 <button type="button" id={`closemodal${count}`} className="btn btn-secondary" data-dismiss="modal">Não</button>
+                                 <button type='button'  id={count} className='btn btn-primary' value= {key} onClick={deleteActivity}> Sim</button>
                             </div>
                         </div>
                     </div>
                 </div >
                     
-                    {/* 
-                    <div className="modal fade" id={`exampleModal${count}`} tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+                    <div className="modal fade" id={`exampleModal${key}`} tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div className="modal-dialog" role="document">
                             <div className="modal-content">
                             <div className="modal-header">
@@ -221,7 +244,6 @@ function Activities (){
                             </div>
                         </div>
                     </div>
-                                                */}
                     </div>
                 )
             }
@@ -250,17 +272,17 @@ function Activities (){
             </div>
            
             <div className='header-container'>
-                <div className='report-header'>Nr</div>
+                {/*<div className='report-header'>Nr</div>*/}
                 <div className='report-header'>Actividade</div>
                 <div className='report-header'>Editar</div>
                 <div className='report-header'>Apagar</div>
-          {/*      <div className='report-header'>Mostrar</div>*/}
+                <div className='report-header'>Mostrar</div>
                 <div className='report-header'>Relatorio</div>
                 
                 <i className="bi bi-info-circle-fill"
                               style={{'cursor':'pointer','fontSize': '2rem', 'color': 'white'}}
                               />  
-            </div>
+              </div>
             {values}
         </div>
         )

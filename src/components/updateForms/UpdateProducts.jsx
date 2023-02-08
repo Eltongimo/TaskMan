@@ -16,14 +16,18 @@ function UpdateProduct(){
         Key: ''
     })
 
+    const [nodeKey, setNodeKey] = useState('')
+
     useEffect( () => {
         const dbRef = ref(db)
         
         get(child(dbRef, `Product`)).then((snapshot) => {
             if (snapshot.exists())
                 for (let key in snapshot.val())
-                    if (document.URL.split('=')[1] === key)
+                    if (document.URL.split('=')[1] === key){
                         setProduct(snapshot.val()[key])
+                        setNodeKey(key)
+                    }
         })},[])
 
     function setProductName(e){
@@ -60,7 +64,15 @@ function UpdateProduct(){
     }
 
     function updateProduct (e){
-        console.log(product)
+        const dbRef = ref(db)
+
+        update(child(dbRef, `Product/${nodeKey}`),product).then(() => {
+            alert('Producto Actualizado com Sucesso')
+        }).catch(() => {
+            alert('Erro ao actualizar o Producto')
+        })
+        window.history.back()
+        document.getElementById('closemodal').click()
     }
 
     function back(){
@@ -80,7 +92,6 @@ function UpdateProduct(){
         }
         if (product.Area === 'Recursos Hídricos e Resiliência'){
             a.push(<option selected value="Recursos Hídricos e Resiliência">Recursos Hídricos e Resiliência</option>)
-          
             a.push(<option  value="Urbanização e Regeneração Urbana">Urbanização e Regeneração Urbana</option>)
             a.push(<option value="Ambiente e Resíduos Sólidos">Ambiente e Resíduos Sólidos</option>)
             a.push(<option value="Educação Primária e Pré-Escolar">Educação Primária e Pré-Escolar</option>)
@@ -135,10 +146,8 @@ function UpdateProduct(){
         }
         return a
     }
-
-    console.log(product)
     
-    return (
+    return (    
         <div className='form-container'>
               <div className='title'> 
                 <div className='back-icon'>
