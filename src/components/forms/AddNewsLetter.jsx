@@ -16,64 +16,48 @@ function AddNewsLetter(){
     })
 
     const [formElements, setFormElements ] = useState([
-        {Title:  '', Body: '', Imagem: null },
+        {Title:  '', Body: '', File: null },
     ])
     
     function back(e){
         window.history.back()
     }
 
-    function setTitle(e){
-        setNewsLetter({
-            Key: newsLetter.Key,
-            Title: e.target.value,
-            Body: newsLetter.Body,
-            File: newsLetter.File   
-        })
-    }
-
-    function setBody(e){
-        setNewsLetter({
-            Key: newsLetter.Key,
-            Title: newsLetter.Title,
-            Body: e.target.value,
-            File: newsLetter.File   
-        })
-    }
-
     function saveNewsLetter(e){
         
-        if (newsLetter.File !== null){
-            uploadBytes( refStorage(Storage,`Newsletter/${newsLetter.Key}`),newsLetter.File)
+        const key = uuidv4()
+        let count = 0
+
+        console.log(formElements)
+        
+        for (let index in formElements){
+            if (formElements[index].File !== null)
+                uploadBytes( refStorage(Storage,`Newsletter/${key}/${uuidv4()}`),formElements[index].File)
         }
 
-        set(ref(db, 'NewsLetter/' + uuidv4()), formElements).then(
+        set(ref(db, 'NewsLetter/' + key), formElements).then(
             ()=> {
                 alert('Newsletter adicionado com sucesso')
             }
         )
-
         document.getElementById('closemodal').click()
         window.history.back()
-            
     }
-
-    function setFile(e){
-        e.preventDefault()
-        setNewsLetter({
-            Key: newsLetter.Key,
-            Title: newsLetter.Title,
-            Body: newsLetter.Body,
-            File: e.target.files[0]
-        })
-    }
-
 
     const  handleFormChange = (event, index) => {
         const data = [...formElements]
-        data[index][event.target.name] = event.target.value
+
+        console.log(event.target)
+
+        if (event.target.name === 'File'){
+            data[index][event.target.name] = event.target.files[0]
+        }
+        else{
+            data[index][event.target.name] = event.target.value
+        }
         setFormElements(data)
         console.log(data)
+
     }
 
     const removeField = (element) => {
@@ -88,6 +72,10 @@ function AddNewsLetter(){
     function addField(e){
         let element =  {Title: '', Body: '', Imagem: null}
         setFormElements([...formElements,element])
+    }
+
+    function setFile(e){
+
     }
     
     return (
@@ -116,19 +104,16 @@ function AddNewsLetter(){
                                      <label for="exampleFormControlInput1">Title</label>
                                 </p>
                                
-                                {/*<input type="email"  onChange={setTitle} onChange={event => handleFormChange(event, index)} className="form-control" id="exampleFormControlInput1" placeholder="Title do Newsletter"/>*/}
                                 <input type="text" name='Title' onChange={event => handleFormChange(event, index)} className="form-control" id="exampleFormControlInput1" placeholder="Title do Newsletter"/>
                       
                             </div>
                             <div className="form-group" style={{'margin-top': '20px'}}>
                                 <label for="exampleFormControlTextarea1" style={{'font-weight': '400'}}>Body</label>
-                                {/*<textarea className="form-control" onChange={setBody} onChange={event => handleFormChange(event, index)} id="exampleFormControlTextarea1" rows="10"></textarea> */}
                                 <textarea type="text" name='Body' className="form-control" onChange={event => handleFormChange(event, index)} id="exampleFormControlTextarea1" rows="10" placeholder='Body do Newsletter'/>
                             </div>
                             <div className="form-group">
                                 <label for="exampleInputEmail1">Carregar Fotografia</label>
-                             {/*<input type="file" accept='image/*' onChange={setFile} className="form-control" aria-describedby="emailHelp" /> */}
-                                <input name='ficheiro' type="file" accept='image/*' onChange={event => handleFormChange(event, index)} className="form-control" aria-describedby="emailHelp" />
+                                <input name='File' type="file" accept='image/*' onChange={event => handleFormChange(event, index)} className="form-control" aria-describedby="emailHelp" />
                             </div>
                         </div> )         
                     })}

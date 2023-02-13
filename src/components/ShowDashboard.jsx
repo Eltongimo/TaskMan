@@ -8,31 +8,46 @@ import './ShowDashboard.css'
 function ShowDashboard(){
     const history = useHistory()
 
-    const [projects, setProjects ] = useState({})
-    const [lats, setLats ] = useState({})
+    const [projects, setProjects ] = useState()
+    const [lats, setLats ] = useState()
+    const dbRef = ref(db)
+    
+    
+    function getProject(){
+        get(child(dbRef, `Project`)).then((snapshot) => {
+            if (snapshot.exists()){
+                setProjects(snapshot.val())
+            }
+            else{
+                alert('no data to load from db server')
+            }
+        })
+
+    }
 
     useEffect( () => {
-        const dbRef = ref(db)
+        getProject()
            
-            get(child(dbRef, `Project`)).then((snapshot) => {
-                    if (snapshot.exists()){
-                        setProjects(snapshot.val())
+        get(child(dbRef, `LAT`)).then((snapshot) => {
+            if (snapshot.exists()){
+                let a = []    
+                for (let projKeys in projects ){
+                    for (let latKey in snapshot.val()){
+                        if (projects[projKeys].Key === snapshot.val()[latKey].ProjectKey){
+                            a.push(
+                                snapshot.val()[latKey]
+                            )
+                        }
                     }
-                    else{
-                        alert('no data to load from db server')
-                    }
-                })
-
-                get(child(dbRef, `LAT`)).then((snapshot) => {
-                    if (snapshot.exists()){
-                        setLats(snapshot.val())
-                    }
-                    else{
-                        alert('no data to load from db server')
-                    }
-                })
-
+                }
+                setLats(a)
             }
+            else{
+                alert('no data to load from db server')
+            }
+        })
+
+    }
     ,[])
 
     function gotoDashboardProduct(e){
@@ -46,15 +61,16 @@ function ShowDashboard(){
     let count = 0
     for(let key in projects){
             let la = []
-            
+            count = 0
             for (let latKey in lats){
-                count++
+                
                 if (lats[latKey].ProjectKey === projects[key].Key){
                     la.push (
                         <div className='card-content'>
                             {lats[latKey].Description}
                         </div>
                     )
+                count++
                 }
 
             }
@@ -89,7 +105,6 @@ function ShowDashboard(){
                      </div>
                  </div>
             )
-        count = 0
     }
 
     return (

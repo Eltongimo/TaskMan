@@ -11,11 +11,9 @@ function UpdateMacroActivity(){
         Name: '',
         ProductKey: document.URL.split('=')[1]
     })
+    const dbRef = ref(db)
 
     useEffect( () => {
-
-
-        const dbRef = ref(db)
 
         get(child(dbRef, `MacroActivity/${document.URL.split('=')[1]}`)).then((snapshot) => {
 
@@ -35,7 +33,6 @@ function UpdateMacroActivity(){
     
     function updateMacroAcivity(e){
 
-        const dbRef = ref(db)
 
         update(child(dbRef, `MacroActivity/${document.URL.split('=')[1]}`), macroActivity).then(() => {
             alert('Macro Actividade Actualizada com sucesso ')

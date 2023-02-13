@@ -3,15 +3,29 @@ import { useState,useEffect } from 'react'
 import {db} from '../database/DatabaseHelper'
 import { child, get, ref } from "firebase/database"
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min'
+import { getDownloadURL, listAll, ref as storageRef } from 'firebase/storage'
+import {Storage} from '../database/Storage'
 
 function ReadNewsNetter(){
 
     const [newsletter, setnewsLetter] = useState({})
-
+    const [imageList, setImageList] = useState([])
+    const newsletterKey = document.URL.split('=')[1]
+    const listOfImages = storageRef(Storage, `Newsletter/${newsletterKey}`)
+   
     useEffect( () => {
         const dbRef = ref(db)
-        
-        get(child(dbRef, `NewsLetter/${document.URL.split('=')[1]}`)).then((snapshot) => {
+
+        listAll(listOfImages).then((response) => {
+         let urls = []
+         response.items.forEach(item => getDownloadURL(item).then(url =>{
+             urls.push(url)
+             setImageList(urls)
+         }))
+        })
+
+
+        get(child(dbRef, `NewsLetter/${newsletterKey}`)).then((snapshot) => {
                 if (snapshot.exists()){
                         setnewsLetter(snapshot.val())
                 }
@@ -23,14 +37,15 @@ function ReadNewsNetter(){
         }
 
         function buildNewsLetter(){
-            
-            let values = []
+           
+            let a = []
 
-            for (let key in newsletter){
+            for(let key in newsletter){
+                for (let innerKey in newsletter[key]){
 
-                values.push(
+                    console.log(innerKey)
 
-                    <div>
+                    a.push(<div>
                         <div className='title' style={{fontWeight: '500',marginTop: '15px' }}>
                             {newsletter[key].Title}
                         </div>
@@ -38,14 +53,13 @@ function ReadNewsNetter(){
                         <div className='body'>
                             {newsletter[key].Body}
                         </div>
-                        <div className='images'>
-                            
+                        <div className='images' style={{marginTop: '20px'}}>
+                            <img src={imageList} className="card-img-top" alt="..."/>
                         </div>
                     </div>
-                )
+                )}
             }
-
-            return values
+            return a 
         }
      
         return (

@@ -29,6 +29,8 @@ import AddProducts from './forms/AddProducts'
 import UpdateMacroActivity from './updateForms/UpdateMacroActivity'
 import UpdateActivity from './updateForms/UpdateActivity'
 import NewsLetterHome from './Newsletter/NewsletterHome'
+import UpdateNewsletter from './updateForms/UpdateNewsletter'
+import UpdateUser from './updateForms/UpdateUser'
 
 function Board() {
 
@@ -36,6 +38,8 @@ function Board() {
         <section className='container'>
             <div className='board'>
                 <Switch>
+                    <Route path='/updateuser'><UpdateUser/></Route>
+                    <Route path='/updatenewsletter'><UpdateNewsletter/></Route>
                     <Route path='/newsletterhome' exact> <NewsLetterHome/> </Route>
                     <Route path='/updateactivity' exact><UpdateActivity/></Route>
                     <Route path='/updatemacroactivity' exact> <UpdateMacroActivity/> </Route>

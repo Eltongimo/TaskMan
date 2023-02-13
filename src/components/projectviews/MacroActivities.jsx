@@ -4,50 +4,41 @@ import {useState, useEffect} from 'react'
 import { child, get, getDatabase, ref, remove,update } from "firebase/database"
 import '../TaskRow.css'
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min'
-import Modal from 'react-modal'
 
 function MacroActivity(){
     
     const [macroActivities, setMacroActivities] = useState({mcs: []})
+    const [keys, setKeys ] = useState()
     const history = useHistory()
+    const dbRef = ref(db)
+
+    
+    function getMCS(){
+        get(child(dbRef, `MacroActivity`)).then((snapshot) => {
+            if (snapshot.exists()){
+                const mcs = snapshot.val()
+                let macroA = []
+                let macAkeys = []
+                for(let key in mcs){
+                    if (mcs[key].ProductKey === document.URL.split('=')[1])
+                    macroA.push(mcs[key])
+                    macAkeys.push(key)
+                }
+                setMacroActivities(macroA)
+                setKeys(macAkeys)
+            }
+
+        })
+    }
 
     useEffect( () => {
-         const dbRef = ref(db)
-           
-            get(child(dbRef, `MacroActivity`)).then((snapshot) => {
-                    if (snapshot.exists()){
-                        const mcs = snapshot.val()
-                        let macroA = []
-                        for(let key in mcs){
-                            if (mcs[key].ProductKey === document.URL.split('=')[1])
-                                macroA.push({Key: key, data: mcs[key]})
-                        }
-                        setMacroActivities({mcs: macroA})
-                    }
-                    else{
-                     alert('no data to load from db server')
-                    }
-                })
-            },[]
-    )
+        getMCS()       
+    },[])
 
     function deleteMacroActivity(e){
         remove(ref(db, `MacroActivity/${e.target.value}`)).then(()=> {
             alert('Macro Actividade Apagada com Sucesso ')
-            const dbRef = ref(db)
-
-            get(child(dbRef, `MacroActivity`)).then((snapshot) => {
-                if (snapshot.exists()){
-                    const mcs = snapshot.val()
-                    let macroA = []
-                    for(let key in mcs){
-                        if (mcs[key].ProductKey === document.URL.split('=')[1])
-                            macroA.push({Key: key, data: mcs[key]})
-                    }
-                    setMacroActivities({mcs: macroA})
-                }
-            })
-            
+            getMCS()
         }).catch(() => {
             alert('Erro ao eliminar Macro Actividade')
         })
@@ -56,6 +47,19 @@ function MacroActivity(){
 
     }
 
+    
+    function searchMcs(e){
+        
+        let a = []
+        if (e.target.value === ''){
+            getMCS()
+        }
+        else{
+            a = macroActivities.filter(element => element.Name.includes(e.target.value))  
+            setMacroActivities(a)
+
+        }
+    }
    function handleButtonEvent(e){
       
         let productKey = e.target.id
@@ -82,7 +86,7 @@ function MacroActivity(){
         var values = []
         let count = 0
         if (macroActivities !== null ){
-            for(let data in macroActivities.mcs){
+            for(let data in macroActivities){
                 values.push( 
                     <div>
                         <button               
@@ -92,14 +96,14 @@ function MacroActivity(){
                                 outline: 'none',
                             }}
                             >
-                            <div className='rows-report' id={`${count++}.${macroActivities.mcs[data].Key}`}>
-                                <div className='colmns-report' id={`${count++}.${macroActivities.mcs[data].Key}`} >
-                                    <ul id={`${count++}.${macroActivities.mcs[data].data.Key}`} >
-                                        <li id={`${count++}.${macroActivities.mcs[data].data.Key}`} onClick={handleButtonEvent}>
-                                            {macroActivities.mcs[data].data.Name}
+                            <div className='rows-report' id={`${count++}.${macroActivities[data].Key}`}>
+                                <div className='colmns-report'>
+                                    <ul>
+                                        <li id={`${count++}.${macroActivities[data].Key}`} onClick={handleButtonEvent}>
+                                            {macroActivities[data].Name}
                                         </li>
                                         <li id={`${count++}.${data}`}>
-                                            <i className="bi bi-pencil" id={`update.${count++}.${macroActivities.mcs[data].Key}`} onClick={updateMacroActivities}/>
+                                            <i className="bi bi-pencil" id={`update.${count++}.${macroActivities[data].Key}`} onClick={updateMacroActivities}/>
                                         </li>
                                         <li id={`delete.${count}.${data}`} >
                                             <i className="bi bi-trash"   data-toggle="modal" data-target={`#exampleModal${count}` }/>
@@ -126,7 +130,7 @@ function MacroActivity(){
                                         </div>
                                             <div className="modal-footer">
                                                 <button type="button" id={`closemodal${data}`} className="btn btn-secondary" data-dismiss="modal">Não</button>
-                                                <button type="button" id={data} value= {macroActivities.mcs[data].Key} onClick={deleteMacroActivity} className="btn btn-primary">Sim</button>
+                                                <button type="button" id={data} value= {macroActivities[data].Key} onClick={deleteMacroActivity} className="btn btn-primary">Sim</button>
                                             </div>
                                         </div>
                                     </div>
@@ -134,6 +138,7 @@ function MacroActivity(){
                     </button>
                 </div>)
             }
+            
         }
 
         function add(){
@@ -154,7 +159,7 @@ function MacroActivity(){
               <i className="bi bi-arrow-left" style={{cursor: 'pointer',
                                                          marginRight: '20px'
                 }} onClick={back}/>
-                <input type='tex' className="form-control" id="search" aria-describedby="emailHelp" placeholder="Procurar.."></input>
+                <input type='tex' onChange={searchMcs} className="form-control" id="search" aria-describedby="emailHelp" placeholder="Procurar.."></input>
                 <button type="button" className="btn btn-light" id='addbutton' onClick={add}>Adicionar</button>
             </div>
            

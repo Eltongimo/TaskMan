@@ -1,13 +1,12 @@
-import React from 'react'
-import './AddNewsLetter.css'
+import React, { useEffect } from 'react'
 import {useState} from 'react'
 import {v4 as uuidv4} from 'uuid';
-import {ref,set} from 'firebase/database'
+import {child, ref,set,get,update} from 'firebase/database'
 import {db} from '../database/DatabaseHelper'
 import {Storage} from '../database/Storage'
 import { uploadBytes, ref as refStorage } from 'firebase/storage'
 
-function AddNewsLetter(){
+function UpdateNewsLetter(){
     const [newsLetter, setNewsLetter] = useState({
         Key: uuidv4(),
         Title: '',
@@ -15,67 +14,53 @@ function AddNewsLetter(){
         File: null 
     })
 
+    const dbRef = ref(db)
+
+    const newsletterKey = document.URL.split('=')[1]
+
     const [formElements, setFormElements ] = useState([
-        {Titulo:  '', Corpo: '', Imagem: null },
+        {Title:  '', Body: '', File: null },
     ])
-    
+
+    function getNewsletter(){
+
+        get(child(dbRef, `NewsLetter/${newsletterKey}`)).then((s) => {
+           let a = []
+            if (s.exists())
+                for (let key in s.val()){
+                    a.push(s.val()[key])
+                }
+                
+            setFormElements([a])
+            console.log(formElements)
+        })
+    }
+
+    useEffect(() =>{
+        getNewsletter()
+    },[])
+
     function back(e){
         window.history.back()
     }
 
-    function setTitle(e){
-        setNewsLetter({
-            Key: newsLetter.Key,
-            Title: e.target.value,
-            Body: newsLetter.Body,
-            File: newsLetter.File   
-        })
-    }
-
-    function setBody(e){
-        setNewsLetter({
-            Key: newsLetter.Key,
-            Title: newsLetter.Title,
-            Body: e.target.value,
-            File: newsLetter.File   
-        })
-    }
-
     function saveNewsLetter(e){
 
-        if (newsLetter.File !== null){
-            uploadBytes( refStorage(Storage,`Newsletter/${newsLetter.Key}`),newsLetter.File)
-        }
-
-        set(ref(db, 'NewsLetter/' + uuidv4()), newsLetter).then(
-            ()=> {
-                alert('Newsletter adicionado com sucesso')
-            }
-        )
-        set(ref(db, 'NewsLetter/' + uuidv4()), newsLetter)
+        update(child(dbRef, `NeswLetter/${newsletterKey}`), formElements).then(() => {
+            alert('Newsletter Actualizada com sucesso ')
+        }).catch(() => {
+            alert('Erro ao actualizar Newsletter')
+        })
+     
         document.getElementById('closemodal').click()
         window.history.back()
     }
-
-    function setFile(e){
-        e.preventDefault()
-        setNewsLetter({
-            Key: newsLetter.Key,
-            Title: newsLetter.Title,
-            Body: newsLetter.Body,
-            File: e.target.files[0]
-        })
-    }
-
 
     const  handleFormChange = (event, index) => {
         const data = [...formElements]
 
         data[index][event.target.name] = event.target.value
-     //   console.log(data[index][event.target.name])
-       
         setFormElements(data)
-        console.log(formElements)
     }
 
     const removeField = (element) => {
@@ -88,10 +73,50 @@ function AddNewsLetter(){
     }
 
     function addField(e){
-        let element =  {Titulo: '', Corpo: '', Imagem: null}
+        let element =  {Title: '', Body: '', File: null}
         setFormElements([...formElements,element])
     }
-    
+
+
+    function createForm(){
+
+        let a = []
+
+        formElements.map((element,index) => {
+            console.log(element[index])
+        })
+        return (
+            <div ></div>
+        )
+
+        formElements.map((element, index) => {
+
+            a.push( <div key={index} style={{border: 'solid #ccc 0.1px', marginBottom: '10px'}}>
+
+                 <div className="form-group" style={{display: 'flex', flexDirection: 'column'}}>
+
+                       <button type="button" id={index} onClick={removeField} style={{width: '10%', marginBottom: '15px', marginLeft: '90%'}}className="btn btn-outline-secondary">
+                             Apagar 
+                       </button>
+                     <p>
+                          <label for="exampleFormControlInput1">Title</label>
+                     </p>
+                     <input type="email" value={element[index].Title} name='Title' onChange={event => handleFormChange(event, index)} className="form-control" id="exampleFormControlInput1" placeholder="Title do Newsletter"/>
+           
+                 </div>
+                 <div className="form-group" style={{'margin-top': '20px'}}>
+                     <label for="exampleFormControlTextarea1" style={{'font-weight': '400'}}>Body</label>
+                     <textarea name='Body' value={element[index].Body} className="form-control" onChange={event => handleFormChange(event, index)} id="exampleFormControlTextarea1" rows="10"></textarea>
+                 </div>
+                 <div className="form-group">
+                     <label for="exampleInputEmail1">Carregar Fotografia</label>
+                     <input name='ficheiro' value={element[index].File} type="file" accept='image/*' onChange={event => handleFormChange(event, index)} className="form-control" aria-describedby="emailHelp" />
+                 </div>
+             </div> )         
+         })         
+         return a
+
+    }
     return (
         <div>
             <div className='title-newsletter'> 
@@ -101,40 +126,12 @@ function AddNewsLetter(){
                         }} onClick={back}/>
                 </div>
                 <div className='newsletter-title' style={{fontSize: '1.1rem', fontWeight: '400'}}>
-                    Adicionar NewsLetter
+                    Actualizar NewsLetter
                 </div>
             </div>
             <div id='newsletter-content'>
                 <form>
-                    {formElements.map((element, index) => {
-                       return ( <div key={index} style={{border: 'solid #ccc 0.1px', marginBottom: '10px'}}>
-            
-                            <div className="form-group" style={{display: 'flex', flexDirection: 'column'}}>
-
-                                  <button type="button" id={index} onClick={removeField} style={{width: '10%', marginBottom: '15px', marginLeft: '90%'}}className="btn btn-outline-secondary">
-                                        Apagar 
-                                  </button>
-                                <p>
-                                     <label for="exampleFormControlInput1">Titulo</label>
-                                </p>
-                               
-                                {/*<input type="email"  onChange={setTitle} onChange={event => handleFormChange(event, index)} className="form-control" id="exampleFormControlInput1" placeholder="Titulo do Newsletter"/>*/}
-                                <input type="email" value={element.Titulo} name='titulo' onChange={event => handleFormChange(event, index)} className="form-control" id="exampleFormControlInput1" placeholder="Titulo do Newsletter"/>
-                      
-                            </div>
-                            <div className="form-group" style={{'margin-top': '20px'}}>
-                                <label for="exampleFormControlTextarea1" style={{'font-weight': '400'}}>Corpo</label>
-                                {/*<textarea className="form-control" onChange={setBody} onChange={event => handleFormChange(event, index)} id="exampleFormControlTextarea1" rows="10"></textarea> */}
-                                <textarea name='corpo' value={element.Corpo} className="form-control" onChange={event => handleFormChange(event, index)} id="exampleFormControlTextarea1" rows="10"></textarea>
-                            </div>
-                            <div className="form-group">
-                                <label for="exampleInputEmail1">Carregar Fotografia</label>
-                             {/*<input type="file" accept='image/*' onChange={setFile} className="form-control" aria-describedby="emailHelp" /> */}
-                                <input name='ficheiro' value={element.Imagem} type="file" accept='image/*' onChange={event => handleFormChange(event, index)} className="form-control" aria-describedby="emailHelp" />
-                            </div>
-                        </div> )         
-                    })}
-                
+                    {createForm()}
                     <div className='buttons-container' style={{'margin-top': '20px'}}>
                         <button type="button"  className="btn btn-secondary" onClick={addField}>
                             Adicionar Campo 
@@ -159,7 +156,7 @@ function AddNewsLetter(){
                         <div className="modal-body">
                         <form>
                             <div className="form-group">
-                                <label for="exampleInputEmail1">Submeter Newsletter ?</label>
+                                <label for="exampleInputEmail1">Actualizar Newsletter ?</label>
                             </div>
                         </form>
                             </div>
@@ -175,4 +172,4 @@ function AddNewsLetter(){
     )
 }
 
-export default AddNewsLetter
+export default UpdateNewsLetter

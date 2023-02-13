@@ -11,33 +11,40 @@ import Projects from './Projects'
 function Activities (){
     
     const [activity, setActivity ] = useState({activities: []})
+    const [keys, setKeys ] = useState([])
     const history =  useHistory()
         
     useEffect(() => {
-            const dbRef = ref(db)
-            
-            get(child(dbRef,`Activity`)).then((snapshot) => {
-                    if (snapshot.exists())
-                    {
-                        let acts = []
-                        const vals = snapshot.val()
-
-                      for (let a in vals){
-                            if (document.URL.split('=')[1] == vals[a].MacroActivityKey){
-                                acts.push(vals[a])
-                            }
-                        } 
-                        
-                        setActivity({activities: vals})
-                        console.log(activity)
-                    }            
-                    else{
-                        alert('Sem actividades para carregar')
-                    }
-            })
+        getActivities()
         },[]
     )
 
+    function getActivities(){
+        const dbRef = ref(db)
+            
+        get(child(dbRef,`Activity`)).then((snapshot) => {
+                if (snapshot.exists())
+                {
+                    let acts = []
+                    let aa = []
+                    const vals = snapshot.val()
+                    
+                  for (let a in vals){
+                        if (document.URL.split('=')[1] == vals[a].MacroActivityKey){
+                            acts.push(vals[a])
+                            aa.push(a)
+                        }
+                    } 
+                    
+                    setActivity({activities: acts})
+                    setKeys(aa)
+                }            
+                else{
+                    alert('Sem actividades para carregar')
+                }
+        })
+    }
+    
     function handleButtonEvent(e){
 
         let productKey = e.target.id
@@ -61,30 +68,14 @@ function Activities (){
     
     }
 
-
     function deleteActivity(e){
     
+        console.log()
         remove(ref(db, `Activity/${e.target.value}`)).then(
             () => {
                 document.getElementById(`closemodal${e.target.id}`).click()
+                getActivities()
                 alert('Actividade Apagada com sucesso')
-                
-                const dbRef = ref(db)
-
-                get(child(dbRef,`Activity`)).then((snapshot) => {
-                    if (snapshot.exists())
-                    {
-                        let acts = []
-                        const vals = snapshot.val()
-
-                      for (let a in vals){
-                            if (document.URL.split('=')[1] == vals[a].MacroActivityKey){
-                                acts.push(vals[a])
-                            }
-                        } 
-                        setActivity({activities: vals})
-                    }            
-                })
             }
         ).catch(() => {
             alert('Erro ao apagar a actividade')
@@ -101,6 +92,7 @@ function Activities (){
             let deleteIndex = count + 1000
 
             for(let key in activity.activities){
+              console.log(keys[key])
 
                values.push( 
                 <div>
@@ -133,9 +125,7 @@ function Activities (){
                                     </li>
                                 
                                     <li className='project-icons' id={`${count}`} >
-                                        <i className="bi bi-info" data-toggle="modal" data-target={`#exampleModal${key}`}
-                                        />
-                                    </li> 
+                                        <i className="bi bi-info" data-toggle="modal" data-target={`#exampleModal${key}`}/>                                 </li> 
                                     <li id={`${count + 1}.${key}`}>
                                         <i class="bi bi-file-earmark-arrow-down" style={{
                                                 fontSize: '1.3rem',
@@ -164,7 +154,7 @@ function Activities (){
                             </div>
                             <div className='modal-footer'>
                                  <button type="button" id={`closemodal${count}`} className="btn btn-secondary" data-dismiss="modal">Não</button>
-                                 <button type='button'  id={count} className='btn btn-primary' value= {key} onClick={deleteActivity}> Sim</button>
+                                 <button type='button'  id={count} className='btn btn-primary' value= {keys[key]} onClick={deleteActivity}> Sim</button>
                             </div>
                         </div>
                     </div>
@@ -244,7 +234,7 @@ function Activities (){
                             </div>
                         </div>
                     </div>
-                    </div>
+                </div>
                 )
             }
         }

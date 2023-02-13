@@ -11,7 +11,7 @@ function Main() {
         <div className='main'>
             <Header/>
                 <div className='main-content'>
-                    <Menu isLogged={false}/>
+                    <Menu />
                     <Board/>
                 </div>
             <Footer/>

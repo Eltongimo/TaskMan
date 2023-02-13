@@ -1,38 +1,32 @@
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import React from 'react'
 import {v4 as uuidv4} from 'uuid';
-import {ref,set,get,child} from 'firebase/database'
+import {ref,set,get} from 'firebase/database'
 import {db} from '../database/DatabaseHelper'
+import { child, update } from 'firebase/database';
 
 function back(e){
     window.history.back()
 }
 
-function AddUser(){
+function UpdateUser(){
 
     const [user, setUser] = useState({
         Role: 'Operacional',
         Username: '',
         Password: '',
-        Area: 'Urbanização e Regeneração Urbana',
-        ProjectKey: null,
-        LATKey: null
+        Area: 'Urbanização e Regeneração Urbana'
     })
-    const [projects, setProjects] = useState([])
-    
-    const dbRef = ref(db)
+    const userKey = document.URL.split('=')[1]
 
-    function getProject(){
-
-        get(child(dbRef, 'Project')).then(snapshot => {
-
-            if (snapshot.exists()){
-                setProjects(snapshot.val())
+    useEffect(() => {
+        get(child(ref(db), `User/${userKey}`)).then( s => {
+            console.log(s.val())
+            if (s.exists()){
+                setUser(s.val())
             }
         })
-
-    }
-
+    }, [])
     function setUsername(e){
 
         setUser({
@@ -71,13 +65,16 @@ function AddUser(){
                 Area: e.target.value
             })
      }
-    function addUser(e){
-        console.log(user)
-        set(ref(db, 'User/' + uuidv4()), user).then(() => {
-            alert('Usuario gravado com sucesso')
+
+    function updateUser(e){
+      
+        update(ref(db, `User/${userKey}`), user).then(()=>
+        {
+            alert('Actividade actualizada com Sucesso')
         }).catch(() => {
-            alert('Erro ao gravar usuario')
+            alert('Erro ao eliminar o Usuario, Tenta mais tarde')
         })
+    
         document.getElementById('closemodal').click()
         window.history.back()
     }
@@ -91,31 +88,30 @@ function AddUser(){
                   }} onClick={back}/>
           </div>
           <div className='form-title'>
-              Adicionar Usuario
+              Actualizar Usuario
           </div>
       </div>
       <div className="form-group">
           <label for="exampleInputEmail1">Username</label>
-          <input type="text" onChange={setUsername} className="form-control" aria-describedby="emailHelp" />
+          <input type="text" value={user.Username} onChange={setUsername} className="form-control" aria-describedby="emailHelp" />
       </div>
       
       <div className="form-group">
           <label for="exampleInputEmail1">Password</label>
-          <input type="text" onChange={setPassword} className="form-control" aria-describedby="emailHelp" />
+          <input type="text" onChange={setPassword} value={user.Password} className="form-control" aria-describedby="emailHelp" />
       </div>
 
       <div className="form-group">
           <label for="exampleInputEmail1">Tipo de Usuario</label>
-          <select className="form-select"  onChange={setRole} aria-label="Default select example">
+          <select className="form-select"  value={user.Role} onChange={setRole} aria-label="Default select example">
               <option selected value="Urbanização e Regeneração Urbana" defaultChecked>Operacional</option>
               <option value="Recursos Hídricos e Resiliência">Tatico</option>
           </select>
       </div>
   
-      
       <div className="form-group">
           <label for="exampleInputEmail1">Area</label>
-          <select className="form-select"  onChange={setArea} aria-label="Default select example">
+          <select className="form-select"  value={user.Area} onChange={setRole} aria-label="Default select example">
               <option selected value="Urbanização e Regeneração Urbana" defaultChecked>Urbanização e Regeneração Urbana</option>
               <option value="Recursos Hídricos e Resiliência">Recursos Hídricos e Resiliência</option>
               <option value="Ambiente e Resíduos Sólidos">Ambiente e Resíduos Sólidos</option>
@@ -138,13 +134,13 @@ function AddUser(){
           <div className="modal-body">
           <form>
               <div className="form-group">
-                  <label for="exampleInputEmail1">Submeter  Usuario ?</label>
+                  <label for="exampleInputEmail1">Actualizar  Usuario ?</label>
               </div>
           </form>
               </div>
                   <div className="modal-footer">
                       <button type="button" id='closemodal' className="btn btn-secondary" data-dismiss="modal">Não</button>
-                      <button type="button" onClick={addUser} className="btn btn-primary">Sim</button>
+                      <button type="button" onClick={updateUser} className="btn btn-primary">Sim</button>
                   </div>
               </div>
           </div>
@@ -153,4 +149,4 @@ function AddUser(){
     )
 }
 
-export default AddUser
+export default UpdateUser

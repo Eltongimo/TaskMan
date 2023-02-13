@@ -61,15 +61,13 @@ function NewsLetterHome (){
      }
  
      function buildTable(){
-         
+
          var values  = []     
          let count = 0
          let index = 0
  
          if (newsLetter !== null ){
              for(let key in newsLetter){
-                console.log(newsLetter)
-                
                 for (let innerKey in newsLetter[key]){
                     values.push(
                         <button   style={{background: 'transparent',
@@ -89,6 +87,7 @@ function NewsLetterHome (){
                             </div>
                     </button>
                     )
+                    break
                 }
             }
          }

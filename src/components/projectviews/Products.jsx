@@ -2,26 +2,64 @@ import React from 'react'
 import {db} from '../database/DatabaseHelper'
 import {useState, useEffect} from 'react'
 import { child, get, ref, remove } from "firebase/database"
-import TaskRow from '../TaskRow'
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min'
 
 
 function Product (){
    const [products, setProducts] = useState({products:  []}) 
-
    const history = useHistory()
+   const dbRef = ref(db)
+   const [project, setProject] = useState()
+   const projKey = document.URL.split('=')[1]
 
+   function getProduct(){
+
+        get(child(dbRef, `Product`)).then((snapshot) => {
+            let a = []
+            if (snapshot.exists()){
+                for(let latKey in snapshot.val()){
+                    if (snapshot.val()[latKey].ProjectKey === projKey){
+                        a.push(
+                            snapshot.val()[latKey]
+                        )
+                    }
+                }
+            }
+            a = sortByArea(a)
+            setProducts(a)
+        })
+    }
+
+   
     useEffect( () => {
-        const dbRef = ref(db)
-           
-            get(child(dbRef, `Product`)).then((snapshot) => {
-                    if (snapshot.exists())
-                        setProducts({projects: snapshot.val()})
-                    else
-                        alert('no data to load from db server')
-            })
-        }
-    ,[])
+        getProject()
+        getProduct()
+
+    },[])
+
+    function sortByArea(a){
+        a.sort((a,b) => {
+            let fa = a.Area,
+            fb = b.Area
+
+            if (fa < fb) {
+                return -1;
+            }
+            if (fa > fb) {
+                return 1;
+            }
+            return 0;
+        })
+        return a
+    }
+
+    function getProject (){
+            get(child(dbRef, `Project/${projKey}`)).then((snapshot) => {
+            if (snapshot.exists())
+                setProject(snapshot.val())
+        })
+        return project
+    }
 
     function gotoMcs(e){
        
@@ -30,6 +68,18 @@ function Product (){
             search: `?key=${e.target.id.split('.')[1]}`,
         })
    
+    }
+
+    function searchProduct(e){
+        
+        let a = []
+        if (e.target.value === ''){
+            getProduct()
+        }
+        else{
+            a = products.filter(element => element.Name.includes(e.target.value))  
+            setProducts(a)
+        }
     }
 
     function updateProduct(e){
@@ -63,7 +113,7 @@ function Product (){
         let count = 0
 
         if (products !== null ){
-            for(let key in products.projects){
+            for(let key in products){
                values.push(
                 <button 
                     style={{background: 'transparent',
@@ -72,22 +122,22 @@ function Product (){
                             outline: 'none',
                         }}
                 >
-                    <div className='rows-report' id={`${count++}.${products.projects[key].Key}`} >
+                    <div className='rows-report' id={`${count++}.${products[key].Key}`} >
                         <div className='colmns-report'>
-                        <ul id={`${count++}.${products.projects[key].Key}`} >
-                            <li id={`${count++}.${products.projects[key].Key}`} >
-                                {products.projects[key].Area}
+                        <ul id={`${count++}.${products[key].Key}`} >
+                            <li id={`${count++}.${products[key].Key}`} >
+                                {products[key].Area}
                             </li>
-                            <li id={`${count++}.${products.projects[key].Key}`} onClick={gotoMcs}>
-                                {products.projects[key].Name}
+                            <li id={`${count++}.${products[key].Key}`} onClick={gotoMcs}>
+                                {products[key].Name}
                             </li>
-                            <li id={`${count++}.${products.projects[key].Key}`}>
-                                {products.projects[key].Status}
+                            <li id={`${count++}.${products[key].Key}`}>
+                                {products[key].Status}
                             </li>
                             <li id={`${count++}.${key}`} onClick={updateProduct}>
                                   <i className="bi bi-pencil" id={`update.${count++}.${key}`}/>
                             </li>
-                            <li id={`delete.${count}.${products.projects[key].Key}`} data-toggle="modal" data-target={`#exampleModal${count}`}>
+                            <li id={`delete.${count}.${products[key].Key}`} data-toggle="modal" data-target={`#exampleModal${count}`}>
                                  <i className="bi bi-trash" />
                             </li>
                         </ul>
@@ -122,6 +172,7 @@ function Product (){
             }
         }
 
+
         function add(e){
             history.push({
                 pathname: '/addproducts',
@@ -140,7 +191,7 @@ function Product (){
               <i className="bi bi-arrow-left" style={{cursor: 'pointer',
                                                          marginRight: '20px'
                 }} onClick={back}/>
-                <input type='tex' className="form-control" id="search" aria-describedby="emailHelp" placeholder="Procurar.."></input>
+                <input type='tex' className="form-control" onChange={searchProduct} id="search" aria-describedby="emailHelp" placeholder="Procurar.."/>
                 <button type="button" className="btn btn-light" id='addbutton' onClick={add}>Adicionar</button>
             </div>
             

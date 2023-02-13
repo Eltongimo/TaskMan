@@ -13,31 +13,44 @@ function NewsLetter (){
     const [imageList, setImageList] = useState([])
     const listOfImages = storageRef(Storage, 'Newsletter/')
     const history = useHistory()
-  
+    const dbRef = ref(db)
+
       useEffect( () => {
-         const dbRef = ref(db)
-           listAll(listOfImages).then((response) => {
+        getNewsletterImages()
+        getNewsletter()
+         }
+     ,[])
+ 
+     function getNewsletterImages(){
+        listAll(listOfImages).then((response) => {
             let urls = []
             response.items.forEach(item => getDownloadURL(item).then(url =>{
                 urls.push(url)
                 setImageList(urls)
             }))
          })
+     }
 
-             get(child(dbRef, `NewsLetter`)).then((snapshot) => {
-                     if (snapshot.exists())
-                         setnewsLetter(snapshot.val())
-                     else
-                         alert('Sem newsletter para mostrar')
-             })
-         }
-     ,[])
- 
+     function getNewsletter(){
+        get(child(dbRef, `NewsLetter`)).then((snapshot) => {
+            if (snapshot.exists())
+                setnewsLetter(snapshot.val())
+            else
+                alert('Sem newsletter para mostrar')
+        })
+    }
+
      function seeMore(e){
-
         history.push({
             pathname: '/readnewsletter',
             search: `?key=${e.target.id.split('.')[1]}`
+        })
+     }
+
+     function updateNewsletter(e){
+        history.push({
+            pathname: '/updatenewsletter',
+            search: `?key=${e.target.id}`
         })
      }
 
@@ -45,15 +58,7 @@ function NewsLetter (){
 
         remove(ref(db, `NewsLetter/${e.target.value}`)).then(() => {
             alert('Newsletter apagado com sucesso')
-          
-            const dbRef = ref(db)
-
-            get(child(dbRef, `NewsLetter`)).then((snapshot) => {
-                if (snapshot.exists())
-                    setnewsLetter({newsLetters: snapshot.val()})
-                else
-                    alert('Sem newsletter para mostrar')
-        })
+            getNewsletter()
         }).catch(() => {
             alert('Erro ao apagar a Newsletter')
         })
@@ -69,54 +74,52 @@ function NewsLetter (){
  
          if (newsLetter !== null ){
              for(let key in newsLetter){
-                console.log(newsLetter)
-                
                 for (let innerKey in newsLetter[key]){
-                    values.push(
-                        <button   style={{background: 'transparent',
-                                        border: 'none',
-                                        width: '100%',
-                                        outline: 'none',
-                                    }}>
-                            <div className="card card-container" style={{width: '18rem', marginTop: '10px'}}>
-                            {/*    <img src={imageList} className="card-img-top" alt="..."/> */}
-                            <div style={{display: 'flex', flexDirection: 'row',width: '100%',padding: '10px'}}>
+                        values.push(
+                            <button   style={{background: 'transparent',
+                                           border: 'none',
+                                           width: '100%',
+                                           outline: 'none',
+                                       }}>
+                               <div className="card card-container" style={{width: '18rem', marginTop: '10px'}}>
+                               <div style={{display: 'flex',flexDirection: 'row',width: '100%',padding: '10px'}}>
                                     <button type='button' className='btn btn-danger' data-toggle="modal" data-target={`#exampleModal${key}`} > Apagar </button> 
-                                    <button type='button' className='btn btn-secondary' > Editar </button>
-                            </div>
-                                <div className="card-body">
-                                    <h5 className="card-title" style={{textAlign: 'justify'}}>{newsLetter[key][innerKey].Title}</h5>
-                                    <p className="card-text" style={{textAlign: 'justify'}}>
-                                        {newsLetter[key][innerKey].Body.split(" ").splice(0, 20).join(" ")} ...
-                                    </p>
-                                    <a className="btn btn-primary" onClick={seeMore} id={`${count++}.${key}`}>Ver Mais</a>
-                                </div>
-                            </div>
-                            <div className="modal fade" id={`exampleModal${key}`} tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div className="modal-dialog" role="document">
-                                <div className="modal-content">
-                                <div className="modal-header">
-                                    <h5 className="modal-title" id="exampleModalLabel">Confirmação</h5>
-                                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div className="modal-body">
-                                <form>
-                                    <div className="form-group" >
-                                        <label style={{textAlign: 'left'}} for="exampleInputEmail1">Apagar Newsletter ?</label>
-                                    </div>
-                                </form>
-                                    </div>
-                                        <div className="modal-footer">
-                                            <button type="button" id={`closemodal${count}`} className="btn btn-secondary" data-dismiss="modal">Não</button>
-                                            <button type="button" value ={key} id={count} onClick={deleteNewsLetter} className="btn btn-primary">Sim</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>  
-                    </button>
-                    )
+                                    <button type='button' className='btn btn-secondary' onClick={updateNewsletter} id={key} > Editar </button>
+                               </div>
+                                   <div className="card-body">
+                                       <h5 className="card-title" style={{textAlign: 'justify'}}>{newsLetter[key][innerKey].Title}</h5>
+                                       <p className="card-text" style={{textAlign: 'justify'}}>
+                                           {newsLetter[key][innerKey].Body.split(" ").splice(0, 20).join(" ")} ...
+                                       </p>
+                                       <a className="btn btn-primary" onClick={seeMore} id={`${count++}.${key}`}>Ver Mais</a>
+                                   </div>
+                               </div>
+                               <div className="modal fade" id={`exampleModal${key}`} tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                               <div className="modal-dialog" role="document">
+                                   <div className="modal-content">
+                                   <div className="modal-header">
+                                       <h5 className="modal-title" id="exampleModalLabel">Confirmação</h5>
+                                       <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                       <span aria-hidden="true">&times;</span>
+                                       </button>
+                                   </div>
+                                   <div className="modal-body">
+                                   <form>
+                                       <div className="form-group" >
+                                           <label style={{textAlign: 'left'}} for="exampleInputEmail1">Apagar Newsletter ?</label>
+                                       </div>
+                                   </form>
+                                       </div>
+                                           <div className="modal-footer">
+                                               <button type="button" id={`closemodal${count}`} className="btn btn-secondary" data-dismiss="modal">Não</button>
+                                               <button type="button" value ={key} id={count} onClick={deleteNewsLetter} className="btn btn-primary">Sim</button>
+                                           </div>
+                                       </div>
+                                   </div>
+                               </div>  
+                       </button>
+                       )
+                        break
                 }
             }
          }

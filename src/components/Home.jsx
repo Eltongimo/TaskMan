@@ -96,7 +96,7 @@ function Home(){
         for (let key in projects.p){
             a.push(
                 <li>
-                    <button type="button" className='btn btn-outline-secondary' data-toggle="modal" data-target={`#exampleModal${count}`}> {projects.p[key].ProjectName}     </button>
+                    <button type="button" className='btn btn-outline-secondary' data-toggle="modal" data-target={`#exampleModal${count}`} style={{marginBottom: '10px'}}> {projects.p[key].ProjectName}     </button>
                       <div className="modal fade" id={`exampleModal${count}`} tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="false">
                             <div className="modal-dialog" role="document">
                                 <div className="modal-content">

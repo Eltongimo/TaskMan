@@ -9,21 +9,38 @@ function Dashboard  (){
 
     const [lats, setLats] = useState({})
     const [products, setProducts ] = useState({})
-
+    const [project, setProject] = useState({})
+    const dbRef = ref(db)
+      
     useEffect( () => {
-        const dbRef = ref(db)
-           
-            get(child(dbRef, `LAT`)).then((snapshot) => {
-                    if (snapshot.exists()){
-                        setLats(snapshot.val())
-                    }
-                    else{
-                        alert('no data to load from db server')
-                    }
-                })
-            }
+        getProject()
+        getLATs()
+    },[])
 
-    ,[])
+    function getLATs(){
+        let a = []
+        get(child(dbRef, `LAT`)).then((snapshot) => {
+                if (snapshot.exists()){
+                    for (let key in snapshot.val()){
+                        if (snapshot.val()[key].ProjectKey === project.Key){
+                            a.push(snapshot.val()[key])
+                        }
+                    }
+                    setLats(a)
+                }
+            })
+        }
+
+    function getProject(){
+        get(child(dbRef, `Project/${document.URL.split('=')[1]}`)).then((snapshot) => {
+
+            if (snapshot.exists())
+                setProject(snapshot.val())
+                
+            }).catch(() => {
+                alert('Erro ao na rede....')
+            })    
+    }
 
     useEffect( () => {
         const dbRef = ref(db)
@@ -37,34 +54,38 @@ function Dashboard  (){
     ,[])
 
 
-    let cards = []
-    for(let key in lats){
-            let prods = []
-            let fullProdsArray = []
-            let cont = 0
-            for(let prodsKey in products){
-                if ( products[prodsKey].Area == lats[key].Description){
-                    if (cont < 5 ){
-                        prods.push(products[prodsKey])   
-                    }
-                    cont++
-                    fullProdsArray.push(products[prodsKey].Status)
-                }
-            }
-            
-            let row = ''
+    function buildCards(){
 
-            if (cont % 2 !== 0)
-                row = 'row-1'
-            else
-                row = 'row-2'
+        let cards = []
+        for(let key in lats){
+                let prods = []
+                let fullProdsArray = []
+                let cont = 0
+                for(let prodsKey in products){
+                    if ( products[prodsKey].Area == lats[key].Description){
+                        if (cont < 5 ){
+                            prods.push(products[prodsKey])   
+                        }
+                        cont++
+                        fullProdsArray.push(products[prodsKey].Status)
+                    }
+                }
                 
-            cards.push(
-                <Stricky rownum={row} header={lats[key].Description}
-                       products={prods}        
-                       fullProds = {fullProdsArray}
-                       Key={lats[key].Key}
-            />)
+                let row = ''
+
+                if (cont % 2 !== 0)
+                    row = 'row-1'
+                else
+                    row = 'row-2'
+                    
+                cards.push(
+                    <Stricky rownum={row} header={lats[key].Description}
+                        products={prods}        
+                        fullProds = {fullProdsArray}
+                        Key={lats[key].Key}
+                />)
+        }
+        return cards
     }
 
     function back (e){
@@ -81,7 +102,7 @@ function Dashboard  (){
                 onClick={back}/>
             </div>
                 <div className='home-container'>
-                    {cards}
+                    {buildCards()}
                 </div>
         </div>
     )

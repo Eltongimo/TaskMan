@@ -56,7 +56,7 @@ function Sticky(props){
     }
 
     return (
-        <div className='sticky-notes'>
+        <div className='sticky-notes' style={{marginLeft: '10px'}}>
             <div className='items'>
                 <div className='note-header'>
                     <div className='note-header-title' >
