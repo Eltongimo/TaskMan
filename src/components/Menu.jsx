@@ -8,7 +8,7 @@ function Menu(props) {
 
     const [menuVisible, setMenuVisibility ] = useState(true)
 
-    const menuKeys = ['home','dahboard','menu-projects','newsletter','relatorios','usuarios','conteudo','newsletterhome']
+    const menuKeys = ['home','dahboard','menu-projects','newsletter','relatorios','usuarios','conteudo','newsletterhome','lat']
     let a = []
 
     function activeBackGroud(e){
@@ -71,6 +71,12 @@ function Menu(props) {
                         <li className='newsletterhome'>
                             <Link id={menuKeys[7]} onClick={activeBackGroud}  className='link' to="/newsletterhome" exact="true"> 
                                 Newsletter
+                            </Link>
+                        </li>
+                        
+                        <li className='lat' hidden={menuVisible}>
+                            <Link id={menuKeys[8]} onClick={activeBackGroud}  className='link' to="/showlats" exact="true"> 
+                                LAT
                             </Link>
                         </li>
                     </ul>

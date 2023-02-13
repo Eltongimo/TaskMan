@@ -8,7 +8,7 @@ import { child, get, ref } from "firebase/database"
 function Carousel(){
 
     const [images, setImages] = useState([])
-    const listOfImages = storageRef(Storage, 'HomeContent/')
+    const listOfImages = storageRef(Storage, 'HomeContent')
 
     useEffect(()=> {
         listAll(listOfImages).then((response) => {

@@ -15,61 +15,55 @@ function Dashboard  (){
     useEffect( () => {
         getProject()
         getLATs()
+        getProducts()
     },[])
+
+    function getProject(){
+
+        get(child(dbRef, `Project/${document.URL.split('=')[1]}`)).then((snapshot) => {
+
+            if (snapshot.exists())
+                setProject(snapshot.val())
+        })
+    }
 
     function getLATs(){
         let a = []
         get(child(dbRef, `LAT`)).then((snapshot) => {
                 if (snapshot.exists()){
-                    for (let key in snapshot.val()){
-                        if (snapshot.val()[key].ProjectKey === project.Key){
-                            a.push(snapshot.val()[key])
-                        }
-                    }
-                    setLats(a)
+                    setLats(snapshot.val())
                 }
             })
         }
-
-    function getProject(){
-        get(child(dbRef, `Project/${document.URL.split('=')[1]}`)).then((snapshot) => {
-
-            if (snapshot.exists())
-                setProject(snapshot.val())
-                
-            }).catch(() => {
-                alert('Erro ao na rede....')
-            })    
+    
+    function getProducts(){
+        get(child(dbRef, `Product`)).then((snapshot) => {
+            if (snapshot.exists()){
+                setProducts(snapshot.val())
+            }
+        })
     }
 
-    useEffect( () => {
-        const dbRef = ref(db)
-           
-            get(child(dbRef, `Product`)).then((snapshot) => {
-                    if (snapshot.exists()){
-                        setProducts(snapshot.val())
-                    }
-                })
-            }
-    ,[])
-
-
     function buildCards(){
-
+        
         let cards = []
         for(let key in lats){
-                let prods = []
-                let fullProdsArray = []
-                let cont = 0
-                for(let prodsKey in products){
-                    if ( products[prodsKey].Area == lats[key].Description){
-                        if (cont < 5 ){
-                            prods.push(products[prodsKey])   
-                        }
-                        cont++
-                        fullProdsArray.push(products[prodsKey].Status)
+            let prods = []
+            let fullProdsArray = []
+            let cont = 0
+            let signal = false
+            for(let prodsKey in products){
+                if ( products[prodsKey].Area == lats[key].Description && lats[key].ProjectKey === project.Key){
+                    if (cont < 5 ){
+                        prods.push(products[prodsKey])   
                     }
+                    cont++
+                    fullProdsArray.push(products[prodsKey].Status)
+                    signal = true
                 }
+            }
+
+            if (signal ){
                 
                 let row = ''
 
@@ -84,13 +78,21 @@ function Dashboard  (){
                         fullProds = {fullProdsArray}
                         Key={lats[key].Key}
                 />)
+            }
+            signal = false
         }
+
         return cards
     }
 
     function back (e){
         window.history.back()
     }
+
+    function add(){
+
+    }
+
     return (
         <div  style={{
             border: 'solid #ccc red '
@@ -101,9 +103,9 @@ function Dashboard  (){
                                                      }} 
                 onClick={back}/>
             </div>
-                <div className='home-container'>
-                    {buildCards()}
-                </div>
+            <div className='home-container'>
+                {buildCards()}
+            </div>
         </div>
     )
 }

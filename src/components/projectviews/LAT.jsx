@@ -89,9 +89,18 @@ function Lat (){
                 )
             }
         }
+
+        function back(){
+            window.history.back()
+        }
         return( 
         <div className='table-container'>
+
             <div className='header-container'>
+                <i className="bi bi-arrow-left" style={{cursor: 'pointer',
+                                                         marginRight: '20px'
+                                                     }} 
+                onClick={back}/>
                 <div className='report-header'>Nome do Producto</div>
                 <div className='report-header'>Estado</div>
                 <div className='report-header'>%</div>

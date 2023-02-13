@@ -31,6 +31,7 @@ import UpdateActivity from './updateForms/UpdateActivity'
 import NewsLetterHome from './Newsletter/NewsletterHome'
 import UpdateNewsletter from './updateForms/UpdateNewsletter'
 import UpdateUser from './updateForms/UpdateUser'
+import ShowLats from './projectviews/ShowLats'
 
 function Board() {
 
@@ -38,6 +39,7 @@ function Board() {
         <section className='container'>
             <div className='board'>
                 <Switch>
+                    <Route path='/showlats'> <ShowLats/></Route>
                     <Route path='/updateuser'><UpdateUser/></Route>
                     <Route path='/updatenewsletter'><UpdateNewsletter/></Route>
                     <Route path='/newsletterhome' exact> <NewsLetterHome/> </Route>

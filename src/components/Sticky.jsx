@@ -56,13 +56,13 @@ function Sticky(props){
     }
 
     return (
-        <div className='sticky-notes' style={{marginLeft: '10px'}}>
-            <div className='items'>
-                <div className='note-header'>
+        <div className='sticky-notes' style={{marginLeft: '10px', border: 'solid 0.1px #001489'}}>
+            <div className='items' >
+                <div className='note-header' >
                     <div className='note-header-title' >
                         {props.header}
                     </div>
-                    <div className='general-percentage'>
+                    <div className='general-percentage' >
                         {getLATFullPercentage(props.fullProds)}%
                     </div>
                 </div>        
