@@ -82,7 +82,8 @@ function Home(){
         document.getElementsByClassName('usuarios')[0].hidden = false
         document.getElementsByClassName('navigation')[0].hidden = false
         document.getElementsByClassName('conteudo')[0].hidden = false
-   
+        document.getElementsByClassName('lat')[0].hidden = false
+        
     }
 
     function clearForm(){

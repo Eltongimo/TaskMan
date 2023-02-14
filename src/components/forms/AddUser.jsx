@@ -19,6 +19,7 @@ function AddUser(){
         LATKey: null
     })
     const [projects, setProjects] = useState([])
+    const [lats, setLats] = useState()
     
     const dbRef = ref(db)
 
@@ -30,7 +31,15 @@ function AddUser(){
                 setProjects(snapshot.val())
             }
         })
+    }
 
+    function getLAT(){
+        get(child(dbRef, 'LAT')).then(snapshot => {
+
+            if (snapshot.exists()){
+                setLats(snapshot.val())
+            }
+        })
     }
 
     function setUsername(e){
