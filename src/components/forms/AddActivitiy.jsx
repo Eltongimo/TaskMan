@@ -3,10 +3,15 @@ import { useState } from 'react'
 import {v4 as uuidv4} from 'uuid';
 import {ref,set} from 'firebase/database'
 import {db} from '../database/DatabaseHelper'
+import { getDownloadURL, listAll, ref as storageRef } from 'firebase/storage'
+import { uploadBytes, ref as refStorage } from 'firebase/storage'
+import {Storage} from '../database/Storage'
 
 import './AddActivitiy.css'
 
 function AddActivity(){
+
+    const [image, setImage] =useState()
 
     const [activity, setActivity] = useState({
         Key: uuidv4(),
@@ -35,13 +40,18 @@ function AddActivity(){
 
         activity.Total = parseInt(activity.Men) + parseInt(activity.Boys) + parseInt(activity.Women) + parseInt(activity.Girls)
 
-        console.log(activity)
+        console.log(image)
 
         set(ref(db, 'Activity/' + uuidv4()), activity).then(()=>
             {
                 alert('Actividade Salva com Sucesso')
             }
         )
+
+        if (image !== null){
+            uploadBytes( refStorage(Storage,`Activity/${activity.Key}`),image)
+        }
+        
         document.getElementById('closemodal').click()
         back()
     }
@@ -424,28 +434,7 @@ function AddActivity(){
     }
 
     function setFile(e){
-        setActivity({
-            Name: activity.Name,
-            Boys: activity.Boys,
-            Comments: activity.Comments,
-            DeadLine: activity.DeadLine,
-            Description: activity.Description,
-            Duration: activity.Duration,
-            Girls: activity.Girls,
-            Heterogenity: activity.Heterogenity,
-            Id: activity.Id,
-            Key: activity.Key,
-            Location: activity.Location,
-            MacroActivityKey: activity.MacroActivityKey,
-            Men: activity.Men,
-            NextSteps: activity.NextSteps,
-            StartTime: activity.StartTime,
-            Time: activity.Time,
-            Total: activity.Total,
-            Waited: activity.Waited,
-            Women: activity.Women,
-            User: activity.User,
-        })
+        setImage(e.target.files[0])
     }
 
     function back(e){
@@ -523,16 +512,6 @@ function AddActivity(){
         </div>
 
         <div className="form-group">
-            <label for="exampleInputEmail1">Comentarios</label>
-            <input type="text"  onChange={setComments}className="form-control" aria-describedby="emailHelp" />
-        </div>
-
-        <div className="form-group">
-            <label for="exampleInputEmail1">Proximos Passos</label>
-            <input type="text"  onChange={setNextSteps}className="form-control" aria-describedby="emailHelp" />
-        </div>
-
-        <div className="form-group">
             <label for="exampleInputEmail1">Esperado</label>
             <select className="form-select" aria-label="Default select example" onChange={setEsperado}>
                 <option selected value="Sim">Sim</option>
@@ -548,6 +527,16 @@ function AddActivity(){
             </select>
         </div>
      
+        <div className="form-group">
+            <label for="exampleInputEmail1">Comentarios</label>
+            <input type="text"  onChange={setComments}className="form-control" aria-describedby="emailHelp" />
+        </div>
+
+        <div className="form-group">
+            <label for="exampleInputEmail1">Proximos Passos</label>
+            <input type="text"  onChange={setNextSteps}className="form-control" aria-describedby="emailHelp" />
+        </div>
+
         <div className="form-group">
             <label for="exampleInputEmail1">Carregar ficheiro</label>
             <input type="file" onChange={setFile} className="form-control" aria-describedby="emailHelp" />

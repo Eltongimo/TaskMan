@@ -5,35 +5,62 @@ import {ref,set,get} from 'firebase/database'
 import {db} from '../database/DatabaseHelper'
 import { child, update } from 'firebase/database';
 
-function back(e){
-    window.history.back()
-}
-
 function UpdateUser(){
 
     const [user, setUser] = useState({
-        Role: 'Operacional',
+        Role: '',
         Username: '',
         Password: '',
-        Area: 'Urbanização e Regeneração Urbana'
+        Area: '',
+        Project: ''
     })
-    const userKey = document.URL.split('=')[1]
 
-    useEffect(() => {
+    const userKey = document.URL.split('=')[1]
+    const [lats, setLats] = useState()
+    const [projects, setProjects] = useState()
+
+    function getLATs(){
+        get(child(ref(db), `LAT`)).then( snapshot => {
+            if (snapshot.exists()){
+                setLats(snapshot.val())
+            }
+        })
+    }
+
+    function getProjects(){
+        
+        get(child(ref(db), `Project`)).then( snapshot => {
+            if (snapshot.exists()){
+                setProjects(snapshot.val())
+            }
+        })
+    }
+
+    function back(e){
+        window.history.back()
+    }
+
+    function getUser(){
         get(child(ref(db), `User/${userKey}`)).then( s => {
-            console.log(s.val())
             if (s.exists()){
                 setUser(s.val())
             }
         })
+    }
+    useEffect(() => {
+        getLATs()
+        getUser()
+        getProjects()
     }, [])
+
     function setUsername(e){
 
         setUser({
             Username: e.target.value,
             Password: user.Password,
             Role: user.Role,
-            Area: user.Area
+            Area: user.Area,
+            Project: user.Project
         })
     }
 
@@ -42,7 +69,8 @@ function UpdateUser(){
             Password: e.target.value,
             Username: user.Username, 
             Role: user.Role,
-            Area: user.Area
+            Area: user.Area,
+            Project: user.Project
         })
     }
 
@@ -51,20 +79,47 @@ function UpdateUser(){
             Username: user.Username,
             Password: user.Password, 
             Role: e.target.value,
-            Area: user.Area
+            Area: user.Area,
+            Project: user.Project
         })
     }
-
-
 
     function setArea(e){
         setUser({
                 Username: user.Username,
                 Password: user.Password, 
                 Role: user.Role,
-                Area: e.target.value
+                Area: e.target.value,
+                Project: user.Project
             })
      }
+
+     function setProject(e){
+        setUser({
+            Username: user.Username,
+            Password: user.Password, 
+            Role: user.Role,
+            Area: user.Area,
+            Project: e.target.value
+        })
+     }
+
+     function generateArea(){
+
+        let a = []
+
+        a.push(
+            <option value="">Selecione uma Area</option>
+        )
+        for (let key in lats){
+            a.push(
+                <option value={lats[key].Description}>{lats[key].Description}</option>
+            )
+        }
+        return a
+    }
+
+
 
     function updateUser(e){
       
@@ -78,6 +133,36 @@ function UpdateUser(){
         document.getElementById('closemodal').click()
         window.history.back()
     }
+
+    function createRole(){
+    
+        let a = []
+
+        if (user.Role.toLowerCase() === 'operacional'){
+            a.push( <option  value="Operacional" defaultChecked>Operacional</option>)
+            a.push(<option value="Tatico">Tatico</option>)
+        }else{
+            a.push(<option value="Tatico" defaultChecked>Tatico</option>)
+            a.push(<option  value="Operacional" >Operacional</option>)
+        }
+        return a
+    }
+
+    function generateProject(){
+        
+        let a = []
+        
+        a.push(
+            <option value="">Selecione um Projecto</option>
+        )
+        for (let key in projects){
+            a.push(
+                <option value={projects[key].ProjectName}> {projects[key].ProjectName}</option>
+            )
+        }
+        return a
+    }
+   
 
     return (
         <div className='form-container'>
@@ -103,21 +188,24 @@ function UpdateUser(){
 
       <div className="form-group">
           <label for="exampleInputEmail1">Tipo de Usuario</label>
-          <select className="form-select"  value={user.Role} onChange={setRole} aria-label="Default select example">
-              <option selected value="Urbanização e Regeneração Urbana" defaultChecked>Operacional</option>
-              <option value="Recursos Hídricos e Resiliência">Tatico</option>
+          <select className="form-select" value={user.Role} onChange={setRole} aria-label="Default select example">
+                  {createRole()}
           </select>
       </div>
   
       <div className="form-group">
           <label for="exampleInputEmail1">Area</label>
-          <select className="form-select"  value={user.Area} onChange={setRole} aria-label="Default select example">
-              <option selected value="Urbanização e Regeneração Urbana" defaultChecked>Urbanização e Regeneração Urbana</option>
-              <option value="Recursos Hídricos e Resiliência">Recursos Hídricos e Resiliência</option>
-              <option value="Ambiente e Resíduos Sólidos">Ambiente e Resíduos Sólidos</option>
-              <option value="Educação Primária e Pré-Escolar">Educação Primária e Pré-Escolar</option>
-              <option value="Sustentabilidade">Sustentabilidade</option>
+          <select className="form-select"  value={user.Area} onChange={setArea} aria-label="Default select example">
+                {generateArea()}
            </select>
+
+           <div className="form-group">
+          <label for="exampleInputEmail1">Projecto</label>
+          <select className="form-select"  value={user.Project} onChange={setProject} aria-label="Default select example">
+                {generateProject()}
+          </select>
+      </div>
+
       </div>
 
       <button type="button"  className="btn btn-primary" data-toggle="modal" data-target="#exampleModal"> Gravar Usuario   </button>

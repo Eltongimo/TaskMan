@@ -12,15 +12,25 @@ function UpdateProduct(){
         LatKey: '',
         Name: '',
         ProjectKey: '',
-        Status: 'Não Iniciado',
+        Status: '',
         Key: ''
     })
 
+    const [lats, setLats] = useState()
+
     const [nodeKey, setNodeKey] = useState('')
+    const dbRef = ref(db)
+    
+    function getLats(){
+        get(child(dbRef, `LAT`)).then((snapshot) => {
+            if (snapshot.exists()){
+                setLats(snapshot.val())
+            }
+        })
+    }
 
     useEffect( () => {
-        const dbRef = ref(db)
-        
+        getLats()
         get(child(dbRef, `Product`)).then((snapshot) => {
             if (snapshot.exists())
                 for (let key in snapshot.val())
@@ -79,43 +89,13 @@ function UpdateProduct(){
         window.history.back()
     }
 
-    function setLATs(){
-
+    function generateLATS(){
         let a = []
 
-        if (product.Area === 'Urbanização e Regeneração Urbana'){
-            a.push(<option selected value="Urbanização e Regeneração Urbana">Urbanização e Regeneração Urbana</option>)
-            a.push(<option value="Recursos Hídricos e Resiliência">Recursos Hídricos e Resiliência</option>)
-            a.push(<option value="Ambiente e Resíduos Sólidos">Ambiente e Resíduos Sólidos</option>)
-            a.push(<option value="Educação Primária e Pré-Escolar">Educação Primária e Pré-Escolar</option>)
-            a.push(<option value="Sustentabilidade">Sustentabilidade</option>)
+        console.log(product)
+        for (let key in lats){
+            a.push(<option value={lats[key].Description}> {lats[key].Description} </option>)
         }
-        if (product.Area === 'Recursos Hídricos e Resiliência'){
-            a.push(<option selected value="Recursos Hídricos e Resiliência">Recursos Hídricos e Resiliência</option>)
-            a.push(<option  value="Urbanização e Regeneração Urbana">Urbanização e Regeneração Urbana</option>)
-            a.push(<option value="Ambiente e Resíduos Sólidos">Ambiente e Resíduos Sólidos</option>)
-            a.push(<option value="Educação Primária e Pré-Escolar">Educação Primária e Pré-Escolar</option>)
-            a.push(<option value="Sustentabilidade">Sustentabilidade</option>)
-        }else if (product.Area === 'Ambiente e Resíduos Sólidos'){
-            a.push(<option selected value="Ambiente e Resíduos Sólidos">Ambiente e Resíduos Sólidos</option>)
-            a.push(<option value="Recursos Hídricos e Resiliência">Recursos Hídricos e Resiliência</option>)
-            a.push(<option  value="Urbanização e Regeneração Urbana">Urbanização e Regeneração Urbana</option>)
-            a.push(<option value="Educação Primária e Pré-Escolar">Educação Primária e Pré-Escolar</option>)
-            a.push(<option value="Sustentabilidade">Sustentabilidade</option>)
-        }else if (product.Area === 'Educação Primária e Pré-Escolar'){
-            a.push(<option selected value="Educação Primária e Pré-Escolar">Educação Primária e Pré-Escolar</option>)
-            a.push(<option value="Ambiente e Resíduos Sólidos">Ambiente e Resíduos Sólidos</option>)
-            a.push(<option value="Recursos Hídricos e Resiliência">Recursos Hídricos e Resiliência</option>)
-            a.push(<option  value="Urbanização e Regeneração Urbana">Urbanização e Regeneração Urbana</option>)
-            a.push(<option value="Sustentabilidade">Sustentabilidade</option>)
-        }else if (product.Area === 'Sustentabilidade'){
-            a.push(<option value="Sustentabilidade">Sustentabilidade</option>)
-            a.push(<option value="Educação Primária e Pré-Escolar">Educação Primária e Pré-Escolar</option>)
-            a.push(<option value="Ambiente e Resíduos Sólidos">Ambiente e Resíduos Sólidos</option>)
-            a.push(<option value="Recursos Hídricos e Resiliência">Recursos Hídricos e Resiliência</option>)
-            a.push(<option  value="Urbanização e Regeneração Urbana">Urbanização e Regeneração Urbana</option>)
-        }
-
         return a
     }
 
@@ -165,8 +145,8 @@ function UpdateProduct(){
             </div>
             <div className="form-group">
                 <label for="exampleInputEmail1">LAT</label>
-                <select className="form-select" onChange={setArea} aria-label="Default select example">
-                    {setLATs()}
+                <select className="form-select" value={product.Area} onChange={setArea} aria-label="Default select example">
+                    {generateLATS()}
                 </select>
             </div>
     

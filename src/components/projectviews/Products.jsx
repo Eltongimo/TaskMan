@@ -15,17 +15,19 @@ function Product (){
    function getProduct(){
 
         get(child(dbRef, `Product`)).then((snapshot) => {
-            let a = []
+            let sortedArray = []
+            let a = {}
             if (snapshot.exists()){
-                for(let latKey in snapshot.val()){
-                    if (snapshot.val()[latKey].ProjectKey === projKey){
-                        a.push(
-                            snapshot.val()[latKey]
-                        )
+                for(let key in snapshot.val()){
+                    if (snapshot.val()[key].ProjectKey ){
+                        if (document.getElementById('role').value === 'operacional')
+                            a[key] = snapshot.val()[key]
+                        else if (document.getElementById('userarea').innerHTML === snapshot.val()[key].Area){
+                            a[key] = snapshot.val()[key]
+                        }
                     }
                 }
             }
-            a = sortByArea(a)
             setProducts(a)
         })
     }
@@ -38,6 +40,7 @@ function Product (){
     },[])
 
     function sortByArea(a){
+        
         a.sort((a,b) => {
             let fa = a.Area,
             fb = b.Area
@@ -62,12 +65,10 @@ function Product (){
     }
 
     function gotoMcs(e){
-       
         history.push({
             pathname: '/macroactivities',
-            search: `?key=${e.target.id.split('.')[1]}`,
+            search: `?key=${e.target.id}`,
         })
-   
     }
 
     function searchProduct(e){
@@ -83,12 +84,12 @@ function Product (){
     }
 
     function updateProduct(e){
-
         history.push({
             pathname: '/updateproduct',
             search: `?key=${e.target.id.split('.')[2]}`,
         })
     }
+
     function deleteProduct(e){
 
         document.getElementById(`${e.target.id}`).click()
@@ -104,7 +105,6 @@ function Product (){
             alert('Erro ao apagar producto')
 
         })
-
     }
     
     function buildTable(){
@@ -124,18 +124,18 @@ function Product (){
                 >
                     <div className='rows-report' id={`${count++}.${products[key].Key}`} >
                         <div className='colmns-report'>
-                        <ul id={`${count++}.${products[key].Key}`} >
-                            <li id={`${count++}.${products[key].Key}`} >
+                        <ul >
+                            <li >
                                 {products[key].Area}
                             </li>
-                            <li id={`${count++}.${products[key].Key}`} onClick={gotoMcs}>
+                            <li onClick={gotoMcs} id={`${products[key].Key}`} >
                                 {products[key].Name}
                             </li>
-                            <li id={`${count++}.${products[key].Key}`}>
+                            <li >
                                 {products[key].Status}
                             </li>
-                            <li id={`${count++}.${key}`} onClick={updateProduct}>
-                                  <i className="bi bi-pencil" id={`update.${count++}.${key}`}/>
+                            <li id={`${count++}.${key}`} >
+                                  <i className="bi bi-pencil" onClick={updateProduct} id={`update.${count++}.${key}`}/>
                             </li>
                             <li id={`delete.${count}.${products[key].Key}`} data-toggle="modal" data-target={`#exampleModal${count}`}>
                                  <i className="bi bi-trash" />

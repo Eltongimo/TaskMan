@@ -1,47 +1,78 @@
 import React from 'react'
 import {db} from '../database/DatabaseHelper'
-import { child, get, ref, remove, update} from "firebase/database"
-import TaskRow from '../TaskRow'
+import { child, get, ref, remove} from "firebase/database"
 import {useState,useEffect} from 'react'
 import { useHistory } from 'react-router-dom/cjs/react-router-dom'
 import './Activity.css'
 import ActivitySinglePDF from '../ReportsPDF/ActivitySinglePDF'
-import Projects from './Projects'
+import { getDownloadURL, listAll, ref as storageRef } from 'firebase/storage'
+import {Storage} from '../database/Storage'
 
 function Activities (){
     
-    const [activity, setActivity ] = useState({activities: []})
+    const [activity, setActivity ] = useState([])
     const [keys, setKeys ] = useState([])
     const history =  useHistory()
-        
+    const listOfImages = storageRef(Storage, 'Activity/')
+    const [imageList, setImageList] = useState([])
+    const [activitiesURLS, setActivityURLS] = useState()
+    const dbRef = ref(db)
+
+    
+    const images = async () =>{
+
+        let a = []
+
+        for (let key in activity){
+
+            for (let imageKey in imageList){
+                if (imageList[imageKey].includes(activity[key].Key)){
+                    a.push(imageList[imageKey])
+                    break
+                }
+            }
+        }
+        console.log(a)
+
+        setActivityURLS(a)
+    }
+
+
     useEffect(() => {
         getActivities()
+
+        listAll(listOfImages).then((response) => {
+        let urls = []
+        response.items.forEach(item => getDownloadURL(item).then(url =>{
+            urls.push(url)
+            setImageList(urls)
+            }))
+        })
         },[]
     )
 
+
     function getActivities(){
-        const dbRef = ref(db)
-            
         get(child(dbRef,`Activity`)).then((snapshot) => {
-                if (snapshot.exists())
-                {
-                    let acts = []
-                    let aa = []
-                    const vals = snapshot.val()
-                    
-                  for (let a in vals){
-                        if (document.URL.split('=')[1] == vals[a].MacroActivityKey){
+            if (snapshot.exists())
+            {
+                let acts = []
+                let aa = []
+                const vals = snapshot.val()
+                
+                for (let a in vals){
+                
+                    if (document.URL.split('=')[1] == vals[a].MacroActivityKey){
                             acts.push(vals[a])
                             aa.push(a)
-                        }
-                    } 
-                    
-                    setActivity({activities: acts})
+                    }
+                    setActivity(acts)
                     setKeys(aa)
-                }            
+                } 
+            }
                 else{
-                    alert('Sem actividades para carregar')
-                }
+                alert('Sem actividades para carregar')
+            }
         })
     }
     
@@ -50,10 +81,7 @@ function Activities (){
         let productKey = e.target.id
         let key  = productKey.split('.')
  
-        if (key[0] === 'delete'){
-            // alert('deleting')
-        }
-        else if (key[0] === 'update'){
+        if (key[0] === 'update'){
             history.push({
                 pathname: '/updateactivity',
                 search: `?key=${key[2]}`,
@@ -64,13 +92,11 @@ function Activities (){
    // create single page report with details from acticit
    function createPDF(e){
 
-        ActivitySinglePDF(activity.activities[e.target.id.split('.')[1]])
+        ActivitySinglePDF(activity[e.target.id.split('.')[1]])
     
     }
 
     function deleteActivity(e){
-    
-        console.log()
         remove(ref(db, `Activity/${e.target.value}`)).then(
             () => {
                 document.getElementById(`closemodal${e.target.id}`).click()
@@ -86,15 +112,13 @@ function Activities (){
         
         var values = []
 
-        if (activity.activities !== null ){
-            let count = 0
-            let index = 0
-            let deleteIndex = count + 1000
+        let count = 0
+        let index = 0
+        let deleteIndex = count + 1000
 
-            for(let key in activity.activities){
-              console.log(keys[key])
-
-               values.push( 
+        for(let key in activity){
+            console.log(imageList[key])            
+              values.push( 
                 <div>
                     <button onClick={handleButtonEvent}
                         style={{background: 'transparent',
@@ -103,25 +127,21 @@ function Activities (){
                                 outline: 'none',
                             }}
                         >
-                        <div className='rows-report' id={`${count++}.${activity.activities[key].Key}`}>
-                            <div className='colmns-report'id={`${count++}.${activity.activities[key].Key}`} >
-                                <ul id={`${count++}.${activity.activities[key].Key}`}>
-                                    {/*
-                                    <li id={`${count++}.${activity.activities[key].Key}`}>
-                                        {++index}
-                                    </li> */}
+                        <div className='rows-report' id={`${count++}.${activity[key].Key}`}>
+                            <div className='colmns-report'id={`${count++}.${activity[key].Key}`} >
+                                <ul id={`${count++}.${activity[key].Key}`}>
                                    
-                                    <li id={`${count++}.${activity.activities[key].Key}`}>
-                                        {activity.activities[key].Name}
+                                    <li id={`${count++}.${activity[key].Key}`}>
+                                        {activity[key].Name}
                                     </li>
                                     
-                                    <li className='project-icons' id={`${count++}.${activity.activities[key].Key}`}>
+                                    <li className='project-icons' id={`${count++}.${activity[key].Key}`}>
                                         <i className="bi bi-pencil" id={`update.${count++}.${key}`}
                                           />
                                     </li>
 
-                                    <li className='project-icons' id={`${count++}.${activity.activities[key].Key}`}>
-                                        <i className="bi bi-trash" id={`delete.${count++}.${activity.activities[key].Key}`} data-toggle="modal" data-target={`#exampleModal${count}`} />
+                                    <li className='project-icons' id={`${count++}.${activity[key].Key}`}>
+                                        <i className="bi bi-trash" id={`delete.${count++}.${activity[key].Key}`} data-toggle="modal" data-target={`#exampleModal${count}`} />
                                     </li>
                                 
                                     <li className='project-icons' id={`${count}`} >
@@ -174,60 +194,65 @@ function Activities (){
                                 <form>
                                         <ul >
                                             <li className='modal-details-row'>
-                                                <label>Actividade </label> <div className='activity-detail'>{activity.activities[key].Name} </div> 
+                                                <label>Actividade </label> <div className='activity-detail'>{activity[key].Name} </div> 
                                             </li> 
                                             
                                             <li className='modal-details-row'>
-                                                <label>Descrição </label> <div className='activity-detail'>{activity.activities[key].Description} </div> 
+                                                <label>Descrição </label> <div className='activity-detail'>{activity[key].Description} </div> 
                                             </li> 
                                             <li className='modal-details-row'>
-                                                <label>Lugar </label> <div className='activity-detail'>{activity.activities[key].Location} </div> 
+                                                <label>Lugar </label> <div className='activity-detail'>{activity[key].Location} </div> 
                                             </li> 
                                             <li className='modal-details-row'>
-                                                <label>Data de Inicio </label> <div className='activity-detail'>{activity.activities[key].StartTime} </div> 
+                                                <label>Data de Inicio </label> <div className='activity-detail'>{activity[key].StartTime} </div> 
                                             </li> 
                                             <li className='modal-details-row'>
-                                                <label>Data Final </label> <div className='activity-detail'>{activity.activities[key].DeadLine} </div> 
+                                                <label>Data Final </label> <div className='activity-detail'>{activity[key].DeadLine} </div> 
                                             </li> 
                                             <li className='modal-details-row'>
-                                                <label>Hora </label> <div className='activity-detail'>{activity.activities[key].Time} </div> 
+                                                <label>Hora </label> <div className='activity-detail'>{activity[key].Time} </div> 
                                             </li > 
                                             
                                             <li className='modal-details-row'>
-                                                <label>Duração </label> <div className='activity-detail'>{activity.activities[key].Duration} </div> 
+                                                <label>Duração </label> <div className='activity-detail'>{activity[key].Duration} </div> 
                                             </li> 
                                             
                                             <li className='modal-details-row'>
-                                                <label>Homens </label>  <div className='activity-detail'>{activity.activities[key].Men} </div> 
+                                                <label>Homens </label>  <div className='activity-detail'>{activity[key].Men} </div> 
                                             </li > 
                                             
                                             <li className='modal-details-row'>
-                                                <label>Mulher </label> <div className='activity-detail'>{activity.activities[key].Women} </div> 
+                                                <label>Mulher </label> <div className='activity-detail'>{activity[key].Women} </div> 
                                             </li> 
                                             
                                             <li className='modal-details-row'>
-                                                <label>Meninos </label> <div className='activity-detail'>{activity.activities[key].Boys} </div> 
+                                                <label>Meninos </label> <div className='activity-detail'>{activity[key].Boys} </div> 
                                             </li> 
                                             
                                             <li className='modal-details-row'>
-                                                <label>Meninas </label> <div className='activity-detail'>{activity.activities[key].Girls} </div> 
+                                                <label>Meninas </label> <div className='activity-detail'>{activity[key].Girls} </div> 
                                             </li> 
                                             
                                             <li className='modal-details-row'>
-                                                <label>Esperado </label>  <div className='activity-detail'>{activity.activities[key].Waited} </div> 
+                                                <label>Esperado </label>  <div className='activity-detail'>{activity[key].Waited} </div> 
                                             </li> 
                                             
                                             <li className='modal-details-row'>
-                                                <label>Etereonidade </label> <div className='activity-detail'>{activity.activities[key].Heterogenity} </div> 
+                                                <label>Etereonidade </label> <div className='activity-detail'>{activity[key].Heterogenity} </div> 
                                             </li> 
                                             
                                             <li className='modal-details-row'>
-                                                <label>Proximos passos </label> <div className='activity-detail'>{activity.activities[key].NextSteps} </div> 
+                                                <label>Proximos passos </label> <div className='activity-detail'>{activity[key].NextSteps} </div> 
                                             </li> 
                                             
                                             <li className='modal-details-row'>
-                                                <label>Comentarios </label>  <div className='activity-detail'>{activity.activities[key].Comments} </div> 
-                                            </li> 
+                                                <label>Comentarios </label>  <div className='activity-detail'>{activity[key].Comments} </div> 
+                                            </li>
+                                            
+                                            <li className='modal-details-row'>
+                                                <label>Imagem </label> 
+                                                 <img src={imageList[key]} alt='Sem Imagem para Carregar'/> 
+                                            </li>
                                         </ul>
                                     </form>
                                 </div>
@@ -235,34 +260,34 @@ function Activities (){
                         </div>
                     </div>
                 </div>
-                )
-            }
+            )
         }
+        return values
+    }
 
-        function add(e){
-            history.push({
-                pathname: '/addactivities',
-                search: `?key=${document.URL.split('/')[3].split('=')[1]}`,
-            })
-        
-        }
+    function add(e){
+        history.push({
+            pathname: '/addactivities',
+            search: `?key=${document.URL.split('/')[3].split('=')[1]}`,
+        })
+    
+    }
 
-        function back(e){
-            window.history.back()
-        }
+    function back(e){
+        window.history.back()
+    }
 
-        return( 
+    return( 
         <div classNameName='table-container'>
-             <div className='title' id='title'>
-              <i className="bi bi-arrow-left" style={{cursor: 'pointer',
-                                                         marginRight: '20px'
+            <div className='title' id='title'>
+            <i className="bi bi-arrow-left" style={{cursor: 'pointer',
+                                                        marginRight: '20px'
                 }} onClick={back}/>
                 <input type='tex' className="form-control" id="search" aria-describedby="emailHelp" placeholder="Procurar.."></input>
                 <button type="button" className="btn btn-light" id='addbutton' onClick={add}>Adicionar</button>
             </div>
-           
+        
             <div className='header-container'>
-                {/*<div className='report-header'>Nr</div>*/}
                 <div className='report-header'>Actividade</div>
                 <div className='report-header'>Editar</div>
                 <div className='report-header'>Apagar</div>
@@ -270,16 +295,12 @@ function Activities (){
                 <div className='report-header'>Relatorio</div>
                 
                 <i className="bi bi-info-circle-fill"
-                              style={{'cursor':'pointer','fontSize': '2rem', 'color': 'white'}}
-                              />  
-              </div>
-            {values}
+                            style={{'cursor':'pointer','fontSize': '2rem', 'color': 'white'}}
+                            />  
+            </div>
+            {buildTable()}
         </div>
-        )
-    }
-
-    return buildTable()
-
+    )
 }
 
 export default Activities

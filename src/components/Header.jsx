@@ -13,6 +13,7 @@ function Header() {
                               <i class="bi bi-house-door-fill" style={{'cursor':'pointer','fontSize': '2rem', 'color': 'white'}}></i>
                          </a>
      </div> */}
+                
                     <div className='search-input'>
                          <div class="form-outline">
                               <input type="search" id="form1" class="form-control" placeholder="Search..."/>
@@ -30,6 +31,13 @@ function Header() {
 
                     }}/>
                </div> 
+               <div>
+                    <label id='role' hidden={true}></label>
+               </div>
+               <div>
+                   <label id='userprojects' hidden={true}></label>
+                   <label id='userarea' hidden={true}></label>
+               </div>
                <a href='/'>
                      <div style={{'cursor':'pointer','fontSize': '1.1rem', 'color': 'white',fontWeight: '500'}}>Log out</div>
                 </a>

@@ -1,12 +1,33 @@
 import pdfMake from 'pdfmake/build/pdfmake'
 import pdfFonts from 'pdfmake/build/vfs_fonts'
-
+import {useEffect,useState} from 'react'
+import { getDownloadURL, listAll, ref as storageRef } from 'firebase/storage'
+import {Storage} from '../database/Storage'
 
 function ActivitySinglePDF(act){
 
+    const listOfImages = storageRef(Storage, 'HomeContent/')
+    const [imageList, setImageList] = useState([])
+
     pdfMake.vfs = pdfFonts.pdfMake.vsf
 
+    useEffect(() =>{
+
+        listAll(listOfImages).then((response) => {
+            let urls = []
+            let items = []
+            response.items.forEach(item => getDownloadURL(item).then(url =>{
+                console.log(item)
+                urls.push(url)
+                setImageList(urls)
+            }))
+         })
+    
+    },[])
     function createTable(){
+        
+        console.log(act.Key)
+
         let a = []
         a.push(['Actividade', act.Name])    
         a.push(['Descrição', act.Description])
@@ -41,7 +62,10 @@ function ActivitySinglePDF(act){
                 body: createTable(),
                 widths: [120, '*'],
 			},
-            layout: 'headerLineOnly'
+            layout: 'headerLineOnly',
+            images: {
+                image: '' 
+            }
 		}
     ]
     

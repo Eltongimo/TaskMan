@@ -14,11 +14,12 @@ function Projects (){
     function getProject(){
 
         get(child(dbRef, `Project`)).then((snapshot) => {
-            let a = []
+            let a = {}
             if (snapshot.exists())
             {
-                for (let key in snapshot.val())
-                    a.push(snapshot.val()[key])
+                for (let key in snapshot.val()){
+                    a[key] = snapshot.val()[key]
+                }
                 setProjects(a)
             }
             else
@@ -26,27 +27,36 @@ function Projects (){
         })
     }
 
+    function updateProject(e){
+        let productKey = e.target.id
+        
+        if (document.getElementById('role').value !== 'operacional'){
+            alert('Não tens permição para Actualzizar dados do Projecto')
+            return 
+        }
+        history.push({
+            pathname: '/updateproject',
+            search: `?key=${productKey}`,
+            })
+    }
+
+
     function handleButtonEvent(e){
        
-        let productKey = e.target.id
-        let key  = productKey.split('.')
-        
-        
-        if (key[0] === 'delete'){
+         const userProject = document.getElementById('userprojects').innerHTML
+         
+         const clickedProject = document.getElementById(e.target.id).innerHTML
 
-        }
-        else if (key[0] === 'update'){
-            history.push({
-                pathname: '/updateproject',
-                search: `?key=${key[2]}`,
-              })
-        }   
-        else if (key[1] !== undefined){
+         if (document.getElementById('role').value === 'operacional' || userProject.toLowerCase() === clickedProject.toLowerCase()){
             history.push({
                 pathname: '/products',
-                search: `?key=${key[1]}`,
+                search: `?key=${e.target.id}`,
               })
-        }    
+         }else {
+            alert(`Não pode ver as informaçoes deste projecto, porque não foi cadastrado para o ${clickedProject}`)
+            return 
+        }
+  
      }
 
      function searchProject(e){
@@ -65,6 +75,11 @@ function Projects (){
 
         document.getElementById(`closemodal${e.target.id}`).click()
         
+        if (document.getElementById('role').value !== 'operacional'){
+            alert('Não tens permissão para apagar projectos')
+            return 
+        }
+
         remove(ref(db, `Project/${e.target.value}`)).then(() => {
             const dbRef = ref(db)
             get(child(dbRef, `Project`)).then((snapshot) => {
@@ -95,7 +110,6 @@ function Projects (){
                             width: '100%',
                             outline: 'none',
                         }}
-                        onClick={handleButtonEvent}
                 >
                     <div className='rows-report' id={`${count++}.${projects[key].Key}`}>
                         <div className='colmns-report'id={`${count++}.${projects[key].Key}`} >
@@ -103,15 +117,14 @@ function Projects (){
                                 <li id={`${count++}.${key}`}>
                                     {values.length + 1}
                                 </li>
-                                <li id={`${count++}.${projects[key].Key}`}>
+                                <li id={`${projects[key].Key}`} key={`${projects[key].ProjectName}`} onClick={handleButtonEvent}>
                                     {projects[key].ProjectName}
                                 </li>
                                 <li id={`${count++}.${projects[key].Key}`}>
                                     {projects[key].TypeOfActivity}
                                 </li>
-                                <li className='project-icons' id={`${count++}.${projects[key].Key}`}>
-                                    <i className="bi bi-pencil" id={`update.${count++}.${key}`}
-                                    />
+                                <li className='project-icons'>
+                                    <i className="bi bi-pencil" id={`${key}`} onClick={updateProject}/>
                                 </li>
                                 <li className='project-icons' id={`${count++}.${projects[key].Key}`}>
                                     <i className="bi bi-trash" id={`delete.${count}.${projects[key].Key}`} data-toggle="modal" data-target={`#exampleModal${count}`} 
@@ -143,8 +156,7 @@ function Projects (){
                                     </div>
                                 </div>
                             </div>    
-
-                    </div>
+                        </div>
                 </button>
                )    
             }

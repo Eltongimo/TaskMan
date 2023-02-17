@@ -4,7 +4,6 @@ import {db} from './database/DatabaseHelper'
 import {useState, useEffect} from 'react'
 import { child, get,ref } from "firebase/database"
 import Carousel from './projectviews/Carousel'
-import logo from '../assets/logo/logo.png'
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min'
 
 function Home(){
@@ -13,7 +12,6 @@ function Home(){
     const [typedUser, setTypedUser] = useState({})
     const [aboutPomar, setAboutPomar] = useState({})
     const history = useHistory()
-    
     
     function getUsername(e){
         setTypedUser({username: e.target.value, password:typedUser.password})
@@ -60,30 +58,35 @@ function Home(){
         for (let u in user.users){
 
             if ( user.users[u].Username === typedUser.username && user.users[u].Password === typedUser.password){
+                console.log(user.users[u].Project)
                 e.target.isVisible = false
                 document.getElementById('welcome').innerHTML = `${typedUser.username}, Bem vindo  ao POMAR!`
                 document.getElementById('closemodal').click()
-                document.getElementById('newsletterhome').hidden = true
-                enableMenus()
+                document.getElementById('role').value = user.users[u].Role
+                document.getElementById('userprojects').innerHTML = user.users[u].Project
+                document.getElementById('userarea').innerHTML = user.users[u].Area
+                enableMenus(user.users[u])
                 clearForm()
-                
                 return 
             }
         }    
         
-        alert('username and Password not correct')
-    }
+   }
 
-    function enableMenus(){
+    function enableMenus(u){
+
+
+        if (u.Role === 'operacional'){
+            document.getElementsByClassName('relatorios')[0].hidden = false
+            document.getElementsByClassName('usuarios')[0].hidden = false
+            document.getElementsByClassName('lat')[0].hidden = false
+            document.getElementsByClassName('newsletter')[0].hidden = false
+            document.getElementById('newsletterhome').hidden = true
+            document.getElementsByClassName('conteudo')[0].hidden = false
+        }
+        document.getElementsByClassName('navigation')[0].hidden = false
         document.getElementsByClassName('dashboard')[0].hidden = false
         document.getElementsByClassName('projects')[0].hidden = false
-        document.getElementsByClassName('newsletter')[0].hidden = false
-        document.getElementsByClassName('relatorios')[0].hidden = false
-        document.getElementsByClassName('usuarios')[0].hidden = false
-        document.getElementsByClassName('navigation')[0].hidden = false
-        document.getElementsByClassName('conteudo')[0].hidden = false
-        document.getElementsByClassName('lat')[0].hidden = false
-        
     }
 
     function clearForm(){
@@ -97,7 +100,7 @@ function Home(){
         for (let key in projects.p){
             a.push(
                 <li>
-                    <button type="button" className='btn btn-outline-secondary' data-toggle="modal" data-target={`#exampleModal${count}`} style={{marginBottom: '10px'}}> {projects.p[key].ProjectName}     </button>
+                    <button type="button" data-toggle="modal" data-target={`#exampleModal${count}`} style={{marginBottom: '10px', border: 'solid 0.1px'}}> {projects.p[key].ProjectName}     </button>
                       <div className="modal fade" id={`exampleModal${count}`} tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="false">
                             <div className="modal-dialog" role="document">
                                 <div className="modal-content">

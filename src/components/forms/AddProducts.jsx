@@ -45,7 +45,7 @@ function AddProducts(){
         setProduct({
             Area: product.Area,
             LatKey: product.LatKey,
-            Name: e.target.value,
+            Name: product.Name,
             ProjectKey: product.ProjectKey,
             Status: e.target.value,
             Key: product.Key
@@ -64,11 +64,22 @@ function AddProducts(){
         })
     }
 
+    function generateLATS(){
+
+        let a = []
+        a.push(<option value="">Selectione uma linha de Acção Tematica</option>)
+
+        for (let key in lat.lats){
+
+            a.push(<option value={lat.lats[key].Description}>{lat.lats[key].Description}</option>)
+
+        }
+        return a
+
+    }
     function saveProduct (e){
 
         
-        console.log(lat)
-
         for (let key in lat.lats){
             console.log(lat.lats[key].Description === product.Area)
 
@@ -122,11 +133,7 @@ function AddProducts(){
             <div className="form-group">
                 <label for="exampleInputEmail1">LAT</label>
                 <select className="form-select" onChange={setArea} aria-label="Default select example">
-                    <option selected value="Urbanização e Regeneração Urbana">Urbanização e Regeneração Urbana</option>
-                    <option value="Recursos Hídricos e Resiliência">Recursos Hídricos e Resiliência</option>
-                    <option value="Ambiente e Resíduos Sólidos">Ambiente e Resíduos Sólidos</option>
-                    <option value="Educação Primária e Pré-Escolar">Educação Primária e Pré-Escolar</option>
-                    <option value="Sustentabilidade">Sustentabilidade</option>
+                        {generateLATS()}
                 </select>
             </div>
     

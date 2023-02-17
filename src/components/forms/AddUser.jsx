@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useState,useEffect} from 'react'
 import React from 'react'
 import {v4 as uuidv4} from 'uuid';
 import {ref,set,get,child} from 'firebase/database'
@@ -11,19 +11,20 @@ function back(e){
 function AddUser(){
 
     const [user, setUser] = useState({
-        Role: 'Operacional',
+        Role: 'Tatico',
         Username: '',
         Password: '',
-        Area: 'Urbanização e Regeneração Urbana',
-        ProjectKey: null,
+        Area: '',
+        Project: null,
         LATKey: null
     })
-    const [projects, setProjects] = useState([])
+    
+    const [projects, setProjects] = useState()
     const [lats, setLats] = useState()
     
     const dbRef = ref(db)
 
-    function getProject(){
+    function getProjects(){
 
         get(child(dbRef, 'Project')).then(snapshot => {
 
@@ -33,7 +34,7 @@ function AddUser(){
         })
     }
 
-    function getLAT(){
+    function getLATs(){
         get(child(dbRef, 'LAT')).then(snapshot => {
 
             if (snapshot.exists()){
@@ -42,13 +43,18 @@ function AddUser(){
         })
     }
 
+    useEffect(() => {
+        getLATs()
+        getProjects()
+    },[])
     function setUsername(e){
 
         setUser({
             Username: e.target.value,
             Password: user.Password,
             Role: user.Role,
-            Area: user.Area
+            Area: user.Area,
+            Project: user.Project
         })
     }
 
@@ -57,7 +63,8 @@ function AddUser(){
             Password: e.target.value,
             Username: user.Username, 
             Role: user.Role,
-            Area: user.Area
+            Area: user.Area,
+            Project: user.Project
         })
     }
 
@@ -66,22 +73,63 @@ function AddUser(){
             Username: user.Username,
             Password: user.Password, 
             Role: e.target.value,
-            Area: user.Area
+            Area: user.Area,
+            Project: user.Project
         })
     }
 
-
-
+    function setProject(e){
+        setUser({
+            Username: user.Username,
+            Password: user.Password, 
+            Role: user.Role,
+            Area: user.Area,
+            Project: e.target.value
+        })
+    }
+    
     function setArea(e){
         setUser({
                 Username: user.Username,
                 Password: user.Password, 
                 Role: user.Role,
-                Area: e.target.value
+                Area: e.target.value,
+                Project: user.Project
             })
-     }
+    }
+
+    function generateArea(){
+
+        let a = []
+        
+        a.push(
+            <option value="">Selecione uma Area</option>
+        )
+        for (let key in lats){
+            a.push(
+                <option value={lats[key].Description}>{lats[key].Description}</option>
+            )
+        }
+        return a
+    }
+   
+    function generateProject(){
+        
+        let a = []
+        
+        a.push(
+            <option value="">Selecione um Projecto</option>
+        )
+        for (let key in projects){
+            a.push(
+                <option value={projects[key].ProjectName}> {projects[key].ProjectName}</option>
+            )
+        }
+        return a
+    }
+   
     function addUser(e){
-        console.log(user)
+
         set(ref(db, 'User/' + uuidv4()), user).then(() => {
             alert('Usuario gravado com sucesso')
         }).catch(() => {
@@ -90,6 +138,8 @@ function AddUser(){
         document.getElementById('closemodal').click()
         window.history.back()
     }
+
+
 
     return (
         <div className='form-container'>
@@ -116,8 +166,8 @@ function AddUser(){
       <div className="form-group">
           <label for="exampleInputEmail1">Tipo de Usuario</label>
           <select className="form-select"  onChange={setRole} aria-label="Default select example">
-              <option selected value="Urbanização e Regeneração Urbana" defaultChecked>Operacional</option>
-              <option value="Recursos Hídricos e Resiliência">Tatico</option>
+              <option selected value="Operacional" defaultChecked>Operacional</option>
+              <option value="Tatico">Tatico</option>
           </select>
       </div>
   
@@ -125,12 +175,15 @@ function AddUser(){
       <div className="form-group">
           <label for="exampleInputEmail1">Area</label>
           <select className="form-select"  onChange={setArea} aria-label="Default select example">
-              <option selected value="Urbanização e Regeneração Urbana" defaultChecked>Urbanização e Regeneração Urbana</option>
-              <option value="Recursos Hídricos e Resiliência">Recursos Hídricos e Resiliência</option>
-              <option value="Ambiente e Resíduos Sólidos">Ambiente e Resíduos Sólidos</option>
-              <option value="Educação Primária e Pré-Escolar">Educação Primária e Pré-Escolar</option>
-              <option value="Sustentabilidade">Sustentabilidade</option>
-           </select>
+                {generateArea()}
+          </select>
+      </div>
+
+      <div className="form-group">
+          <label for="exampleInputEmail1">Projecto</label>
+          <select className="form-select"  onChange={setProject} aria-label="Default select example">
+                {generateProject()}
+          </select>
       </div>
 
       <button type="button"  className="btn btn-primary" data-toggle="modal" data-target="#exampleModal"> Gravar Usuario   </button>

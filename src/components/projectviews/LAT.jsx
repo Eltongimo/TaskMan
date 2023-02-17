@@ -8,14 +8,14 @@ import { useHistory } from 'react-router-dom/cjs/react-router-dom.min'
 
 function Lat (){
    const [products, setProducts] = useState({products:  []}) 
-
    const history = useHistory()
-
+   const dbRef = ref(db)
+        
     useEffect( () => {
-        const dbRef = ref(db)
            
             get(child(dbRef, `Product`)).then((snapshot) => {
                     if (snapshot.exists()){
+                        console.log(snapshot.val())
                         setProducts({projects: snapshot.val()})
                     }
                     else{
@@ -25,16 +25,6 @@ function Lat (){
         }
     ,[])
 
-    function handleButtonEvent(e){
-       
-       let productKey = e.target.id
-       let key  = productKey.split('.')
-       
-       history.push({
-        pathname: '/macroactivities',
-        search: `?key=${key[1]}`,
-      })
-    }
 
     function filterProducts(prods){
         let prodArray = []
@@ -43,7 +33,6 @@ function Lat (){
             
             if (prods.projects[p].LatKey === document.URL.split('=')[1]){
                 prodArray.push(prods.projects[p])
-                console.log(true)
              }
         }
         return prodArray

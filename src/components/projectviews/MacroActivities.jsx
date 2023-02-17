@@ -12,7 +12,6 @@ function MacroActivity(){
     const history = useHistory()
     const dbRef = ref(db)
 
-    
     function getMCS(){
         get(child(dbRef, `MacroActivity`)).then((snapshot) => {
             if (snapshot.exists()){

@@ -42,9 +42,7 @@ function ReadNewsNetter(){
 
             for(let key in newsletter){
                 for (let innerKey in newsletter[key]){
-
-                    console.log(innerKey)
-
+                
                     a.push(<div>
                         <div className='title' style={{fontWeight: '500',marginTop: '15px' }}>
                             {newsletter[key].Title}
@@ -56,8 +54,9 @@ function ReadNewsNetter(){
                         <div className='images' style={{marginTop: '20px'}}>
                             <img src={imageList} className="card-img-top" alt="..."/>
                         </div>
-                    </div>
-                )}
+                    </div>)
+                    break
+                }
             }
             return a 
         }
