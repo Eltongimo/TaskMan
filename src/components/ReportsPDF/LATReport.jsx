@@ -4,33 +4,49 @@ import {useEffect,useState} from 'react'
 import { getDownloadURL, listAll, ref as storageRef } from 'firebase/storage'
 import {Storage} from '../database/Storage'
 
-function ActivitySinglePDF(act){
+function LATReport(project,acts ){
 
     const listOfImages = storageRef(Storage, 'HomeContent/')
-   // const [imageList, setImageList] = useState()
+    const [imageList, setImageList] = useState([])
 
     pdfMake.vfs = pdfFonts.pdfMake.vsf
 
+    useEffect(() =>{
+        /*
+        listAll(listOfImages).then((response) => {
+            let urls = []
+            let items = []
+            response.items.forEach(item => getDownloadURL(item).then(url =>{
+                console.log(item)
+                urls.push(url)
+                setImageList(urls)
+            }))
+         })
+         */
+    
+    },[])
+
     function createTable(){
-        
-        console.log(act.Key)
 
         let a = []
-        a.push(['Actividade', act.Name])    
-        a.push(['Descrição', act.Description])
-        a.push(['Lugar', act.Location])
-        a.push(['Inicio', act.StartTime])
-        a.push(['Data Final', act.DeadLine])
-        a.push(['Hora', act.Time])
-        a.push(['Duração', act.Duration])
-        a.push(['Homens', act.Men])
-        a.push(['Mulheres', act.Women])
-        a.push(['Meninos', act.Boys])
-        a.push(['Meninas', act.Girls])
-        a.push(['Esperado', act.Waited])
-        a.push(['Etereogenidade', act.Heterogenity])
-        a.push(['Proximos Passos', act.NextSteps])
-        a.push(['Comentarios', act.Comments])
+
+        for(let key in acts){
+            a.push(['Actividade', acts[key].Name])    
+            a.push(['Descrição', acts[key].Description])
+            a.push(['Lugar', acts[key].Location])
+            a.push(['Inicio', acts[key].StartTime])
+            a.push(['Data Final', acts[key].DeadLine])
+            a.push(['Hora', acts[key].Time])
+            a.push(['Duração', acts[key].Duration])
+            a.push(['Homens', acts[key].Men])
+            a.push(['Mulheres', acts[key].Women])
+            a.push(['Meninos', acts[key].Boys])
+            a.push(['Meninas', acts[key].Girls])
+            a.push(['Esperado', acts[key].Waited])
+            a.push(['Etereogenidade', acts[key].Heterogenity])
+            a.push(['Proximos Passos', acts[key].NextSteps])
+            a.push(['Comentarios', acts[key].Comments])
+        }
         return a
     }
     const title = [{
@@ -79,4 +95,4 @@ function ActivitySinglePDF(act){
 
 }
 
-export default ActivitySinglePDF
+export default LATReport

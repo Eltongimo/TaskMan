@@ -4,10 +4,12 @@ import {useState, useEffect} from 'react'
 import { child, get, getDatabase, ref, remove,update } from "firebase/database"
 import '../TaskRow.css'
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min'
+import MacroActivityPDF from '../ReportsPDF/MacroActivityPDF'
 
 function MacroActivity(){
     
     const [macroActivities, setMacroActivities] = useState({mcs: []})
+    const [activities, setActivites ] = useState()
     const [keys, setKeys ] = useState()
     const history = useHistory()
     const dbRef = ref(db)
@@ -15,23 +17,29 @@ function MacroActivity(){
     function getMCS(){
         get(child(dbRef, `MacroActivity`)).then((snapshot) => {
             if (snapshot.exists()){
-                const mcs = snapshot.val()
-                let macroA = []
-                let macAkeys = []
-                for(let key in mcs){
-                    if (mcs[key].ProductKey === document.URL.split('=')[1])
-                    macroA.push(mcs[key])
-                    macAkeys.push(key)
+                let macroA = {}
+                for(let key in snapshot.val()){
+                    if (snapshot.val()[key].ProductKey === document.URL.split('=')[1]){
+                        macroA[key] = snapshot.val()[key]
+                    }
                 }
                 setMacroActivities(macroA)
-                setKeys(macAkeys)
             }
+        })
+    }
 
+    function getActivities(){
+
+        get(child(dbRef, 'Activity')).then( snapshot => {
+            if (snapshot.exists()){
+                setActivites(snapshot.val())
+            }
         })
     }
 
     useEffect( () => {
-        getMCS()       
+        getMCS()     
+        getActivities()  
     },[])
 
     function deleteMacroActivity(e){
@@ -75,9 +83,31 @@ function MacroActivity(){
 
         history.push({
             pathname: '/updatemacroactivity',
-            search: `?key=${e.target.id.split('.')[2]}`,
+            search: `?key=${e.target.id}`,
         })
     
+    }
+
+    function createMcsPDF(e){
+
+        let a = {}
+        
+        const m = macroActivities[e.target.id]
+
+        for (let aKey in activities){
+
+            if (m.Key === activities[aKey].MacroActivityKey){
+                a[aKey] = activities[aKey]
+            }
+        }
+        
+        if ( Object.keys(a).length === 0 ){
+            
+            alert('Sem actividades para inserir no relatorio')
+        }else{
+            MacroActivityPDF(m.Name, a)
+        }
+     
     }
 
     function buildTableforMcs(){
@@ -85,9 +115,9 @@ function MacroActivity(){
         var values = []
         let count = 0
         if (macroActivities !== null ){
-            for(let data in macroActivities){
+            for(let key in macroActivities){
                 values.push( 
-                    <div>
+                    <div id={`${key}.`} >
                         <button               
                             style={{background: 'transparent',
                                 border: 'none',
@@ -95,18 +125,28 @@ function MacroActivity(){
                                 outline: 'none',
                             }}
                             >
-                            <div className='rows-report' id={`${count++}.${macroActivities[data].Key}`}>
+                            <div className='rows-report' >
                                 <div className='colmns-report'>
                                     <ul>
-                                        <li id={`${count++}.${macroActivities[data].Key}`} onClick={handleButtonEvent}>
-                                            {macroActivities[data].Name}
+                                        <li id={`${count++}.${macroActivities[key].Key}`} onClick={handleButtonEvent}>
+                                            {macroActivities[key].Name}
                                         </li>
-                                        <li id={`${count++}.${data}`}>
-                                            <i className="bi bi-pencil" id={`update.${count++}.${macroActivities[data].Key}`} onClick={updateMacroActivities}/>
+                                        <li >
+                                            <i className="bi bi-pencil" id={`${key}`} onClick={updateMacroActivities}/>
                                         </li>
-                                        <li id={`delete.${count}.${data}`} >
-                                            <i className="bi bi-trash"   data-toggle="modal" data-target={`#exampleModal${count}` }/>
+                                        <li id={`delete.${count}.${key}`} >
+                                            <i className="bi bi-trash"   data-toggle="modal" data-target={`#exampleModal${key}` }/>
                                         </li>
+                                        <li id={`${count + 1}.${key}`}>
+                                        <i className="bi bi-file-earmark-arrow-down" style={{
+                                                fontSize: '1.3rem',
+                                                color: 'blue'
+                                            }}
+                                            onClick={createMcsPDF}
+                                            id={`${key}`}
+                                        />   
+                                    </li>
+                       
                                     </ul>
                                 </div>
                             </div>
@@ -128,8 +168,8 @@ function MacroActivity(){
                                     </form>
                                         </div>
                                             <div className="modal-footer">
-                                                <button type="button" id={`closemodal${data}`} className="btn btn-secondary" data-dismiss="modal">Não</button>
-                                                <button type="button" id={data} value= {macroActivities[data].Key} onClick={deleteMacroActivity} className="btn btn-primary">Sim</button>
+                                                <button type="button" id={`closemodal${key}`} className="btn btn-secondary" data-dismiss="modal">Não</button>
+                                                <button type="button" id={key} value= {macroActivities[key].Key} onClick={deleteMacroActivity} className="btn btn-primary">Sim</button>
                                             </div>
                                         </div>
                                     </div>
@@ -167,6 +207,7 @@ function MacroActivity(){
                     <div className='report-header'>Nome da Macro Actividade</div>
                     <div className='report-header'>Actualizar</div>
                     <div className='report-header'>Apagar</div>
+                    <div className='report-header'>Gerar Relatorio</div>
                 </div>
                     {values}
             </div>

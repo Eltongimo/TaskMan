@@ -4,7 +4,7 @@ import {useEffect,useState} from 'react'
 import { getDownloadURL, listAll, ref as storageRef } from 'firebase/storage'
 import {Storage} from '../database/Storage'
 
-function ActivitySinglePDF(act){
+function MacroActivityPDF(name, acts){
 
     const listOfImages = storageRef(Storage, 'HomeContent/')
    // const [imageList, setImageList] = useState()
@@ -13,28 +13,31 @@ function ActivitySinglePDF(act){
 
     function createTable(){
         
-        console.log(act.Key)
-
         let a = []
-        a.push(['Actividade', act.Name])    
-        a.push(['Descrição', act.Description])
-        a.push(['Lugar', act.Location])
-        a.push(['Inicio', act.StartTime])
-        a.push(['Data Final', act.DeadLine])
-        a.push(['Hora', act.Time])
-        a.push(['Duração', act.Duration])
-        a.push(['Homens', act.Men])
-        a.push(['Mulheres', act.Women])
-        a.push(['Meninos', act.Boys])
-        a.push(['Meninas', act.Girls])
-        a.push(['Esperado', act.Waited])
-        a.push(['Etereogenidade', act.Heterogenity])
-        a.push(['Proximos Passos', act.NextSteps])
-        a.push(['Comentarios', act.Comments])
+
+        for(let actKey in acts){
+            a.push(['Actividade', acts[actKey].Name])    
+            a.push(['Descrição', acts[actKey].Description])
+            a.push(['Lugar', acts[actKey].Location])
+            a.push(['Inicio', acts[actKey].StartTime])
+            a.push(['Data Final', acts[actKey].DeadLine])
+            a.push(['Hora', acts[actKey].Time])
+            a.push(['Duração', acts[actKey].Duration])
+            a.push(['Homens', acts[actKey].Men])
+            a.push(['Mulheres', acts[actKey].Women])
+            a.push(['Meninos', acts[actKey].Boys])
+            a.push(['Meninas', acts[actKey].Girls])
+            a.push(['Esperado', acts[actKey].Waited])
+            a.push(['Etereogenidade', acts[actKey].Heterogenity])
+            a.push(['Proximos Passos', acts[actKey].NextSteps])
+            a.push(['Comentarios', acts[actKey].Comments])
+            a.push([' ', ' '])
+            a.push([' ', ' '])
+        }
         return a
     }
     const title = [{
-        text:[`Relatorio de Actividade`],
+        text:[`Relatorio da Macro Actividade ${name}`],
         fontSize: 15,
         bold: true,
         margin: [15,20,0,45],
@@ -79,4 +82,4 @@ function ActivitySinglePDF(act){
 
 }
 
-export default ActivitySinglePDF
+export default MacroActivityPDF

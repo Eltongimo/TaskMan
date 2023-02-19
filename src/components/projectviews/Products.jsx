@@ -3,7 +3,7 @@ import {db} from '../database/DatabaseHelper'
 import {useState, useEffect} from 'react'
 import { child, get, ref, remove } from "firebase/database"
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min'
-
+import ProductPDF from '../ReportsPDF/ProductPDF'
 
 function Product (){
    const [products, setProducts] = useState({products:  []}) 
@@ -11,11 +11,12 @@ function Product (){
    const dbRef = ref(db)
    const [project, setProject] = useState()
    const projKey = document.URL.split('=')[1]
+   const [activities, setActivities] = useState()
+   const [macroActivities, setMacroActivities] = useState()
 
    function getProduct(){
 
         get(child(dbRef, `Product`)).then((snapshot) => {
-            let sortedArray = []
             let a = {}
             if (snapshot.exists()){
                 for(let key in snapshot.val()){
@@ -32,11 +33,27 @@ function Product (){
         })
     }
 
-   
+    function getMCS(){
+        get(child(dbRef, 'MacroActivity')).then(snapshot => {
+            if (snapshot.exists()){
+                setMacroActivities(snapshot.val())
+            }
+        })
+    }
+
+    function getActivities(){
+        get(child(dbRef, 'Activity')).then(snapshot => {
+            if (snapshot.exists()){
+                setActivities(snapshot.val())
+            }
+        })
+    }
+
     useEffect( () => {
         getProject()
         getProduct()
-
+        getMCS()
+        getActivities()
     },[])
 
     function sortByArea(a){
@@ -57,7 +74,7 @@ function Product (){
     }
 
     function getProject (){
-            get(child(dbRef, `Project/${projKey}`)).then((snapshot) => {
+        get(child(dbRef, `Project/${projKey}`)).then((snapshot) => {
             if (snapshot.exists())
                 setProject(snapshot.val())
         })
@@ -78,8 +95,23 @@ function Product (){
             getProduct()
         }
         else{
-            a = products.filter(element => element.Name.includes(e.target.value))  
-            setProducts(a)
+
+            let array = []
+            for( let key in products){
+                array.push(products[key])
+            }
+
+            const a = array.filter(element => element.Name.toLowerCase().includes(e.target.value.toLowerCase()))
+            const b = {}
+            for (let key2 in a){
+                for (let key3 in products ){
+                    if ( a[key2].Name === products[key3].Name){
+                       b[key3] = a[key2]
+                       break 
+                    }
+                }
+            }
+            setProducts(b)
         }
     }
 
@@ -99,7 +131,7 @@ function Product (){
             const dbRef = ref(db)
             get(child(dbRef, `Product`)).then((snapshot) => {
                 if (snapshot.exists())
-                    setProducts({projects: snapshot.val()})
+                    setProducts(snapshot.val())
         })
         }).catch(() => {
             alert('Erro ao apagar producto')
@@ -107,6 +139,10 @@ function Product (){
         })
     }
     
+    function createPDF(e){
+         ProductPDF (products[e.target.id], macroActivities, activities)    
+    }
+
     function buildTable(){
         
         var values = []
@@ -140,6 +176,15 @@ function Product (){
                             <li id={`delete.${count}.${products[key].Key}`} data-toggle="modal" data-target={`#exampleModal${count}`}>
                                  <i className="bi bi-trash" />
                             </li>
+                            <li id={`${count++}.${key}`}>
+                                        <i className="bi bi-file-earmark-arrow-down" style={{
+                                                fontSize: '1.3rem',
+                                                color: 'blue'
+                                            }}
+                                            onClick={createPDF}
+                                            id={`${key}`}
+                                        />   
+                                    </li>
                         </ul>
                     </div>
                 </div>
@@ -202,6 +247,7 @@ function Product (){
                     <div className='report-header'>Estado</div>
                     <div className='report-header'>Actualizar</div>
                     <div className='report-header'>Apagar</div>
+                    <div className='report-header'>Gerar Relatorio</div>
                 </div>
                 {values}
             </div>

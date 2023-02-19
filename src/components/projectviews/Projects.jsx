@@ -10,6 +10,8 @@ function Projects (){
     const [projects, setProjects]  = useState({projs: []})
     const history = useHistory()
     const dbRef = ref(db)
+    const userRole = document.getElementById('role').value
+    const userProjects = document.getElementById('userprojects').innerHTML
 
     function getProject(){
 
@@ -18,7 +20,11 @@ function Projects (){
             if (snapshot.exists())
             {
                 for (let key in snapshot.val()){
-                    a[key] = snapshot.val()[key]
+                    if (userRole !== 'operacional' && userProjects.toLowerCase() === snapshot.val()[key].ProjectName.toLowerCase() ){
+                        a[key] = snapshot.val()[key]
+                    } if (userRole === 'operacional'){
+                        a[key] = snapshot.val()[key]
+                    }
                 }
                 setProjects(a)
             }
@@ -60,14 +66,30 @@ function Projects (){
      }
 
      function searchProject(e){
+        
+        console.log(projects)
 
-        let a = []
         if (e.target.value === ''){
             getProject()
         }
         else{
-            a = projects.filter(element => element.ProjectName.includes(e.target.value))  
-            setProjects(a)
+          
+            let array = []
+            for( let key in projects){
+                array.push(projects[key])
+            }
+
+            const a = array.filter(element => element.ProjectName.toLowerCase().includes(e.target.value.toLowerCase()))
+            const b = {}
+            for (let key2 in a){
+                for (let key3 in projects ){
+                    if ( a[key2].ProjectName === projects[key3].ProjectName){
+                       b[key3] = a[key2]
+                       break 
+                    }
+                }
+            }
+            setProjects(b)
         }
      }
 
@@ -171,7 +193,6 @@ function Projects (){
         return( 
         <div >
             <div className='title' id='title'>
-                
                 <input type='tex' onChange={searchProject} className="form-control" id="search" aria-describedby="emailHelp" placeholder="Procurar.."></input>
                 <button type="button" className="btn btn-light" id='addbutton' onClick={add}>Adicionar</button>
             </div>

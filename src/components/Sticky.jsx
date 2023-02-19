@@ -62,6 +62,11 @@ function Sticky(props){
                     <div className='note-header-title' >
                         {props.header}
                     </div>
+                    <div className='note-header-title'>
+                        <button type='button' className='btn btn-primary'>
+                            Baixar Relatorio da LAT
+                        </button>
+                    </div>
                     <div className='general-percentage' >
                         {getLATFullPercentage(props.fullProds)}%
                     </div>

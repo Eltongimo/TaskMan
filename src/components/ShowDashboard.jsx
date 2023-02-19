@@ -4,12 +4,16 @@ import {useState, useEffect} from 'react'
 import { child, get, ref } from "firebase/database"
 import { useHistory } from 'react-router-dom/cjs/react-router-dom'
 import './ShowDashboard.css'
+import {LATReport} from './ReportsPDF/LATReport'
 
 function ShowDashboard(){
     const history = useHistory()
 
     const [projects, setProjects ] = useState()
     const [lats, setLats ] = useState()
+    const [products, setProducts] = useState()
+    const [macroActivities, setMacroActivities] = useState()
+
     const dbRef = ref(db)
     
     function getProject(){
@@ -17,6 +21,17 @@ function ShowDashboard(){
         get(child(dbRef, 'Project'),[]).then(snapshot => {
             if (snapshot.exists()){
                 setProjects(snapshot.val())
+            }
+        })
+        get(child(dbRef, 'Product'),[]).then(snapshot => {
+            if (snapshot.exists()){
+                setProducts (snapshot.val())
+            }
+        })
+
+        get(child(dbRef, 'MacroActivity'),[]).then(snapshot => {
+            if (snapshot.exists()){
+                setMacroActivities (snapshot.val())
             }
         })
     }
@@ -51,6 +66,30 @@ function ShowDashboard(){
         }
     }
 
+    function generateProjectReport(e){
+        const projectKey = e.target.id
+
+        const projectName = projects[projectKey].ProjectName
+
+        let la = []
+        for (let lkey in lats ){
+            if (lats[lkey].ProjectKey === projects[projectKey]){
+                la.push(lats[lkey])
+            }
+        }
+
+        let p = []
+        for (let prodKey in products){
+
+            if (products[prodKey].ProjectKey === projects[projectKey].Key){
+                p.push(
+                    products[prodKey]
+                )
+            }
+        }
+        
+    }
+
     function createCard(){
 
         let cards = []
@@ -70,17 +109,25 @@ function ShowDashboard(){
                 }
                             
                 cards.push(
-                    <div class="col-sm">
+                    <div className="col-sm">
                         <div className="card" style={{
                             marginTop: '15px',
                             textAlign: 'justify'
                             }}>
+
                                 <h5 className="card-header"
                                 style={{
                                     color: 'white', 
-                                    background: '#001489'
+                                    background: '#001489',
+                                    display: 'flex'
                                 }}>
-                                    {projects[key].ProjectName}
+                                    <div style={{width:'90%',color: 'white'}}>
+                                        {projects[key].ProjectName}
+                                    </div>
+                                    <button type='button' className='btn btn-primary' id={key} onClick={generateProjectReport}>
+                                        Baixar Relatorio
+                                    </button>
+
                                 </h5>
                             <div className="card-body">
                                 <h5 className="card-title">Linha de Acção Tematica</h5>

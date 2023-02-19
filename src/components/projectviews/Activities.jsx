@@ -91,9 +91,7 @@ function Activities (){
 
    // create single page report with details from acticit
    function createPDF(e){
-
-        ActivitySinglePDF(activity[e.target.id.split('.')[1]])
-    
+        ActivitySinglePDF(activity[e.target.id])
     }
 
     function deleteActivity(e){
@@ -147,12 +145,12 @@ function Activities (){
                                     <li className='project-icons' id={`${count}`} >
                                         <i className="bi bi-info" data-toggle="modal" data-target={`#exampleModal${key}`}/>                                 </li> 
                                     <li id={`${count + 1}.${key}`}>
-                                        <i class="bi bi-file-earmark-arrow-down" style={{
+                                        <i className="bi bi-file-earmark-arrow-down" style={{
                                                 fontSize: '1.3rem',
                                                 color: 'blue'
                                             }}
                                             onClick={createPDF}
-                                            id={`${count + 10}.${key}`}
+                                            id={`${key}`}
                                         />   
                                     </li>
                                 </ul>

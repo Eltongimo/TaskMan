@@ -77,7 +77,7 @@ function Home(){
 
 
         if (u.Role === 'operacional'){
-            document.getElementsByClassName('relatorios')[0].hidden = false
+            //document.getElementsByClassName('relatorios')[0].hidden = false
             document.getElementsByClassName('usuarios')[0].hidden = false
             document.getElementsByClassName('lat')[0].hidden = false
             document.getElementsByClassName('newsletter')[0].hidden = false
@@ -100,7 +100,7 @@ function Home(){
         for (let key in projects.p){
             a.push(
                 <li>
-                    <button type="button" data-toggle="modal" data-target={`#exampleModal${count}`} style={{marginBottom: '10px', border: 'solid 0.1px'}}> {projects.p[key].ProjectName}     </button>
+                    <button type="button" data-toggle="modal" data-target={`#exampleModal${count}`} style={{marginBottom: '10px',color: 'white', borderRadius: '10px', height: '3.5rem', border: 'solid 0.1px', background: '#001489'}}> {projects.p[key].ProjectName}     </button>
                       <div className="modal fade" id={`exampleModal${count}`} tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="false">
                             <div className="modal-dialog" role="document">
                                 <div className="modal-content">

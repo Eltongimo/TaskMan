@@ -1,26 +1,24 @@
-import React, { useEffect } from 'react'
-import { useState } from 'react'
+import React from 'react'
+import { useState,useEffect } from 'react'
 import {v4 as uuidv4} from 'uuid';
-import {ref,set,child,update,get} from 'firebase/database'
+import {ref,child,update,get} from 'firebase/database'
 import {db} from '../database/DatabaseHelper'
 
 function UpdateMacroActivity(){
-
+    const dbRef = ref(db)
+    const productKey = document.URL.split('=')[1]
     const [macroActivity, setMacroActivity] = useState({
         Key: uuidv4(),
         Name: '',
         ProductKey: document.URL.split('=')[1]
     })
-    const dbRef = ref(db)
 
     useEffect( () => {
-
         get(child(dbRef, `MacroActivity/${document.URL.split('=')[1]}`)).then((snapshot) => {
-
-            setMacroActivity(snapshot.val())
-
+            if (snapshot.exists()){
+                setMacroActivity(snapshot.val())
+            }
         })
-
     },[])
 
     function setName(e){
@@ -32,7 +30,6 @@ function UpdateMacroActivity(){
     }
     
     function updateMacroAcivity(e){
-
 
         update(child(dbRef, `MacroActivity/${document.URL.split('=')[1]}`), macroActivity).then(() => {
             alert('Macro Actividade Actualizada com sucesso ')

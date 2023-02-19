@@ -7,29 +7,77 @@ import ActivityPDF from '../ReportsPDF/ActivityPDF'
 
 function Reports(){
 
-    const [macroActivities, setmacroActivities ] = useState({mcs: []})
-    const [activities, setActivities ] = useState({acts: []})
-    const [activitiesCount, setActivitiesCount] = useState({})
-    const [mActivities, setMActivities] = useState({})
-    useEffect( () => {
-        const dbRef = ref(db)
-           
-            get(child(dbRef, `MacroActivity`)).then((snapshot) => {
-                    if (snapshot.exists()){
-                        setmacroActivities({mcs: snapshot.val()})
-                    }
-                    else
-                        alert('no data to load from db server')
-            }).catch(()=>{
-                alert('Verifique a conexão com a internet')
-            })
+    const [macroActivities, setMacroActivities ] = useState()
+    const [activities, setActivities ] = useState()
+    const [products, setProducts] = useState()
+    const [projects, setProjects ] = useState()
+    const [wholeData, setWholeData] = useState({})
+    const [rows, setRows ] = useState()
+    const dbRef = ref(db)
 
+    function getProducts(){
+        get(child(ref(db), 'Product')).then( snapshot => {
+            if (snapshot.exists()){
+                setProducts(snapshot.val())
+            }
+        })
+    }
+
+    function getMacroActivities(){
+        get(child(ref(db), 'MacroActivity')).then( snapshot => {
+            if (snapshot.exists()){
+                setMacroActivities(snapshot().val())
+            }
+        })
+    }
+
+    function getProjects(){
+
+        getProducts()
+        getMacroActivities()
+
+        get(child(ref(db), 'Project')).then( snapshot => {
+            if (snapshot.exists()){
+                setProjects(snapshot.val())
+                let a = {}
+                for (let projectKey in projects){
+                    for (let productKey in products){
+                        if ( products[productKey].ProjectKey === projects[projectKey].Key){
+                            for (let mcsKey in macroActivities){
+                                if (macroActivities[mcsKey].ProductKey === products[productKey].Key){
+                                    a[mcsKey] = { 
+                                                        ProjectName: `${projects[projectKey].ProjectName}`,
+                                                        ProductName:  `${products[productKey].Name}`,
+                                                        MacroActivityName:  `${macroActivities[mcsKey].Name}}`
+                                                     }
+                                }
+                            }
+                        }
+                    }
+                }
+                setWholeData(a)
+            }
+        })
+
+    }
+
+    function getMacroActivities(){
+        
+        get(child(ref(db), `MacroActivity`)).then((snapshot) => {
+            if (snapshot.exists()){
+                setMacroActivities(snapshot.val())
+            }
+        })
+    }
+
+    useEffect( () => {
+        getProjects()
+            
             get(child(dbRef, 'Activity')).then( snapshot => {
 
                 if (snapshot.exists()){
-                    setActivities({acts: snapshot.val()})
+                    setActivities(snapshot.val())
                 }
-                console.log(activities)
             })
         }
     ,[])
@@ -43,15 +91,9 @@ function Reports(){
                 a.push(activities.acts[index])
             }
         }
-        
-        console.log(a)
-
         return a
     }
 
-    function handleButtonEvent(){
-
-    }
 
     function generatePDF(e){
         
@@ -62,7 +104,6 @@ function Reports(){
         const acts = getActivities(macroAct)
 
         ActivityPDF(acts, macroAct)
-
     }
 
     function getRows(){
@@ -70,28 +111,40 @@ function Reports(){
         let index = 0
         let count = 0
 
-        for(let key in macroActivities.mcs){
-                values.push(                 
+        getProjects()
+        setTimeout(function doesnothing(){},1)
+        
+        for(let key in wholeData){
+            console.log(wholeData)
+            values.push(                 
                  <div> 
-                    <button onClick={handleButtonEvent}
+                    <button 
                                 style={{background: 'transparent',
                                     border: 'none',
                                     width: '100%',
                                     outline: 'none',
                                 }}>
 
-                        <div className='rows-report' id={`${count++}.${macroActivities.mcs[key].Key}`} >
+                        <div className='rows-report' id={`${count++}.${key}`} >
                             <div className='colmns-report'>
-                                <ul id={`${count++}.${macroActivities.mcs[key].Key}`} >
-                                    <li id={`${count++}.${macroActivities.mcs[key].Key}`} >
+                                <ul >
+                                    <li>
                                         {++index}
                                     </li>
                                 
-                                    <li id={`${count++}.${macroActivities.mcs[key].Key}`} >
-                                        {macroActivities.mcs[key].Name}
+                                    <li id={`${count++}.${key}`} >
+                                        {wholeData[key].ProjectName}
+                                    </li>
+                                   
+                                    <li id={`${count++}.${key}`}>
+                                        {wholeData[key].ProductName}
+                                    </li>
+                                   
+                                    <li id={`${count++}.${key}`} >
+                                        {wholeData[key].MacroActivityName}
                                     </li>
                                     
-                                    <li id={`${count++}.${macroActivities.mcs[key].Key}`}>
+                                    <li id={`${count++}.${key}`}>
                                         <i id={`${count++}.${key}`} className="bi bi-file-earmark-arrow-down" style={{color: 'blue', fontSize: '1.2rem'}}
                                             onClick={generatePDF}
                                         />
@@ -102,7 +155,7 @@ function Reports(){
                     </button>
                 </div>)
              }
-        return values    
+             return values
     }
 
     return (
@@ -110,17 +163,18 @@ function Reports(){
             <div className='table-container'>
                 <div className='title' id='title'>
                     <input type='tex' className="form-control" id="search" aria-describedby="emailHelp" placeholder="Procurar.."></input>
+                    <button type='button' className='btn btn-danger' style={{marginLeft: '10px'}}>Relatotio Completo</button>
                 </div>
                 <div className='header-container'>
                     <div className='report-header'>Nr</div>
+                    <div className='report-header'>Projecto</div>
+                    <div className='report-header'>Producto</div>
                     <div className='report-header'>Macro Actividade</div>
                     <div className='report-header'>Baixar Relatorio</div>
                 </div>
-                {
-                    getRows()
-                }
+                    {getRows()}
+                </div>
             </div>
-        </div>
     )
 }
 
