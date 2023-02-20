@@ -4,18 +4,17 @@ import {useState, useEffect} from 'react'
 import { child, get, ref } from "firebase/database"
 import { useHistory } from 'react-router-dom/cjs/react-router-dom'
 import './ShowDashboard.css'
-import {LATReport} from './ReportsPDF/LATReport'
+import LATProjectReportPDF from './ReportsPDF/LATProjectReportPDF'
 
 function ShowDashboard(){
     const history = useHistory()
-
     const [projects, setProjects ] = useState()
     const [lats, setLats ] = useState()
     const [products, setProducts] = useState()
     const [macroActivities, setMacroActivities] = useState()
-
+    const [activities, setActivities] = useState()
     const dbRef = ref(db)
-    
+
     function getProject(){
 
         get(child(dbRef, 'Project'),[]).then(snapshot => {
@@ -34,6 +33,13 @@ function ShowDashboard(){
                 setMacroActivities (snapshot.val())
             }
         })
+
+        get(child(dbRef, 'Activity'),[]).then(snapshot => {
+            if (snapshot.exists()){
+                setActivities (snapshot.val())
+            }
+        })
+        
     }
     
     function getLATS(){
@@ -44,7 +50,6 @@ function ShowDashboard(){
             }
         })
     }
-
 
     useEffect( () => {
         getProject()
@@ -67,27 +72,8 @@ function ShowDashboard(){
     }
 
     function generateProjectReport(e){
-        const projectKey = e.target.id
-
-        const projectName = projects[projectKey].ProjectName
-
-        let la = []
-        for (let lkey in lats ){
-            if (lats[lkey].ProjectKey === projects[projectKey]){
-                la.push(lats[lkey])
-            }
-        }
-
-        let p = []
-        for (let prodKey in products){
-
-            if (products[prodKey].ProjectKey === projects[projectKey].Key){
-                p.push(
-                    products[prodKey]
-                )
-            }
-        }
         
+        LATProjectReportPDF(lats,projects[e.target.id], products,macroActivities,activities)
     }
 
     function createCard(){

@@ -5,17 +5,21 @@ import React, { useState } from "react"
 function CRUDOperations (){
 
     const [projects, setProjects] = useState()
-    const [project, setProject] = useState()
+    const [project, setProject] = useState(['askdjnaskdj'])
+
 
     function getProjects(){
-
+        /*
         get(child(this.dbRef, 'Project')).then( snapshot => {
 
             if (snapshot.exists()){
                 setProjects(snapshot.val())            
             }
         })
+        
         return projects
+        */
+       console.log('Ola Projects')
     }
 
     
