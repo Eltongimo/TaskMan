@@ -12,6 +12,7 @@ import './AddActivitiy.css'
 function AddActivity(){
 
     const [image, setImage] =useState()
+    const [comprovantes, setComprovantes] = useState()
 
     const [activity, setActivity] = useState({
         Key: uuidv4(),
@@ -51,10 +52,21 @@ function AddActivity(){
         if (image !== null){
             uploadBytes( refStorage(Storage,`Activity/${activity.Key}`),image)
         }
+
+        if (comprovantes !== null){
+            uploadBytes(refStorage(Storage, `Activity/${activity.Key}`,comprovantes))
+        }
         
         document.getElementById('closemodal').click()
         back()
     }
+
+    function setFicheiros(e){
+
+        setComprovantes(e.target.files[0])
+
+    }
+
 
     function setName(e){
 
@@ -538,8 +550,12 @@ function AddActivity(){
         </div>
 
         <div className="form-group">
-            <label for="exampleInputEmail1">Carregar ficheiro</label>
+            <label for="exampleInputEmail1">Carregar Imagem</label>
             <input type="file" onChange={setFile} className="form-control" aria-describedby="emailHelp" />
+        </div>
+        <div className="form-group">
+            <label for="exampleInputEmail1">Carregar Ficheiros</label>
+            <input type="file" onChange={setFicheiros} className="form-control" aria-describedby="emailHelp" />
         </div>
         <button type="button"  className="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
                 Gravar Actividade         </button>

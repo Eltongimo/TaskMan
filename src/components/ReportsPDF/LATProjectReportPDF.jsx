@@ -25,34 +25,34 @@ function LATProjectReportPDF(lats, project,products, mcs, acts){
                 for (let pKey in products ){
 
                     if (products[pKey].LatKey === lats[lKey].Key){
-                        a.push(['Producto',products[pKey].Name])
+                        a.push(['  Producto',products[pKey].Name])
                         //po[pKey] = products[pKey]
 
                         for (let mKey in mcs){
 
                             if (mcs[mKey].ProductKey === products[pKey].Key){
-                                a.push(['Macro Actividade',mcs[mKey].Name])
+                                a.push(['    Macro Actividade',mcs[mKey].Name])
                             //    ma[mKey] = mcs[mKey]
 
                                 for (let aKey in acts){
 
                                     if (mcs[mKey].Key === acts[aKey].MacroActivityKey){
                                    //     ac[aKey] = acts[aKey]
-                                        a.push(['Actividade', acts[aKey].Name])    
-                                        a.push(['Descrição', acts[aKey].Description])
-                                        a.push(['Lugar', acts[aKey].Location])
-                                        a.push(['Inicio', acts[aKey].StartTime])
-                                        a.push(['Data Final', acts[aKey].DeadLine])
-                                        a.push(['Hora', acts[aKey].Time])
-                                        a.push(['Duração', acts[aKey].Duration])
-                                        a.push(['Homens', acts[aKey].Men])
-                                        a.push(['Mulheres', acts[aKey].Women])
-                                        a.push(['Meninos', acts[aKey].Boys])
-                                        a.push(['Meninas', acts[aKey].Girls])
-                                        a.push(['Esperado', acts[aKey].Waited])
-                                        a.push(['Etereogenidade', acts[aKey].Heterogenity])
-                                        a.push(['Proximos Passos', acts[aKey].NextSteps])
-                                        a.push(['Comentarios', acts[aKey].Comments])
+                                        a.push(['     Actividade', acts[aKey].Name])    
+                                        a.push(['     Descrição', acts[aKey].Description])
+                                        a.push(['     Lugar', acts[aKey].Location])
+                                        a.push(['     Inicio', acts[aKey].StartTime])
+                                        a.push(['     Data Final', acts[aKey].DeadLine])
+                                        a.push(['     Hora', acts[aKey].Time])
+                                        a.push(['     Duração', acts[aKey].Duration])
+                                        a.push(['     Homens', acts[aKey].Men])
+                                        a.push(['     Mulheres', acts[aKey].Women])
+                                        a.push(['     Meninos', acts[aKey].Boys])
+                                        a.push(['     Meninas', acts[aKey].Girls])
+                                        a.push(['     Esperado', acts[aKey].Waited])
+                                        a.push(['     Etereogenidade', acts[aKey].Heterogenity])
+                                        a.push(['     Proximos Passos', acts[aKey].NextSteps])
+                                        a.push(['     Comentarios', acts[aKey].Comments])
                                         a.push(['', ''])
                                         a.push(['', ''])
                                     }

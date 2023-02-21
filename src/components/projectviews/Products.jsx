@@ -29,6 +29,7 @@ function Product (){
                     }
                 }
             }
+            console.log(a)
             setProducts(a)
         })
     }

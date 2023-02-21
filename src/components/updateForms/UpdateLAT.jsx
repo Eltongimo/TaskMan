@@ -8,7 +8,6 @@ import {v4 as uuidv4} from 'uuid';
 
 function UpdateLAT(){
 
-
     const dbRef = ref(db)
     
     const [projects, setProjects ] = useState()

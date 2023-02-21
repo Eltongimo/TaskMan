@@ -6,7 +6,10 @@ import { useHistory } from 'react-router-dom/cjs/react-router-dom'
 import './Activity.css'
 import ActivitySinglePDF from '../ReportsPDF/ActivitySinglePDF'
 import { getDownloadURL, listAll, ref as storageRef } from 'firebase/storage'
+import { getStorage } from 'firebase/storage'
 import {Storage} from '../database/Storage'
+
+
 
 function Activities (){
     
@@ -15,51 +18,24 @@ function Activities (){
     const history =  useHistory()
     const listOfImages = storageRef(Storage, 'Activity/')
     const [imageList, setImageList] = useState([])
-    const [activitiesURLS, setActivityURLS] = useState()
-    const dbRef = ref(db)
-
     
-    const images = async () =>{
-
-        let a = []
-
-        for (let key in activity){
-
-            for (let imageKey in imageList){
-                if (imageList[imageKey].includes(activity[key].Key)){
-                    a.push(imageList[imageKey])
-                    break
-                }
-            }
-        }
-        console.log(a)
-
-        setActivityURLS(a)
-    }
-
+    const dbRef = ref(db)
 
     useEffect(() => {
         getActivities()
-
-        listAll(listOfImages).then((response) => {
-        let urls = []
-        response.items.forEach(item => getDownloadURL(item).then(url =>{
-            urls.push(url)
-            setImageList(urls)
-            }))
-        })
-        },[]
-    )
+    },[])
 
 
     function getActivities(){
+        
         get(child(dbRef,`Activity`)).then((snapshot) => {
+            
             if (snapshot.exists())
             {
                 let acts = []
                 let aa = []
                 const vals = snapshot.val()
-                
+            
                 for (let a in vals){
                 
                     if (document.URL.split('=')[1] == vals[a].MacroActivityKey){
@@ -69,11 +45,23 @@ function Activities (){
                     setActivity(acts)
                     setKeys(aa)
                 } 
-            }
-                else{
+                listAll(listOfImages).then((response) => {
+                    let urls = []
+                    response.items.forEach(item => getDownloadURL(item).then(url =>{
+                        for (let aKey in activity){
+                        //    console.log(url.includes(activity[aKey].Key))
+                            if (url.includes(activity[aKey].Key))
+                                urls.push(url)
+                        }
+                    }))
+                    setImageList(urls)
+                })
+            }else{
                 alert('Sem actividades para carregar')
             }
         })
+        console.log(imageList)
+
     }
     
     function handleButtonEvent(e){
@@ -91,31 +79,47 @@ function Activities (){
 
    // create single page report with details from acticit
    function createPDF(e){
-        ActivitySinglePDF(activity[e.target.id])
+        
+        console.log(imageList)
+        console.log(imageList[e.target.id])
+
+       ActivitySinglePDF(activity[e.target.id],e.target.value)
     }
 
     function deleteActivity(e){
+        
         remove(ref(db, `Activity/${e.target.value}`)).then(
             () => {
                 document.getElementById(`closemodal${e.target.id}`).click()
-                getActivities()
                 alert('Actividade Apagada com sucesso')
+                getActivities()
             }
         ).catch(() => {
             alert('Erro ao apagar a actividade')
         })
     }
 
+    /*
+    function filterImageAndActivity(){
+
+        let a = []
+
+        for (let aKey in activity){
+
+            for (let imgKey in imageList){
+                if (imageList[imgKey].includes(activity[aKey].Key)){
+                    a[aKey] = imageList[imgKey]
+                }
+            }
+        }
+        return a
+    }
+    */
     function buildTable (){
-        
         var values = []
-
         let count = 0
-        let index = 0
-        let deleteIndex = count + 1000
-
+        
         for(let key in activity){
-            console.log(imageList[key])            
               values.push( 
                 <div>
                     <button onClick={handleButtonEvent}
@@ -142,10 +146,10 @@ function Activities (){
                                         <i className="bi bi-trash" id={`delete.${count++}.${activity[key].Key}`} data-toggle="modal" data-target={`#exampleModal${count}`} />
                                     </li>
                                 
-                                    <li className='project-icons' id={`${count}`} >
+                                    <li className='project-icons' id={`${count++}`} >
                                         <i className="bi bi-info" data-toggle="modal" data-target={`#exampleModal${key}`}/>                                 </li> 
-                                    <li id={`${count + 1}.${key}`}>
-                                        <i className="bi bi-file-earmark-arrow-down" style={{
+                                    <li id={`${count++}`} >
+                                        <i id={`${key}`}className="bi bi-file-earmark-arrow-down" style={{
                                                 fontSize: '1.3rem',
                                                 color: 'blue'
                                             }}
@@ -247,10 +251,10 @@ function Activities (){
                                                 <label>Comentarios </label>  <div className='activity-detail'>{activity[key].Comments} </div> 
                                             </li>
                                             
-                                            <li className='modal-details-row'>
+                                        {/*  <li className='modal-details-row'>
                                                 <label>Imagem </label> 
-                                                 <img src={imageList[key]} alt='Sem Imagem para Carregar'/> 
-                                            </li>
+                                                 <img src={img[key]} alt='Sem Imagem para Carregar'/> 
+                                        </li> */}
                                         </ul>
                                     </form>
                                 </div>
@@ -296,7 +300,7 @@ function Activities (){
                             style={{'cursor':'pointer','fontSize': '2rem', 'color': 'white'}}
                             />  
             </div>
-            {buildTable()}
+                {buildTable()}
         </div>
     )
 }

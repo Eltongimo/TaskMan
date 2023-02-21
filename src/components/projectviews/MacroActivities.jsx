@@ -24,6 +24,8 @@ function MacroActivity(){
                     }
                 }
                 setMacroActivities(macroA)
+            }else{
+                alert('Sem Macto Actividades para mostrar')
             }
         })
     }
