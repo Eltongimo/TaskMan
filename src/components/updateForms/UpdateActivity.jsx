@@ -35,8 +35,14 @@ function UpdateActivity(){
 
         const dbRef = ref(db)
 
-        get(child(dbRef,`Activity/${document.URL.split('=')[1]}`)).then( (snapshot => {
-            setActivity(snapshot.val())
+        get(child(dbRef,`Activity`)).then( (snapshot => {
+           
+            for (let key in snapshot.val()){
+                if (snapshot.val()[key].Key === document.URL.split('=')[1]){
+                    setActivity(snapshot.val()[key])
+                    break
+                }
+            }
         }))
 
     },[])
@@ -475,90 +481,89 @@ function UpdateActivity(){
       
         <div className="form-group">
             <label for="exampleInputEmail1">Nome da actividade</label>
-            <input type="text" value={activity.Name} onChange= {setName} className="form-control" aria-describedby="emailHelp" />
+            <textarea type="text" value={activity.Name} onChange= {setName} className="form-control" aria-describedby="emailHelp" />
         </div>
         <div className="form-group">
             <label for="exampleInputEmail1">Breve descrição da actividade</label>
-            <input type="text"  value={activity.Description} onChange={setDescription} className="form-control" aria-describedby="emailHelp" />
+            <textarea type="text"  value={activity.Description} onChange={setDescription} className="form-control" aria-describedby="emailHelp" />
         </div>
         
         <div className="form-group">
             <label for="exampleInputEmail1">Lugar</label>
-            <input type="text" value={activity.Location} onChange={setLugar} className="form-control" aria-describedby="emailHelp" />
+            <textarea type="text" value={activity.Location} onChange={setLugar} className="form-control" aria-describedby="emailHelp" />
         </div>
 
         <div className="form-group">
             <label for="exampleInputEmail1">Data de Inicio</label>
-            <input type="date"  value={activity.StartTime} onChange={setStartTime}className="form-control" aria-describedby="emailHelp" />
+            <textarea type="date"  value={activity.StartTime} onChange={setStartTime}className="form-control" aria-describedby="emailHelp" />
         </div>
         
         <div className="form-group">
             <label for="exampleInputEmail1">Data final</label>
-            <input type="date" value={activity.DeadLine} onChange={setFinalDate}className="form-control" aria-describedby="emailHelp" />
+            <textarea type="date" value={activity.DeadLine} onChange={setFinalDate}className="form-control" aria-describedby="emailHelp" />
         </div>
         
         <div className="form-group">
             <label for="exampleInputEmail1">Hora</label>
-            <input type="time" value={activity.Time} onChange={setTime} className="form-control" aria-describedby="emailHelp" />
+            <textarea type="text" value={activity.Time} onChange={setTime} className="form-control" aria-describedby="emailHelp" />
         </div>
-
         
         <div className="form-group">
             <label for="exampleInputEmail1">Duração</label>
-            <input type="text"  value={activity.Duration} onChange={setDuration} className="form-control" aria-describedby="emailHelp" />
+            <textarea type="text"  value={activity.Duration} onChange={setDuration} className="form-control" aria-describedby="emailHelp" />
         </div>
 
         <div className="form-group">
             <label for="exampleInputEmail1">Homens</label>
-            <input type="text" value={activity.Men} onChange={setMen} className="form-control" aria-describedby="emailHelp" />
+            <textarea type="text" value={activity.Men} onChange={setMen} className="form-control" aria-describedby="emailHelp" />
         </div>
 
         
         <div className="form-group">
             <label for="exampleInputEmail1">Mulheres</label>
-            <input type="text"  value={activity.Women} onChange={setWoman} className="form-control" aria-describedby="emailHelp" />
+            <textarea type="text"  value={activity.Women} onChange={setWoman} className="form-control" aria-describedby="emailHelp" />
         </div>
 
         <div className="form-group">
             <label for="exampleInputEmail1">Meninos</label>
-            <input type="text"  value={activity.Boys} onChange={setBoys} className="form-control" aria-describedby="emailHelp" />
+            <textarea type="text"  value={activity.Boys} onChange={setBoys} className="form-control" aria-describedby="emailHelp" />
         </div>
 
         <div className="form-group">
             <label for="exampleInputEmail1">Meninas</label>
-            <input type="text" value={activity.Girls} onChange={setGirls} className="form-control" aria-describedby="emailHelp" />
+            <textarea type="text" value={activity.Girls} onChange={setGirls} className="form-control" aria-describedby="emailHelp" />
         </div>
 
         <div className="form-group">
             <label for="exampleInputEmail1">Comentarios</label>
-            <input type="text"  value={activity.Comments} onChange={setComments}className="form-control" aria-describedby="emailHelp" />
+            <textarea type="text"  value={activity.Comments} onChange={setComments}className="form-control" aria-describedby="emailHelp" />
         </div>
 
         
         <div className="form-group">
             <label for="exampleInputEmail1">Proximos Passos</label>
-            <input type="text"  value={activity.NextSteps} onChange={setNextSteps}className="form-control" aria-describedby="emailHelp" />
+            <textarea type="text"  value={activity.NextSteps} onChange={setNextSteps}className="form-control" aria-describedby="emailHelp" />
         </div>
 
         <div className="form-group">
             <label for="exampleInputEmail1">Esperado</label>
-            <select className="form-select" aria-label="Default select example" onChange={setEsperado}>
-                <option selected value="Sim">Sim</option>
+            <select className="form-select" value={activity.Waited} aria-label="Default select example" onChange={setEsperado}>
+                <option value="Sim">Sim</option>
                 <option value="Não">Não</option>
             </select>
         </div>
         
         <div className="form-group">
             <label for="exampleInputEmail1">Eterogenidade</label>
-            <select className="form-select" onChange={setEterogenidade} aria-label="Default select example" >
-                <option selected value="Sim">Sim</option>
+            <select className="form-select" value={activity.Heterogenity} onChange={setEterogenidade} aria-label="Default select example" >
+                <option value="Sim">Sim</option>
                 <option value="Não">Não</option>
             </select>
         </div>
      
         <div className="form-group">
             <label for="exampleInputEmail1">Carregar ficheiro</label>
-            <input type="file" onChange={setFile} className="form-control" aria-describedby="emailHelp" />
+            <textarea type="file" onChange={setFile} className="form-control" aria-describedby="emailHelp" />
         </div>
         <button type="button"  className="btn btn-primary" data-toggle="modal" data-target="#exampleModal"> Actualizar Actividade  </button>
 

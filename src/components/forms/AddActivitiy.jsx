@@ -468,59 +468,59 @@ function AddActivity(){
       
         <div className="form-group">
             <label for="exampleInputEmail1">Nome da actividade</label>
-            <input type="text"  onChange= {setName} className="form-control" aria-describedby="emailHelp" />
+            <textarea type="text"  onChange= {setName} className="form-control" aria-describedby="emailHelp" />
         </div>
         <div className="form-group">
             <label for="exampleInputEmail1">Breve descrição da actividade</label>
-            <input type="text"  onChange={setDescription} className="form-control" aria-describedby="emailHelp" />
+            <textarea type="text"  onChange={setDescription} className="form-control" aria-describedby="emailHelp" />
         </div>
         
         <div className="form-group">
             <label for="exampleInputEmail1">Lugar</label>
-            <input type="text" onChange={setLugar} className="form-control" aria-describedby="emailHelp" />
+            <textarea type="text" onChange={setLugar} className="form-control" aria-describedby="emailHelp" />
         </div>
 
         <div className="form-group">
             <label for="exampleInputEmail1">Data de Inicio</label>
-            <input type="date"  onChange={setStartTime}className="form-control" aria-describedby="emailHelp" />
+            <textarea type="date"  onChange={setStartTime}className="form-control" aria-describedby="emailHelp" />
         </div>
         
         <div className="form-group">
             <label for="exampleInputEmail1">Data final</label>
-            <input type="date"  onChange={setFinalDate}className="form-control" aria-describedby="emailHelp" />
+            <textarea type="date"  onChange={setFinalDate}className="form-control" aria-describedby="emailHelp" />
         </div>
         
         <div className="form-group">
             <label for="exampleInputEmail1">Hora</label>
-            <input type="time" onChange={setTime} className="form-control" aria-describedby="emailHelp" />
+            <textarea type="text" onChange={setTime} className="form-control" aria-describedby="emailHelp" />
         </div>
 
         
         <div className="form-group">
             <label for="exampleInputEmail1">Duração</label>
-            <input type="text"  onChange={setDuration} className="form-control" aria-describedby="emailHelp" />
+            <textarea type="text"  onChange={setDuration} className="form-control" aria-describedby="emailHelp" />
         </div>
 
         
         <div className="form-group">
             <label for="exampleInputEmail1">Homens</label>
-            <input type="text" onChange={setMen} className="form-control" aria-describedby="emailHelp" />
+            <textarea type="text" onChange={setMen} className="form-control" aria-describedby="emailHelp" />
         </div>
 
         
         <div className="form-group">
             <label for="exampleInputEmail1">Mulheres</label>
-            <input type="text"  onChange={setWoman} className="form-control" aria-describedby="emailHelp" />
+            <textarea type="text"  onChange={setWoman} className="form-control" aria-describedby="emailHelp" />
         </div>
 
         <div className="form-group">
             <label for="exampleInputEmail1">Meninos</label>
-            <input type="text"  onChange={setBoys} className="form-control" aria-describedby="emailHelp" />
+            <textarea type="text"  onChange={setBoys} className="form-control" aria-describedby="emailHelp" />
         </div>
 
         <div className="form-group">
             <label for="exampleInputEmail1">Meninas</label>
-            <input type="text" onChange={setGirls} className="form-control" aria-describedby="emailHelp" />
+            <textarea type="text" onChange={setGirls} className="form-control" aria-describedby="emailHelp" />
         </div>
 
         <div className="form-group">
@@ -541,12 +541,12 @@ function AddActivity(){
      
         <div className="form-group">
             <label for="exampleInputEmail1">Comentarios</label>
-            <input type="text"  onChange={setComments}className="form-control" aria-describedby="emailHelp" />
+            <textarea type="text"  onChange={setComments}className="form-control" aria-describedby="emailHelp" />
         </div>
 
         <div className="form-group">
             <label for="exampleInputEmail1">Proximos Passos</label>
-            <input type="text"  onChange={setNextSteps}className="form-control" aria-describedby="emailHelp" />
+            <textarea type="text"  onChange={setNextSteps}className="form-control" aria-describedby="emailHelp" />
         </div>
 
         <div className="form-group">

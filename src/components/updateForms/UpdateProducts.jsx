@@ -34,7 +34,7 @@ function UpdateProduct(){
         get(child(dbRef, `Product`)).then((snapshot) => {
             if (snapshot.exists())
                 for (let key in snapshot.val())
-                    if (document.URL.split('=')[1] === key){
+                    if (document.URL.split('=')[1] === snapshot.val()[key].Key){
                         setProduct(snapshot.val()[key])
                         setNodeKey(key)
                     }

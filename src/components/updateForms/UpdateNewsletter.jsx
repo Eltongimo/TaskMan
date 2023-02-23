@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import {useState} from 'react'
 import {v4 as uuidv4} from 'uuid';
-import {child, ref,set,get,update} from 'firebase/database'
+import {child, ref,set,get,update, remove} from 'firebase/database'
 import {db} from '../database/DatabaseHelper'
 import {Storage} from '../database/Storage'
 import { uploadBytes, ref as refStorage } from 'firebase/storage'
@@ -22,17 +22,13 @@ function UpdateNewsLetter(){
         {Title:  '', Body: '', File: null },
     ])
 
+    
     function getNewsletter(){
 
         get(child(dbRef, `NewsLetter/${newsletterKey}`)).then((s) => {
-           let a = []
-            if (s.exists())
-                for (let key in s.val()){
-                    a.push(s.val()[key])
-                }
-                
-            setFormElements([a])
-            console.log(formElements)
+           if (s.exists()){
+            setFormElements(s.val())
+           }
         })
     }
 
@@ -45,15 +41,18 @@ function UpdateNewsLetter(){
     }
 
     function saveNewsLetter(e){
-
-        update(child(dbRef, `NeswLetter/${newsletterKey}`), formElements).then(() => {
-            alert('Newsletter Actualizada com sucesso ')
-        }).catch(() => {
-            alert('Erro ao actualizar Newsletter')
+        
+        remove(ref(db, `NewsLetter/${newsletterKey}`)).then(s => {
+            set(ref(db, `NewsLetter/${newsletterKey}`), formElements).then(()=>
+            {
+                alert('Newsletter Actualizado com sucesso')
+            }
+        )
         })
-     
+
         document.getElementById('closemodal').click()
         window.history.back()
+        
     }
 
     const  handleFormChange = (event, index) => {
@@ -79,17 +78,11 @@ function UpdateNewsLetter(){
 
 
     function createForm(){
-
         let a = []
 
-        formElements.map((element,index) => {
-            console.log(element[index])
-        })
-        return (
-            <div ></div>
-        )
-
         formElements.map((element, index) => {
+
+            console.log(element)
 
             a.push( <div key={index} style={{border: 'solid #ccc 0.1px', marginBottom: '10px'}}>
 
@@ -101,21 +94,20 @@ function UpdateNewsLetter(){
                      <p>
                           <label for="exampleFormControlInput1">Title</label>
                      </p>
-                     <input type="email" value={element[index].Title} name='Title' onChange={event => handleFormChange(event, index)} className="form-control" id="exampleFormControlInput1" placeholder="Title do Newsletter"/>
+                     <input type="email" value={element.Title} name='Title' onChange={event => handleFormChange(event, index)} className="form-control" id="exampleFormControlInput1" placeholder="Title do Newsletter"/>
            
                  </div>
                  <div className="form-group" style={{'margin-top': '20px'}}>
                      <label for="exampleFormControlTextarea1" style={{'font-weight': '400'}}>Body</label>
-                     <textarea name='Body' value={element[index].Body} className="form-control" onChange={event => handleFormChange(event, index)} id="exampleFormControlTextarea1" rows="10"></textarea>
+                     <textarea name='Body' value={element.Body} className="form-control" onChange={event => handleFormChange(event, index)} id="exampleFormControlTextarea1" rows="10"></textarea>
                  </div>
                  <div className="form-group">
                      <label for="exampleInputEmail1">Carregar Fotografia</label>
-                     <input name='ficheiro' value={element[index].File} type="file" accept='image/*' onChange={event => handleFormChange(event, index)} className="form-control" aria-describedby="emailHelp" />
+                     <input name='ficheiro' value={element.File} type="file" accept='image/*' onChange={event => handleFormChange(event, index)} className="form-control" aria-describedby="emailHelp" />
                  </div>
              </div> )         
-         })         
+         })       
          return a
-
     }
     return (
         <div>

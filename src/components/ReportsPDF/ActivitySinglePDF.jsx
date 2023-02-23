@@ -26,6 +26,7 @@ function ActivitySinglePDF(act, imageUrl){
         a.push(['Mulheres', act.Women])
         a.push(['Meninos', act.Boys])
         a.push(['Meninas', act.Girls])
+        a.push(['Total', act.Total])
         a.push(['Esperado', act.Waited])
         a.push(['Etereogenidade', act.Heterogenity])
         a.push(['Proximos Passos', act.NextSteps])

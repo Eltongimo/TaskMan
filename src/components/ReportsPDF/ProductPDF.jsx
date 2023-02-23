@@ -25,6 +25,7 @@ function ProductPDF (prod, mcs, acts){
                 }
             }
         }
+        console.log(acts)
         mcs = m
         acts = a
 
@@ -57,6 +58,7 @@ function ProductPDF (prod, mcs, acts){
                 a.push(['Mulheres', acts[aKey].Women])
                 a.push(['Meninos', acts[aKey].Boys])
                 a.push(['Meninas', acts[aKey].Girls])
+                a.push(['Total', acts[aKey].Total])
                 a.push(['Esperado', acts[aKey].Waited])
                 a.push(['Etereogenidade', acts[aKey].Heterogenity])
                 a.push(['Proximos Passos', acts[aKey].NextSteps])

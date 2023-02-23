@@ -17,19 +17,19 @@ function Product (){
    function getProduct(){
 
         get(child(dbRef, `Product`)).then((snapshot) => {
-            let a = {}
+            let a = []
             if (snapshot.exists()){
                 for(let key in snapshot.val()){
                     if (snapshot.val()[key].ProjectKey ){
                         if (document.getElementById('role').value === 'operacional')
-                            a[key] = snapshot.val()[key]
+                            a.push(snapshot.val()[key])
                         else if (document.getElementById('userarea').innerHTML === snapshot.val()[key].Area){
-                            a[key] = snapshot.val()[key]
+                            a.push(snapshot.val()[key])
                         }
                     }
                 }
             }
-            console.log(a)
+            a = sortByArea(a)
             setProducts(a)
         })
     }
@@ -119,23 +119,28 @@ function Product (){
     function updateProduct(e){
         history.push({
             pathname: '/updateproduct',
-            search: `?key=${e.target.id.split('.')[2]}`,
+            search: `?key=${e.target.id}`,
         })
     }
 
     function deleteProduct(e){
 
         document.getElementById(`${e.target.id}`).click()
+        
+        get(child(dbRef, 'Product')).then((snapshot ) =>{
 
-        remove(ref(db, `Product/${e.target.value}`)).then(() => {
-            alert('Producto removido com sucesso')
-            const dbRef = ref(db)
-            get(child(dbRef, `Product`)).then((snapshot) => {
-                if (snapshot.exists())
-                    setProducts(snapshot.val())
-        })
-        }).catch(() => {
-            alert('Erro ao apagar producto')
+            if (snapshot.exists()){
+
+                for (let pKey in snapshot.val()){
+                    if (snapshot.val()[pKey].Key === e.target.value){
+                        console.log(pKey)
+                        remove(ref(db, `Product/${pKey}`)).then(s => {
+                            alert('Producto eliminado com sucesso')
+                            getProduct()
+                        })
+                    }
+                }
+            }
 
         })
     }
@@ -172,12 +177,12 @@ function Product (){
                                 {products[key].Status}
                             </li>
                             <li id={`${count++}.${key}`} >
-                                  <i className="bi bi-pencil" onClick={updateProduct} id={`update.${count++}.${key}`}/>
+                                  <i className="bi bi-pencil" onClick={updateProduct} id={`${products[key].Key}`}/>
                             </li>
                             <li id={`delete.${count}.${products[key].Key}`} data-toggle="modal" data-target={`#exampleModal${count}`}>
                                  <i className="bi bi-trash" />
                             </li>
-                            <li id={`${count++}.${key}`}>
+                            <li id={`${count}.${key}`}>
                                         <i className="bi bi-file-earmark-arrow-down" style={{
                                                 fontSize: '1.3rem',
                                                 color: 'blue'
@@ -208,7 +213,7 @@ function Product (){
                                 </div>
                                     <div className="modal-footer">
                                         <button type="button" id={`${count}`} className="btn btn-secondary" data-dismiss="modal">Não</button>
-                                        <button type="button" value ={key} id={count} onClick={deleteProduct} className="btn btn-primary">Sim</button>
+                                        <button type="button" value ={products[key].Key} id={count} onClick={deleteProduct} className="btn btn-primary">Sim</button>
                                     </div>
                                 </div>
                             </div>

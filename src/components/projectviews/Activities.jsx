@@ -137,8 +137,8 @@ function Activities (){
                                         {activity[key].Name}
                                     </li>
                                     
-                                    <li className='project-icons' id={`${count++}.${activity[key].Key}`}>
-                                        <i className="bi bi-pencil" id={`update.${count++}.${key}`}
+                                    <li className='project-icons' id={`${activity[key].Key}`}>
+                                        <i className="bi bi-pencil" id={`update.${count++}.${activity[key].Key}`}
                                           />
                                     </li>
 
@@ -146,15 +146,14 @@ function Activities (){
                                         <i className="bi bi-trash" id={`delete.${count++}.${activity[key].Key}`} data-toggle="modal" data-target={`#exampleModal${count}`} />
                                     </li>
                                 
-                                    <li className='project-icons' id={`${count++}`} >
+                                    <li className='project-icons' id={`${count}`} >
                                         <i className="bi bi-info" data-toggle="modal" data-target={`#exampleModal${key}`}/>                                 </li> 
-                                    <li id={`${count++}`} >
+                                    <li id={`${count}`} >
                                         <i id={`${key}`}className="bi bi-file-earmark-arrow-down" style={{
                                                 fontSize: '1.3rem',
                                                 color: 'blue'
                                             }}
                                             onClick={createPDF}
-                                            id={`${key}`}
                                         />   
                                     </li>
                                 </ul>
@@ -233,6 +232,10 @@ function Activities (){
                                             
                                             <li className='modal-details-row'>
                                                 <label>Meninas </label> <div className='activity-detail'>{activity[key].Girls} </div> 
+                                            </li> 
+                                            
+                                            <li className='modal-details-row'>
+                                                <label>Total </label> <div className='activity-detail'>{activity[key].Total} </div> 
                                             </li> 
                                             
                                             <li className='modal-details-row'>

@@ -3,9 +3,12 @@ import { useState,useEffect } from 'react'
 import { getDownloadURL, listAll, ref as storageRef } from 'firebase/storage'
 import {Storage} from '../database/Storage'
 import { child, get, ref } from "firebase/database"
+import Carousel from 'react-elastic-carousel';
+import ReactDOM from "react-dom";
+import Item from "./Item";
+import "./Carousel.css";
 
-
-function Carousel(){
+function CarouselHome(){
 
     const [images, setImages] = useState([])
     const listOfImages = storageRef(Storage, 'HomeContent')
@@ -15,45 +18,60 @@ function Carousel(){
          let urls = []
          response.items.forEach(item => getDownloadURL(item).then(url =>{
              urls.push(url)
-             setImages(urls)
          }))
+         setImages(urls)
       })
 
     },[])
 
-    function getImage(){
-        let img = []
-
-        for (let element in images){
-            img.push(
-                <div className="carousel-item active">
-                    <img className="d-block w-100" height={300} src={images[element]} alt="Slide"/>
-                </div>
-            ) 
-        }
-        return img
+    
+    
+    const breakPoints = [
+      { width: 1, itemsToShow: 1 },
+      { width: 550, itemsToShow: 2 },
+      { width: 768, itemsToShow: 3 },
+      { width: 1200, itemsToShow: 4 },
+    ];
+    
+    function buildCarouselImages(){
+        let a = []
+        images.map((element,index) => {
+            a.push( <Item> 
+                        <img src={`${element}`} data-toggle="modal" data-target={`#exampleModal${index}`} />
+                        <div className="modal fade" id={`exampleModal${index}`} tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="false"
+                        >
+                            <div className="modal-dialog modal-dialog-centered" role="document">
+                                    <img className='home-img' src={`${element}`} data-toggle="modal" data-target={`#exampleModal${index}`}
+                                        width={700}
+                                        style={{marginRight: '200px'}}
+                                    />
+                            </div>
+                        </div>
+                    </Item>)
+        })
+        return a
     }
-
     return (
-        <div id="carouselExampleIndicators" className="carousel slide" data-ride="carousel">
-            <ol className="carousel-indicators">
-                <li data-target="#carouselExampleIndicators" data-slide-to="0" className="active"></li>
-                <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-            </ol>
-            <div className="carousel-inner">
-                {getImage()}
-            </div>
-            <a className="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                <span className="carousel-control-prev-icon" aria-hidden="false"></span>
-                <span className="sr-only">Previous</span>
-            </a>
-            <a className="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                <span className="carousel-control-next-icon" aria-hidden="false"></span>
-                <span className="sr-only">Next</span>
-            </a>
+    <>
+        <div className="App">
+        <Carousel breakPoints={breakPoints}
+            transitioning={true}           
+        >
+            {buildCarouselImages()}
+        </Carousel>
         </div>
+    </>
     )
+
+    
+    /*
+    return( <Carousel>
+                {images.map((item) => {
+                    {console.log(item)}
+                    <img src={`${item}`} alt='No image to load'/>
+                })}
+            </Carousel>
+    )*/
 }
 
-export default Carousel
+export default CarouselHome

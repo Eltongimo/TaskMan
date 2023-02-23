@@ -3,7 +3,7 @@ import './Home.css'
 import {db} from './database/DatabaseHelper'
 import {useState, useEffect} from 'react'
 import { child, get,ref } from "firebase/database"
-import Carousel from './projectviews/Carousel'
+import CarouselHome from './projectviews/Carousel'
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min'
 
 function Home(){
@@ -151,7 +151,7 @@ function Home(){
         <div className='homeContainer'>
 
             <div className='carousel-home'>
-                <Carousel/>
+                <CarouselHome/>
             </div>
         
             <div className='image' style={{textAlign: 'justify', padding: '10px', marginTop: '15px'}}> 
