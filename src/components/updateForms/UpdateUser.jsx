@@ -18,6 +18,13 @@ function UpdateUser(){
     const userKey = document.URL.split('=')[1]
     const [lats, setLats] = useState()
     const [projects, setProjects] = useState()
+    const [userProjects, setUserProjects ] = useState([
+        {Project:  ''},
+    ])
+    const [userLats, setUserLats] = useState([
+        {Area: ''}
+    ])
+
 
     function getLATs(){
         get(child(ref(db), `LAT`)).then( snapshot => {
@@ -41,9 +48,14 @@ function UpdateUser(){
     }
 
     function getUser(){
-        get(child(ref(db), `User/${userKey}`)).then( s => {
-            if (s.exists()){
-                setUser(s.val())
+        get(child(ref(db), `User`)).then( snapshot => {
+            if (snapshot.exists()){
+                for (let key in snapshot.val()){
+                    if(snapshot.val()[key].Id === userKey){
+                        setUser(snapshot.val()[key])
+                        break
+                    }
+                }
             }
         })
     }
@@ -59,8 +71,8 @@ function UpdateUser(){
             Username: e.target.value,
             Password: user.Password,
             Role: user.Role,
-            Area: user.Area,
-            Project: user.Project
+            Area: userLats,
+            Project: userProjects
         })
     }
 
@@ -69,8 +81,8 @@ function UpdateUser(){
             Password: e.target.value,
             Username: user.Username, 
             Role: user.Role,
-            Area: user.Area,
-            Project: user.Project
+            Area: userLats,
+            Project: userProjects
         })
     }
 
@@ -79,30 +91,10 @@ function UpdateUser(){
             Username: user.Username,
             Password: user.Password, 
             Role: e.target.value,
-            Area: user.Area,
-            Project: user.Project
+            Area: userLats,
+            Project: userProjects
         })
     }
-
-    function setArea(e){
-        setUser({
-                Username: user.Username,
-                Password: user.Password, 
-                Role: user.Role,
-                Area: e.target.value,
-                Project: user.Project
-            })
-     }
-
-     function setProject(e){
-        setUser({
-            Username: user.Username,
-            Password: user.Password, 
-            Role: user.Role,
-            Area: user.Area,
-            Project: e.target.value
-        })
-     }
 
      function generateArea(){
 
@@ -162,9 +154,54 @@ function UpdateUser(){
         }
         return a
     }
-   
 
+    
+    function addArea(e){
+        let element =  {Area: '', LATKey: ''}
+        setUserLats([...userLats,element])
+    }
+
+    function addProject(){
+        let element = {Project: ''}
+        setUserProjects([...userProjects, element])
+    }
+
+    function removeLatsField(e){
+        let data = [...userLats]
+        const index = e.target.id
+
+        data.splice(index,1)
+
+        setUserLats(data)
+    }
+
+    function removeProjectField(e){
+        let data = [...userProjects]
+        const index = e.target.id
+
+        data.splice(index,1)
+
+        setUserProjects(data)
+    }
+
+    function handleLatsFormsChange(e,index){
+        const data = [...userLats]
+   
+         data[index][e.target.name] = e.target.value
+
+        setUserLats(data)
+    }
+
+    function handleProjectFormsChange(e,index){
+        const data = [...userProjects]
+   
+         data[index][e.target.name] = e.target.value
+
+        setUserProjects(data)
+    }
+    
     return (
+        
         <div className='form-container'>
         <div className='title'> 
           <div className='back-icon'>
@@ -183,30 +220,54 @@ function UpdateUser(){
       
       <div className="form-group">
           <label for="exampleInputEmail1">Password</label>
-          <input type="text" onChange={setPassword} value={user.Password} className="form-control" aria-describedby="emailHelp" />
+          <input type="text" value={user.Password} onChange={setPassword} className="form-control" aria-describedby="emailHelp" />
       </div>
 
       <div className="form-group">
           <label for="exampleInputEmail1">Tipo de Usuario</label>
           <select className="form-select" value={user.Role} onChange={setRole} aria-label="Default select example">
-                  {createRole()}
+              <option selected value="Operacional" defaultChecked>Operacional</option>
+              <option value="Tatico">Tatico</option>
           </select>
       </div>
   
-      <div className="form-group">
+      <button type='button' className='btn btn-secondary' onClick={addArea}>Adicionar Area </button>
+      <div className="form-group" style={{border: 'solid #ccc 0.1px', marginTop: '5px'}}>
           <label for="exampleInputEmail1">Area</label>
-          <select className="form-select"  value={user.Area} onChange={setArea} aria-label="Default select example">
-                {generateArea()}
-           </select>
+          {userLats.map( (element,index) => {
+              return(  <div>
+                          <button type="button" id={index} onClick={removeLatsField} style={{width: '10%', marginBottom: '15px', marginLeft: '90%'}}className="btn btn-outline-secondary">
+                                        Apagar 
+                            </button>
+                            
+                         <select value={user.Area} className="form-select"  name='Area'onChange={event => handleLatsFormsChange(event, index)} aria-label="Default select example"
+                            style={{marginBottom: '10px'}}
+                        >
+                    {generateArea()}
+                </select>
+                </div>
+              )
+          })}
+      </div>
 
-           <div className="form-group">
+      <button type='button' className='btn btn-secondary' onClick={addProject}>Adicionar Projecto </button>
+
+      <div className="form-group">
           <label for="exampleInputEmail1">Projecto</label>
-          <select className="form-select"  value={user.Project} onChange={setProject} aria-label="Default select example">
-                {generateProject()}
-          </select>
-      </div>
-
-      </div>
+          {userProjects.map((element, index) => {
+            return (
+                <div>
+                    <button type="button" id={index} onClick={removeProjectField} style={{width: '10%', marginTop: '15px', marginLeft: '90%'}}className="btn btn-outline-secondary">
+                            Apagar 
+                    </button>
+                            
+                    <select className="form-select" user={user.Project} name='Project' onChange={event => handleProjectFormsChange(event,index)} aria-label="Default select example">
+                        {generateProject()}
+                    </select>
+                </div>
+            )
+          })}
+         </div>
 
       <button type="button"  className="btn btn-primary" data-toggle="modal" data-target="#exampleModal"> Gravar Usuario   </button>
 

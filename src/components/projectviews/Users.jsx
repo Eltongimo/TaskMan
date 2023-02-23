@@ -86,6 +86,8 @@ function Users(){
         var values = []
         let count = 0
             
+            console.log(users)
+
             for(let key in users){
                 
                 values.push(
@@ -102,7 +104,7 @@ function Users(){
                                     <li >{users[key].Username}</li>
                                     <li >{users[key].Role}</li>
                                     <li className='project-icons' ><i className="bi bi-trash" data-toggle="modal" data-target={`#exampleModal${count}`} /></li>
-                                    <li className='project-icons' ><i className="bi bi-pencil" id={`${key}`} onClick={updateUser}/></li>
+                                    <li className='project-icons' ><i className="bi bi-pencil" id={`${users[key].Id}`} onClick={updateUser}/></li>
                                 </ul>
                             </div>
                         </div>

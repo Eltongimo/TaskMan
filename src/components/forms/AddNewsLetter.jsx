@@ -47,8 +47,6 @@ function AddNewsLetter(){
     const  handleFormChange = (event, index) => {
         const data = [...formElements]
 
-        console.log(event.target)
-
         if (event.target.name === 'File'){
             data[index][event.target.name] = event.target.files[0]
         }
@@ -56,8 +54,7 @@ function AddNewsLetter(){
             data[index][event.target.name] = event.target.value
         }
         setFormElements(data)
-        console.log(data)
-
+        
     }
 
     const removeField = (element) => {

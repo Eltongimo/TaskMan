@@ -18,7 +18,15 @@ function AddUser(){
         Project: null,
         LATKey: null
     })
-    
+ 
+    const [userProjects, setUserProjects ] = useState([
+        {Project:  ''},
+    ])
+
+    const [userLats, setUserLats] = useState([
+        {Area: ''}
+    ])
+
     const [projects, setProjects] = useState()
     const [lats, setLats] = useState()
     
@@ -53,8 +61,8 @@ function AddUser(){
             Username: e.target.value,
             Password: user.Password,
             Role: user.Role,
-            Area: user.Area,
-            Project: user.Project
+            Area: userLats,
+            Project: userProjects
         })
     }
 
@@ -63,8 +71,8 @@ function AddUser(){
             Password: e.target.value,
             Username: user.Username, 
             Role: user.Role,
-            Area: user.Area,
-            Project: user.Project
+            Area: userLats,
+            Project: userProjects
         })
     }
 
@@ -73,29 +81,9 @@ function AddUser(){
             Username: user.Username,
             Password: user.Password, 
             Role: e.target.value,
-            Area: user.Area,
-            Project: user.Project
+            Area: userLats,
+            Project: userProjects
         })
-    }
-
-    function setProject(e){
-        setUser({
-            Username: user.Username,
-            Password: user.Password, 
-            Role: user.Role,
-            Area: user.Area,
-            Project: e.target.value
-        })
-    }
-    
-    function setArea(e){
-        setUser({
-                Username: user.Username,
-                Password: user.Password, 
-                Role: user.Role,
-                Area: e.target.value,
-                Project: user.Project
-            })
     }
 
     function generateArea(){
@@ -130,6 +118,14 @@ function AddUser(){
    
     function addUser(e){
 
+        setUser({
+            Username: user.Username,
+            Password: user.Password, 
+            Role: user.Role,
+            Area: userLats,
+            Project: userProjects
+        })
+
         set(ref(db, 'User/' + uuidv4()), user).then(() => {
             alert('Usuario gravado com sucesso')
         }).catch(() => {
@@ -139,8 +135,50 @@ function AddUser(){
         window.history.back()
     }
 
+    function addArea(e){
+        let element =  {Area: '', LATKey: ''}
+        setUserLats([...userLats,element])
+    }
 
+    function addProject(){
+        let element = {Project: ''}
+        setUserProjects([...userProjects, element])
+    }
 
+    function removeLatsField(e){
+        let data = [...userLats]
+        const index = e.target.id
+
+        data.splice(index,1)
+
+        setUserLats(data)
+    }
+
+    function removeProjectField(e){
+        let data = [...userProjects]
+        const index = e.target.id
+
+        data.splice(index,1)
+
+        setUserProjects(data)
+    }
+
+    function handleLatsFormsChange(e,index){
+        const data = [...userLats]
+   
+         data[index][e.target.name] = e.target.value
+
+        setUserLats(data)
+    }
+
+    function handleProjectFormsChange(e,index){
+        const data = [...userProjects]
+   
+         data[index][e.target.name] = e.target.value
+
+        setUserProjects(data)
+    }
+    
     return (
         <div className='form-container'>
         <div className='title'> 
@@ -171,20 +209,43 @@ function AddUser(){
           </select>
       </div>
   
-      
-      <div className="form-group">
+      <button type='button' className='btn btn-secondary' onClick={addArea}>Adicionar Area </button>
+      <div className="form-group" style={{border: 'solid #ccc 0.1px', marginTop: '5px'}}>
           <label for="exampleInputEmail1">Area</label>
-          <select className="form-select"  onChange={setArea} aria-label="Default select example">
-                {generateArea()}
-          </select>
+          {userLats.map( (element,index) => {
+              return(  <div>
+                          <button type="button" id={index} onClick={removeLatsField} style={{width: '10%', marginBottom: '15px', marginLeft: '90%'}}className="btn btn-outline-secondary">
+                                        Apagar 
+                            </button>
+                            
+                         <select className="form-select"  name='Area'onChange={event => handleLatsFormsChange(event, index)} aria-label="Default select example"
+                            style={{marginBottom: '10px'}}
+                        >
+                    {generateArea()}
+                </select>
+                </div>
+              )
+          })}
       </div>
+
+      <button type='button' className='btn btn-secondary' onClick={addProject}>Adicionar Projecto </button>
 
       <div className="form-group">
           <label for="exampleInputEmail1">Projecto</label>
-          <select className="form-select"  onChange={setProject} aria-label="Default select example">
-                {generateProject()}
-          </select>
-      </div>
+          {userProjects.map((element, index) => {
+            return (
+                <div>
+                    <button type="button" id={index} onClick={removeProjectField} style={{width: '10%', marginTop: '15px', marginLeft: '90%'}}className="btn btn-outline-secondary">
+                            Apagar 
+                    </button>
+                            
+                    <select className="form-select" name='Project' onChange={event => handleProjectFormsChange(event,index)} aria-label="Default select example">
+                        {generateProject()}
+                    </select>
+                </div>
+            )
+          })}
+         </div>
 
       <button type="button"  className="btn btn-primary" data-toggle="modal" data-target="#exampleModal"> Gravar Usuario   </button>
 
