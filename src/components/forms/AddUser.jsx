@@ -11,14 +11,16 @@ function back(e){
 function AddUser(){
 
     const [user, setUser] = useState({
-        Role: 'Tatico',
+        Role: '',
         Username: '',
         Password: '',
         Area: '',
         Project: null,
-        LATKey: null
+        Id: uuidv4()
     })
  
+    console.log(user)
+
     const [userProjects, setUserProjects ] = useState([
         {Project:  ''},
     ])
@@ -62,7 +64,8 @@ function AddUser(){
             Password: user.Password,
             Role: user.Role,
             Area: userLats,
-            Project: userProjects
+            Project: userProjects,
+            Id: user.Id
         })
     }
 
@@ -72,7 +75,8 @@ function AddUser(){
             Username: user.Username, 
             Role: user.Role,
             Area: userLats,
-            Project: userProjects
+            Project: userProjects,
+            Id: user.Id
         })
     }
 
@@ -82,7 +86,8 @@ function AddUser(){
             Password: user.Password, 
             Role: e.target.value,
             Area: userLats,
-            Project: userProjects
+            Project: userProjects,
+            Id: user.Id
         })
     }
 
@@ -118,14 +123,9 @@ function AddUser(){
    
     function addUser(e){
 
-        setUser({
-            Username: user.Username,
-            Password: user.Password, 
-            Role: user.Role,
-            Area: userLats,
-            Project: userProjects
-        })
-
+        setUser(user)
+        console.log(user)
+        
         set(ref(db, 'User/' + uuidv4()), user).then(() => {
             alert('Usuario gravado com sucesso')
         }).catch(() => {
@@ -204,7 +204,8 @@ function AddUser(){
       <div className="form-group">
           <label for="exampleInputEmail1">Tipo de Usuario</label>
           <select className="form-select"  onChange={setRole} aria-label="Default select example">
-              <option selected value="Operacional" defaultChecked>Operacional</option>
+              <option defaultChecked>Selectione tipo de Usuario </option>
+              <option value="Operacional">Operacional</option>
               <option value="Tatico">Tatico</option>
           </select>
       </div>

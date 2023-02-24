@@ -85,8 +85,6 @@ function Users(){
     function buildTable(){
         var values = []
         let count = 0
-            
-            console.log(users)
 
             for(let key in users){
                 

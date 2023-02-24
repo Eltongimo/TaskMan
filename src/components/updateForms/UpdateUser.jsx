@@ -12,7 +12,8 @@ function UpdateUser(){
         Username: '',
         Password: '',
         Area: '',
-        Project: ''
+        Project: '',
+        Id: ''
     })
 
     const userKey = document.URL.split('=')[1]
@@ -24,7 +25,6 @@ function UpdateUser(){
     const [userLats, setUserLats] = useState([
         {Area: ''}
     ])
-
 
     function getLATs(){
         get(child(ref(db), `LAT`)).then( snapshot => {
@@ -72,7 +72,9 @@ function UpdateUser(){
             Password: user.Password,
             Role: user.Role,
             Area: userLats,
-            Project: userProjects
+            Project: userProjects,
+            Id: user.Id
+
         })
     }
 
@@ -82,7 +84,8 @@ function UpdateUser(){
             Username: user.Username, 
             Role: user.Role,
             Area: userLats,
-            Project: userProjects
+            Project: userProjects,
+            Id: user.Id
         })
     }
 
@@ -92,7 +95,8 @@ function UpdateUser(){
             Password: user.Password, 
             Role: e.target.value,
             Area: userLats,
-            Project: userProjects
+            Project: userProjects,
+            Id: user.Id
         })
     }
 
@@ -114,7 +118,16 @@ function UpdateUser(){
 
 
     function updateUser(e){
-      
+        
+        setUser({
+            Username: user.Username,
+            Password: user.Password, 
+            Role: user.Role,
+            Area: userLats,
+            Project: userProjects,
+            Id: user.Id
+        })
+
         update(ref(db, `User/${userKey}`), user).then(()=>
         {
             alert('Actividade actualizada com Sucesso')
