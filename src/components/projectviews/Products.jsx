@@ -26,7 +26,7 @@ function Product (){
                             a.push(snapshot.val()[key])
                         else{
                             for(let prodK in prods){
-                                if (prods[prodK] === snapshot.val()[key].Area){
+                                if (prods[prodK] === snapshot.val()[key].Area && snapshot.val()[key].ProjectKey === projKey){
                                     a.push(snapshot.val()[key])
                                 }
                             }
