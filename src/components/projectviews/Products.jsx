@@ -16,6 +16,7 @@ function Product (){
 
    function getProduct(){
 
+     const prods = document.getElementById('userarea').innerHTML.split(';')
         get(child(dbRef, `Product`)).then((snapshot) => {
             let a = []
             if (snapshot.exists()){
@@ -23,9 +24,13 @@ function Product (){
                     if (snapshot.val()[key].ProjectKey ){
                         if (document.getElementById('role').value === 'operacional')
                             a.push(snapshot.val()[key])
-                        else if (document.getElementById('userarea').innerHTML === snapshot.val()[key].Area){
-                            a.push(snapshot.val()[key])
-                        }
+                        else{
+                            for(let prodK in prods){
+                                if (prods[prodK] === snapshot.val()[key].Area){
+                                    a.push(snapshot.val()[key])
+                                }
+                            }
+                        } 
                     }
                 }
             }

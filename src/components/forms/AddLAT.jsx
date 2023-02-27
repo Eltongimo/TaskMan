@@ -8,7 +8,6 @@ import {v4 as uuidv4} from 'uuid';
 
 function AddLAT(){
 
-
     const dbRef = ref(db)
     
     const [projects, setProjects ] = useState()
@@ -61,15 +60,6 @@ function AddLAT(){
         })
     }
 
-    function setDescription(e){
-        setLat({
-            Description: e.target.value,
-            Name: lat.Name,
-            ProjectKey: lat.ProjectKey,
-            Key: lat.Key
-        })
-    }
-
     function setProject(e){
         
         let a = ''
@@ -117,11 +107,6 @@ function AddLAT(){
             <div className="form-group">
                 <label for="exampleInputEmail1">Nome da Linha de Acção Tematica</label>
                 <input type="text" onChange={setName} className="form-control" aria-describedby="emailHelp" />
-            </div>
-
-            <div className="form-group">
-                <label for="exampleInputEmail1">Descrição</label>
-                <input type="text" onChange={setDescription} className="form-control" aria-describedby="emailHelp" />
             </div>
 
             <div className="form-group">

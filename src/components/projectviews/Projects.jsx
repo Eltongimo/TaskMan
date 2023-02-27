@@ -31,19 +31,16 @@ function Projects (){
 
     function getProject(){
 
-        const u = document.getElementById('welcome').innerHTML.split(',')[0]
-        getUser(u)
-
-        console.log(user)
-
         get(child(dbRef, `Project`)).then((snapshot) => {
             let a = {}
+            const pjs = document.getElementById('userprojects').innerHTML.split(';')
+
             if (snapshot.exists())
             {
                 for (let key in snapshot.val()){
                    if (userRole !== 'operacional' ){
-                        for (let uKey in user.Project){
-                            if (snapshot.val()[key].ProjectName === user.Project[uKey].Project){
+                        for (let uKey in pjs){
+                            if (snapshot.val()[key].ProjectName === pjs[uKey]){
                                 a[key] = snapshot.val()[key]
                             }    
                         }
@@ -78,16 +75,10 @@ function Projects (){
          
          const clickedProject = document.getElementById(e.target.id).innerHTML
 
-         if (document.getElementById('role').value === 'operacional' || userProject.toLowerCase() === clickedProject.toLowerCase()){
-            history.push({
-                pathname: '/products',
-                search: `?key=${e.target.id}`,
-              })
-         }else {
-            alert(`Não pode ver as informaçoes deste projecto, porque não foi cadastrado para o ${clickedProject}`)
-            return 
-        }
-  
+         history.push({
+            pathname: '/products',
+            search: `?key=${e.target.id}`,
+        })
      }
 
      function searchProject(e){
@@ -140,6 +131,7 @@ function Projects (){
     }
  
     useEffect( () => {
+        const u = document.getElementById('welcome').innerHTML.split(',')[0]
         getProject()    
     },[])
 

@@ -5,11 +5,7 @@ import logo from '../assets/logo/logo.png'
 //import Menu from './Menu'
 
 function Header() {
-
-     function generateProjectNames(){
-
-     }
-     
+  
      return (
                <header className='header'>
                     <div className='search-input'>

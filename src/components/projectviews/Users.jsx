@@ -48,14 +48,24 @@ function Users(){
 
     function deleteUser(e){
     
-        console.log(e.target.value)
+        get(child(dbRef, `User`)).then(snapshot => {
 
-        remove(ref(db, `User/${e.target.value}`)).then(() => {
-            alert('Usuario eliminado com sucesso')
-            document.getElementById(`closemodal${e.target.id}`).click()
-            getUsers()
-        })
-            
+            if (snapshot.exists()){
+                for (let k in snapshot.val()){
+
+                    if (snapshot.val()[k].Id === e.target.value){
+                        remove(ref(db, `User/${k}`)).then(() => {
+                            alert('Usuario eliminado com sucesso')
+                            document.getElementById(`closemodal${e.target.id}`).click()
+                            getUsers()
+                        })
+                        return                
+                    }
+
+                }
+            }
+
+        })  
     }
     
     function updateUser(e){

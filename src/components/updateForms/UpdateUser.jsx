@@ -56,9 +56,7 @@ function UpdateUser(){
                     
                         const project = typeof snapshot.val()[key].Project
                         const area = typeof snapshot.val()[key].Area
-                        console.log(project)
-                        console.log(area)
-
+                    
                         if (area === 'object'){
                             setUserLats(snapshot.val()[key].Area)
                         }

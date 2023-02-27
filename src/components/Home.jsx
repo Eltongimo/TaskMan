@@ -76,9 +76,15 @@ function Home(){
 
    function writeProjects(u){
 
-    let  a = 1
+    document.getElementById('userarea').innerHTML = ''
+    document.getElementById('userprojects').innerHTML = ''
+    
     for (let key in u.Project){
-       document.getElementById('userprojects').innerHTML += u.Project[key].Project
+       document.getElementById('userprojects').innerHTML += u.Project[key].Project + ';'
+    }
+
+    for (let key in u.Area){
+        document.getElementById('userarea').innerHTML += u.Area[key].Area + ';'
     }
 
    }
