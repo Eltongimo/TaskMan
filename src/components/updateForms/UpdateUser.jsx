@@ -3,7 +3,7 @@ import React from 'react'
 import {v4 as uuidv4} from 'uuid';
 import {ref,set,get} from 'firebase/database'
 import {db} from '../database/DatabaseHelper'
-import { child, update } from 'firebase/database';
+import { child, remove } from 'firebase/database';
 
 function UpdateUser(){
 
@@ -53,6 +53,18 @@ function UpdateUser(){
                 for (let key in snapshot.val()){
                     if(snapshot.val()[key].Id === userKey){
                         setUser(snapshot.val()[key])
+                    
+                        const project = typeof snapshot.val()[key].Project
+                        const area = typeof snapshot.val()[key].Area
+                        console.log(project)
+                        console.log(area)
+
+                        if (area === 'object'){
+                            setUserLats(snapshot.val()[key].Area)
+                        }
+                        if (project === 'object'){
+                            setUserProjects(snapshot.val()[key].Project)
+                        }
                         break
                     }
                 }
@@ -127,30 +139,21 @@ function UpdateUser(){
             Project: userProjects,
             Id: user.Id
         })
+        
+        user.Area = userLats
+        user.Project = userProjects
 
-        update(ref(db, `User/${userKey}`), user).then(()=>
-        {
-            alert('Actividade actualizada com Sucesso')
-        }).catch(() => {
-            alert('Erro ao eliminar o Usuario, Tenta mais tarde')
-        })
-    
+        console.log(userKey)
+        remove(ref(db, `User/${userKey}`)).then(() => {
+            set(ref(db, 'User/' + uuidv4()), user).then(()=>
+            {
+                alert('Usuario Actualizado com sucesso')
+            }
+        )})
+     
+        console.log(user)
         document.getElementById('closemodal').click()
         window.history.back()
-    }
-
-    function createRole(){
-    
-        let a = []
-
-        if (user.Role.toLowerCase() === 'operacional'){
-            a.push( <option  value="Operacional" defaultChecked>Operacional</option>)
-            a.push(<option value="Tatico">Tatico</option>)
-        }else{
-            a.push(<option value="Tatico" defaultChecked>Tatico</option>)
-            a.push(<option  value="Operacional" >Operacional</option>)
-        }
-        return a
     }
 
     function generateProject(){
@@ -239,8 +242,8 @@ function UpdateUser(){
       <div className="form-group">
           <label for="exampleInputEmail1">Tipo de Usuario</label>
           <select className="form-select" value={user.Role} onChange={setRole} aria-label="Default select example">
-              <option selected value="Operacional" defaultChecked>Operacional</option>
               <option value="Tatico">Tatico</option>
+              <option value="Operacional" >Operacional</option>
           </select>
       </div>
   
@@ -248,12 +251,13 @@ function UpdateUser(){
       <div className="form-group" style={{border: 'solid #ccc 0.1px', marginTop: '5px'}}>
           <label for="exampleInputEmail1">Area</label>
           {userLats.map( (element,index) => {
-              return(  <div>
+          
+          return(  <div>
                           <button type="button" id={index} onClick={removeLatsField} style={{width: '10%', marginBottom: '15px', marginLeft: '90%'}}className="btn btn-outline-secondary">
                                         Apagar 
                             </button>
                             
-                         <select value={user.Area} className="form-select"  name='Area'onChange={event => handleLatsFormsChange(event, index)} aria-label="Default select example"
+                         <select value={element.Area} className="form-select"  name='Area'onChange={event => handleLatsFormsChange(event, index)} aria-label="Default select example"
                             style={{marginBottom: '10px'}}
                         >
                     {generateArea()}
@@ -273,9 +277,11 @@ function UpdateUser(){
                     <button type="button" id={index} onClick={removeProjectField} style={{width: '10%', marginTop: '15px', marginLeft: '90%'}}className="btn btn-outline-secondary">
                             Apagar 
                     </button>
-                            
-                    <select className="form-select" user={user.Project} name='Project' onChange={event => handleProjectFormsChange(event,index)} aria-label="Default select example">
-                        {generateProject()}
+
+                         <select value={element.Project} className="form-select"  name='Project'onChange={event => handleProjectFormsChange(event, index)} aria-label="Default select example"
+                            style={{marginBottom: '10px'}}
+                        >
+                            {generateProject()}
                     </select>
                 </div>
             )

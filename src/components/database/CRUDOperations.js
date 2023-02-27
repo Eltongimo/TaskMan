@@ -1,38 +1,30 @@
-import { db } from "./DatabaseHelper"
-import {get,set,child,ref} from 'firebase/database'
+import {get,set,child,ref,update} from 'firebase/database'
 import React, { useState } from "react"
+import {db} from './DatabaseHelper'
+import { Component } from 'react'
 
-function CRUDOperations (){
+class CRUDOperations extends Component{
 
-    const [projects, setProjects] = useState()
-    const [project, setProject] = useState(['askdjnaskdj'])
+    constructor(){
+        this.state = { users: 
 
+                            function getUsers(){
 
-    function getProjects(){
-        /*
-        get(child(this.dbRef, 'Project')).then( snapshot => {
-
-            if (snapshot.exists()){
-                setProjects(snapshot.val())            
+                                get(child(ref(db), `User`)).then((snapshot) => {
+                                    if (snapshot.exists())
+                                        this.setState({
+                                            users: snapshot.val()
+                                        })
+                                    else
+                                        this.setState({users: null})
+                                })
+                        
+                                console.log(this.state)
+                                return this.state.users
             }
-        })
-        
-        return projects
-        */
-       console.log('Ola Projects')
+        }
     }
-
-    
-    function getProject(key){
-
-        get(child(this.dbRef, `Project/${key}`)).then( snapshot => {
-
-            if (snapshot.exists()){
-                setProject(snapshot.val())            
-            }
-        })
-        return project
-    }
+  
 }
 
 export default CRUDOperations

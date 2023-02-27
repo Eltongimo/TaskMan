@@ -48,6 +48,8 @@ function Users(){
 
     function deleteUser(e){
     
+        console.log(e.target.value)
+
         remove(ref(db, `User/${e.target.value}`)).then(() => {
             alert('Usuario eliminado com sucesso')
             document.getElementById(`closemodal${e.target.id}`).click()
@@ -121,7 +123,7 @@ function Users(){
                                     </div>
                                     <div className='modal-footer'>
                                             <button type="button" id={`closemodal${count}`} className="btn btn-secondary" data-dismiss="modal">Não</button>
-                                            <button type='button'  id={count} className='btn btn-primary' value={`${key}`}onClick={deleteUser}> Sim</button>
+                                            <button type='button'  id={count} className='btn btn-primary' value={`${users[key].Id}`}onClick={deleteUser}> Sim</button>
                                     </div>
                                 </div>
                             </div>

@@ -29,6 +29,7 @@ function Home(){
     }
 
     useEffect( () => {
+
         const dbRef = ref(db)
             get(child(dbRef,'HomeContent')).then((snapshot) => {
 
@@ -58,14 +59,14 @@ function Home(){
         for (let u in user.users){
 
             if ( user.users[u].Username === typedUser.username && user.users[u].Password === typedUser.password){
-                console.log(user.users[u].Project)
                 e.target.isVisible = false
                 document.getElementById('welcome').innerHTML = `${typedUser.username}, Bem vindo  ao POMAR!`
-                document.getElementById('closemodal').click()
                 document.getElementById('role').value = user.users[u].Role
-                document.getElementById('userprojects').innerHTML = user.users[u].Project
                 document.getElementById('userarea').innerHTML = user.users[u].Area
+                writeProjects(user.users[u])
                 enableMenus(user.users[u])
+                const b = document.getElementById('closemodallogin')
+                b.click()
                 clearForm()
                 return 
             }
@@ -73,6 +74,14 @@ function Home(){
         
    }
 
+   function writeProjects(u){
+
+    let  a = 1
+    for (let key in u.Project){
+       document.getElementById('userprojects').innerHTML += u.Project[key].Project
+    }
+
+   }
     function enableMenus(u){
 
 
@@ -100,8 +109,8 @@ function Home(){
         for (let key in projects.p){
             a.push(
                 <li>
-                    <button type="button" data-toggle="modal" data-target={`#exampleModal${count}`} style={{marginBottom: '10px',color: 'white', borderRadius: '10px', height: '3.5rem', border: 'solid 0.1px', background: '#001489'}}> {projects.p[key].ProjectName}     </button>
-                      <div className="modal fade" id={`exampleModal${count}`} tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="false">
+                    <button type="button" data-toggle="modal" data-target={`#exampleModal1${count}`} style={{marginBottom: '10px',color: 'white', borderRadius: '10px', height: '3.5rem', border: 'solid 0.1px', background: '#001489'}}> {projects.p[key].ProjectName}     </button>
+                      <div className="modal fade" id={`exampleModal1${count}`} tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="false">
                             <div className="modal-dialog" role="document">
                                 <div className="modal-content">
                                     <div className="modal-header">
@@ -167,11 +176,11 @@ function Home(){
                     {aboutPomar.About}
                 </p>
 
-            <button type="button" onClick={clearForm} className="btn btn-outline-primary" data-toggle="modal" data-target="#exampleModal">
+            <button type="button" onClick={clearForm} className="btn btn-outline-primary" data-toggle="modal" data-target="#exampleModalogin">
                 Login
             </button>
 
-            <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="false">
+            <div className="modal fade"  id="exampleModalogin" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
                         <div className="modal-header">
@@ -193,7 +202,7 @@ function Home(){
                         </form>
                     </div>
                     <div className="modal-footer">
-                        <button type="button" id='closemodal' className="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        <button type="button" id='closemodallogin' className="btn btn-secondary" data-dismiss="modal">Fechar</button>
                         <button type="button" className="btn btn-primary" onClick={login}>Entrar</button>
                     </div>
                     </div>

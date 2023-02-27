@@ -12,17 +12,42 @@ function Projects (){
     const dbRef = ref(db)
     const userRole = document.getElementById('role').value
     const userProjects = document.getElementById('userprojects').innerHTML
+    const [user, setUser] = useState({})
+
+    function getUser(username){
+
+        get(child(dbRef, 'User')).then(snapshot => {
+            if (snapshot.exists()){
+                for (let key in snapshot.val()){
+                    if (snapshot.val()[key].Username === username){
+                        setUser(snapshot.val()[key])
+                        break
+                    }
+                }
+            }
+        })
+        return user
+    }
 
     function getProject(){
+
+        const u = document.getElementById('welcome').innerHTML.split(',')[0]
+        getUser(u)
+
+        console.log(user)
 
         get(child(dbRef, `Project`)).then((snapshot) => {
             let a = {}
             if (snapshot.exists())
             {
                 for (let key in snapshot.val()){
-                    if (userRole !== 'operacional' && userProjects.toLowerCase() === snapshot.val()[key].ProjectName.toLowerCase() ){
-                        a[key] = snapshot.val()[key]
-                    } if (userRole === 'operacional'){
+                   if (userRole !== 'operacional' ){
+                        for (let uKey in user.Project){
+                            if (snapshot.val()[key].ProjectName === user.Project[uKey].Project){
+                                a[key] = snapshot.val()[key]
+                            }    
+                        }
+                    } else if (userRole === 'operacional'){
                         a[key] = snapshot.val()[key]
                     }
                 }
@@ -67,8 +92,6 @@ function Projects (){
 
      function searchProject(e){
         
-        console.log(projects)
-
         if (e.target.value === ''){
             getProject()
         }
@@ -126,7 +149,7 @@ function Projects (){
         if (projects !== null ){
             for(let key in projects){
                values.push(
-                <button 
+                <button id={key}
                     style={{background: 'transparent',
                             border: 'none',
                             width: '100%',

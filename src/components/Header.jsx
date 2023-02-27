@@ -6,14 +6,12 @@ import logo from '../assets/logo/logo.png'
 
 function Header() {
 
+     function generateProjectNames(){
+
+     }
+     
      return (
                <header className='header'>
-                {/*    <div className="home">
-                         <a href='/'>
-                              <i class="bi bi-house-door-fill" style={{'cursor':'pointer','fontSize': '2rem', 'color': 'white'}}></i>
-                         </a>
-     </div> */}
-                
                     <div className='search-input'>
                          <div class="form-outline">
                               <input type="search" id="form1" class="form-control" placeholder="Search..."/>
