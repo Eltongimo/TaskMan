@@ -14,6 +14,7 @@ function ShowDashboard(){
     const [macroActivities, setMacroActivities] = useState()
     const [activities, setActivities] = useState()
     const dbRef = ref(db)
+    const userRole = document.getElementById('role').innerHTML
 
     function getProject(){
 
@@ -73,9 +74,26 @@ function ShowDashboard(){
 
     function generateProjectReport(e){
         
+        if (userRole !== 'operacional'){
+            alert('Apenas os utilizadores operacionais podem gerar relatorios dos projectos')
+            return 
+        }
         LATProjectReportPDF(lats,projects[e.target.id], products,macroActivities,activities)
     }
 
+    function reportButton (key){
+        let a = []
+
+        if  (userRole === 'operacional'){
+            a.push(
+                <button type='button' className='btn btn-primary report-button' id={key} onClick={generateProjectReport}>
+                    Baixar Relatorio
+                </button>
+            )
+        }
+        return a
+        
+    }
     function createCard(){
 
         let cards = []
@@ -109,11 +127,9 @@ function ShowDashboard(){
                                 }}>
                                     <div style={{width:'90%',color: 'white'}}>
                                         {projects[key].ProjectName}
-                                    </div>
-                                    <button type='button' className='btn btn-primary' id={key} onClick={generateProjectReport}>
-                                        Baixar Relatorio
-                                    </button>
-
+                                    </div>{
+                                        reportButton(key)
+                                    }
                                 </h5>
                             <div className="card-body">
                                 <h5 className="card-title">Linha de Acção Tematica</h5>

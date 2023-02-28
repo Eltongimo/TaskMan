@@ -11,7 +11,7 @@ function Dashboard  (){
     const [products, setProducts ] = useState({})
     const [project, setProject] = useState({})
     const dbRef = ref(db)
-      
+
     useEffect( () => {
         getProject()
         getLATs()

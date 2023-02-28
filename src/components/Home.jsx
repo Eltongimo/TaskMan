@@ -60,6 +60,7 @@ function Home(){
 
             if ( user.users[u].Username === typedUser.username && user.users[u].Password === typedUser.password){
                 e.target.isVisible = false
+                document.getElementById('reload').innerHTML = 'Log out'
                 document.getElementById('welcome').innerHTML = `${typedUser.username}, Bem vindo  ao POMAR!`
                 document.getElementById('role').value = user.users[u].Role
                 document.getElementById('userarea').innerHTML = user.users[u].Area
@@ -75,7 +76,8 @@ function Home(){
    }
 
    function writeProjects(u){
-
+    
+    document.getElementById('role').innerHTML = u.Role
     document.getElementById('userarea').innerHTML = ''
     document.getElementById('userprojects').innerHTML = ''
     
@@ -89,10 +91,7 @@ function Home(){
 
    }
     function enableMenus(u){
-
-
         if (u.Role === 'operacional'){
-            //document.getElementsByClassName('relatorios')[0].hidden = false
             document.getElementsByClassName('usuarios')[0].hidden = false
             document.getElementsByClassName('lat')[0].hidden = false
             document.getElementsByClassName('newsletter')[0].hidden = false

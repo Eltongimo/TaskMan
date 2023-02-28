@@ -13,7 +13,7 @@ function Projects (){
     const userRole = document.getElementById('role').value
     const userProjects = document.getElementById('userprojects').innerHTML
     const [user, setUser] = useState({})
-
+     
     function getUser(username){
 
         get(child(dbRef, 'User')).then(snapshot => {
@@ -135,6 +135,58 @@ function Projects (){
         getProject()    
     },[])
 
+    function addDeleteUpdateColumns(){
+        let a = []
+
+        if (userRole === 'operacional')
+        {
+            a.push(
+                <div className='report-header'>Actualizar</div>
+            )        
+            a.push(
+                <div className='report-header'>Apagar</div>
+            )
+        }else{
+
+        }
+        return a 
+    }
+
+    function addDeleteAndUpdateRows(key, projects,count){
+        let a = []
+        
+        if (userRole === 'operacional'){
+            a.push(
+                <li className='project-icons'>
+                    <i className="bi bi-pencil" id={`${key}`} onClick={updateProject}/>
+                </li>
+            )
+            a.push(
+                <li className='project-icons'>
+                    <i className="bi bi-trash" id={`delete.${count}.${projects[key].Key}`} data-toggle="modal" data-target={`#exampleModal${count}`} 
+                    />    
+                </li>
+            )
+        }
+        return a 
+    }
+
+    function add(e){
+        history.push({
+            pathname: '/addproject',
+        })
+    }
+    
+    function enableProjectAddButton (){
+
+        if (userRole === 'operacional'){
+            return (
+                <button type="button" className="btn btn-light" id='project-add-button' onClick={add}>Adicionar</button>
+            )
+        }
+        return ([])
+    }
+
     function buildTable(){
         var values = []
         let count = 0
@@ -160,13 +212,7 @@ function Projects (){
                                 <li id={`${count++}.${projects[key].Key}`}>
                                     {projects[key].TypeOfActivity}
                                 </li>
-                                <li className='project-icons'>
-                                    <i className="bi bi-pencil" id={`${key}`} onClick={updateProject}/>
-                                </li>
-                                <li className='project-icons' id={`${count++}.${projects[key].Key}`}>
-                                    <i className="bi bi-trash" id={`delete.${count}.${projects[key].Key}`} data-toggle="modal" data-target={`#exampleModal${count}`} 
-                                    />    
-                                </li>
+                                {addDeleteAndUpdateRows(key, projects,count)}
                             </ul>
                         </div>
 
@@ -199,24 +245,17 @@ function Projects (){
             }
         }
 
-        function add(e){
-            history.push({
-                pathname: '/addproject',
-            })
-        }
-        
         return( 
         <div >
             <div className='title' id='title'>
                 <input type='tex' onChange={searchProject} className="form-control" id="search" aria-describedby="emailHelp" placeholder="Procurar.."></input>
-                <button type="button" className="btn btn-light" id='addbutton' onClick={add}>Adicionar</button>
+                {enableProjectAddButton()}
             </div>
             <div className='header-container'>
                 <div className='report-header'>Nr</div>
                 <div className='report-header'>Nome do Projecto</div>
                 <div className='report-header'>Tipo de Actividade</div>
-                <div className='report-header'>Actualizar</div>
-                <div className='report-header'>Apagar</div>
+                {addDeleteUpdateColumns()}
             </div>
                 {values}
             </div>

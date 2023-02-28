@@ -33,7 +33,7 @@ function Header() {
                    <label id='userarea' hidden={true}></label>
                </div>
                <a href='/'>
-                     <div style={{'cursor':'pointer','fontSize': '1.1rem', 'color': 'white',fontWeight: '500'}}>Log out</div>
+                     <div style={{'cursor':'pointer','fontSize': '1.1rem', 'color': 'white',fontWeight: '400'}} id='reload'>Reload System</div>
                 </a>
           </header>
      )

@@ -8,7 +8,7 @@ function Menu(props) {
 
     const [menuVisible, setMenuVisibility ] = useState(true)
 
-    const menuKeys = ['home','dahboard','menu-projects','newsletter'/*,'relatorios'*/,'usuarios','conteudo','lat','newsletterhome']
+    const menuKeys = ['home','dahboard','menu-projects','newsletter','usuarios','conteudo','lat','newsletterhome']
     let a = []
 
     function activeBackGroud(e){

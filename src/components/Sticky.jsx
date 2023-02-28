@@ -4,6 +4,7 @@ import './Sticky.css'
 function Sticky(props){
     
     const history = useHistory()
+    const userRole = document.getElementById('role').innerHTML
 
     function GetProdNames(propsProd){
 
@@ -41,6 +42,19 @@ function Sticky(props){
             search: `?key=${e.target.id}`,})
     }
 
+    function reportButton(){
+        let a = []
+
+        if (userRole === 'operacional'){
+            a.push(
+                <button type='button' className='btn btn-primary'>
+                    Baixar Relatorio da LAT
+                 </button>
+            )
+        }
+        return a 
+    }
+
     function getLATFullPercentage(arrayStatus){
 
         let percentage = 0
@@ -63,9 +77,7 @@ function Sticky(props){
                         {props.header}
                     </div>
                     <div className='note-header-title'>
-                        <button type='button' className='btn btn-primary'>
-                            Baixar Relatorio da LAT
-                        </button>
+                        {reportButton()}
                     </div>
                     <div className='general-percentage' >
                         {getLATFullPercentage(props.fullProds)}%

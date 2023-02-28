@@ -9,8 +9,6 @@ import { getDownloadURL, listAll, ref as storageRef } from 'firebase/storage'
 import { getStorage } from 'firebase/storage'
 import {Storage} from '../database/Storage'
 
-
-
 function Activities (){
     
     const [activity, setActivity ] = useState([])
@@ -18,7 +16,7 @@ function Activities (){
     const history =  useHistory()
     const listOfImages = storageRef(Storage, 'Activity/')
     const [imageList, setImageList] = useState([])
-    
+    const userRole = document.getElementById('role').value    
     const dbRef = ref(db)
 
     useEffect(() => {
@@ -99,22 +97,25 @@ function Activities (){
         })
     }
 
-    /*
-    function filterImageAndActivity(){
-
-        let a = []
-
-        for (let aKey in activity){
-
-            for (let imgKey in imageList){
-                if (imageList[imgKey].includes(activity[aKey].Key)){
-                    a[aKey] = imageList[imgKey]
-                }
-            }
+    function enableUpdateDeleteRows(key, count, activity){
+     
+        if (userRole === 'operacional'){
+            return (
+                [
+                    <li className='project-icons' id={`${activity[key].Key}`}>
+                        <i className="bi bi-pencil" id={`update.${count++}.${activity[key].Key}`}/>
+                    </li>,
+                    <li className='project-icons'>
+                        <i className="bi bi-trash" id={`delete.${count++}.${activity[key].Key}`} data-toggle="modal" data-target={`#exampleModal${count}`} />
+                    </li>
+                ]
+            )
         }
-        return a
+        return (
+            []
+        )
     }
-    */
+
     function buildTable (){
         var values = []
         let count = 0
@@ -136,16 +137,9 @@ function Activities (){
                                     <li id={`${count++}.${activity[key].Key}`}>
                                         {activity[key].Name}
                                     </li>
-                                    
-                                    <li className='project-icons' id={`${activity[key].Key}`}>
-                                        <i className="bi bi-pencil" id={`update.${count++}.${activity[key].Key}`}
-                                          />
-                                    </li>
-
-                                    <li className='project-icons' id={`${count++}.${activity[key].Key}`}>
-                                        <i className="bi bi-trash" id={`delete.${count++}.${activity[key].Key}`} data-toggle="modal" data-target={`#exampleModal${count}`} />
-                                    </li>
-                                
+                                    {
+                                        enableUpdateDeleteRows(key,count,activity)
+                                    }
                                     <li className='project-icons' id={`${count}`} >
                                         <i className="bi bi-info" data-toggle="modal" data-target={`#exampleModal${key}`}/>                                 </li> 
                                     <li id={`${count}`} >
@@ -282,6 +276,17 @@ function Activities (){
         window.history.back()
     }
 
+    function enableUpdateDeleteColumns(){
+
+        if (userRole === 'operacional'){
+            return ([
+                <div className='report-header'>Editar</div>,
+                <div className='report-header'>Apagar</div>
+            ])
+        }
+        return ([])
+    }
+
     return( 
         <div classNameName='table-container'>
             <div className='title' id='title'>
@@ -294,8 +299,7 @@ function Activities (){
         
             <div className='header-container'>
                 <div className='report-header'>Actividade</div>
-                <div className='report-header'>Editar</div>
-                <div className='report-header'>Apagar</div>
+                {enableUpdateDeleteColumns()}
                 <div className='report-header'>Mostrar</div>
                 <div className='report-header'>Relatorio</div>
                 

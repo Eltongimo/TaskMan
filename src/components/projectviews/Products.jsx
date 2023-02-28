@@ -13,6 +13,7 @@ function Product (){
    const projKey = document.URL.split('=')[1]
    const [activities, setActivities] = useState()
    const [macroActivities, setMacroActivities] = useState()
+   const userRole = document.getElementById('role').value
 
    function getProduct(){
 
@@ -154,6 +155,59 @@ function Product (){
          ProductPDF (products[e.target.id], macroActivities, activities)    
     }
 
+    function add(e){
+        history.push({
+            pathname: '/addproducts',
+            search: `?key=${document.URL.split('/')[3].split('=')[1]}`,
+        })
+    }
+
+    function back(e){
+        window.history.back()
+    }
+
+
+    function enablePrductAddButton (){
+
+        if (userRole === 'operacional'){
+            return (
+                <button type="button" className="btn btn-light" id='addbutton' onClick={add}>Adicionar</button>
+            )
+        }
+        return ([])
+    }
+
+    function addMoreColumnsToTable(){
+        
+        if (userRole === 'operacional'){
+            return (
+                [
+                    <div className='report-header'>Actualizar</div>,
+                    <div className='report-header'>Apagar</div>,
+                    <div className='report-header'>Gerar Relatorio</div>
+                ]
+            )
+        }
+    }
+
+    function addReportUpdateDeleteIcons(count, key, products){
+
+        if (userRole === 'operacional'){
+            return ([
+                    <li >
+                        <i className="bi bi-pencil" onClick={updateProduct} id={`${products[key].Key}`}/>
+                    </li>,  
+                    <li id={`delete.${count}.${products[key].Key}`} data-toggle="modal" data-target={`#exampleModal${count}`}>
+                        <i className="bi bi-trash" />
+                    </li>,
+                    <li id={`${count}.${key}`}>
+                        <i className="bi bi-file-earmark-arrow-down" style={{fontSize: '1.3rem',color: 'blue'}} onClick={createPDF} id={`${key}`} />   
+                    </li>
+            ])
+        }
+        return []
+    } 
+
     function buildTable(){
         
         var values = []
@@ -181,21 +235,7 @@ function Product (){
                             <li >
                                 {products[key].Status}
                             </li>
-                            <li id={`${count++}.${key}`} >
-                                  <i className="bi bi-pencil" onClick={updateProduct} id={`${products[key].Key}`}/>
-                            </li>
-                            <li id={`delete.${count}.${products[key].Key}`} data-toggle="modal" data-target={`#exampleModal${count}`}>
-                                 <i className="bi bi-trash" />
-                            </li>
-                            <li id={`${count}.${key}`}>
-                                        <i className="bi bi-file-earmark-arrow-down" style={{
-                                                fontSize: '1.3rem',
-                                                color: 'blue'
-                                            }}
-                                            onClick={createPDF}
-                                            id={`${key}`}
-                                        />   
-                                    </li>
+                            {addReportUpdateDeleteIcons(count, key, products)}
                         </ul>
                     </div>
                 </div>
@@ -227,19 +267,7 @@ function Product (){
             )
             }
         }
-
-
-        function add(e){
-            history.push({
-                pathname: '/addproducts',
-                search: `?key=${document.URL.split('/')[3].split('=')[1]}`,
-            })
-        }
-
-        function back(e){
-            window.history.back()
-        }
-
+        
         return( 
         <div className='product-container'
         >
@@ -248,7 +276,7 @@ function Product (){
                                                          marginRight: '20px'
                 }} onClick={back}/>
                 <input type='tex' className="form-control" onChange={searchProduct} id="search" aria-describedby="emailHelp" placeholder="Procurar.."/>
-                <button type="button" className="btn btn-light" id='addbutton' onClick={add}>Adicionar</button>
+                {enablePrductAddButton()}
             </div>
             
             <div className='table-container'>
@@ -256,10 +284,8 @@ function Product (){
                     <div className='report-header'>Area</div>
                     <div className='report-header'>Nome do Producto</div>
                     <div className='report-header'>Estado</div>
-                    <div className='report-header'>Actualizar</div>
-                    <div className='report-header'>Apagar</div>
-                    <div className='report-header'>Gerar Relatorio</div>
-                </div>
+                    {addMoreColumnsToTable()}
+                 </div>
                 {values}
             </div>
         </div>

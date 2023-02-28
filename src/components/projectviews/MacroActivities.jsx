@@ -13,6 +13,7 @@ function MacroActivity(){
     const [keys, setKeys ] = useState()
     const history = useHistory()
     const dbRef = ref(db)
+    const userRole = document.getElementById('role').value
 
     function getMCS(){
         get(child(dbRef, `MacroActivity`)).then((snapshot) => {
@@ -112,6 +113,69 @@ function MacroActivity(){
      
     }
 
+    function add(){
+        history.push({
+            pathname: '/addmacroactivities',
+            search: `?key=${document.URL.split('/')[3].split('=')[1]}`,
+        })
+    }
+
+    function back()
+    {
+        window.history.back()
+    }
+
+
+    function enableMcsAddButton(){
+        
+        if (userRole === 'operacional')
+            return (
+                <button type="button" className="btn btn-light" id='addbutton' onClick={add}>Adicionar</button>
+            )
+        
+        return []
+    }
+
+    function addColumnsToTable(){
+
+        if (userRole === 'operacional'){
+            return (
+                [
+                    <div className='report-header'>Actualizar</div>,
+                    <div className='report-header'>Apagar</div>,
+                    <div className='report-header'>Gerar Relatorio</div>
+                ]
+            )
+        }
+        return (
+            []
+        )
+    }
+
+    function addReportUpdateDeleteButtons(count, key){
+
+        if (userRole === 'operacional'){
+            return (
+                [
+                    <li >
+                        <i className="bi bi-pencil" id={`${key}`} onClick={updateMacroActivities}/>
+                    </li>,
+                    <li id={`delete.${count}.${key}`} >
+                        <i className="bi bi-trash"   data-toggle="modal" data-target={`#exampleModal${key}` }/>
+                    </li>,
+
+                    <li>
+                        <i className="bi bi-file-earmark-arrow-down" style={{fontSize: '1.3rem',color: 'blue' }}
+                            onClick={createMcsPDF}
+                            id={`${key}`}
+                        />   
+                    </li>
+                ]
+            )
+        }
+    }
+
+
     function buildTableforMcs(){
     
         var values = []
@@ -133,22 +197,7 @@ function MacroActivity(){
                                         <li id={`${count++}.${macroActivities[key].Key}`} onClick={handleButtonEvent}>
                                             {macroActivities[key].Name}
                                         </li>
-                                        <li >
-                                            <i className="bi bi-pencil" id={`${key}`} onClick={updateMacroActivities}/>
-                                        </li>
-                                        <li id={`delete.${count}.${key}`} >
-                                            <i className="bi bi-trash"   data-toggle="modal" data-target={`#exampleModal${key}` }/>
-                                        </li>
-                                        <li id={`${count + 1}.${key}`}>
-                                        <i className="bi bi-file-earmark-arrow-down" style={{
-                                                fontSize: '1.3rem',
-                                                color: 'blue'
-                                            }}
-                                            onClick={createMcsPDF}
-                                            id={`${key}`}
-                                        />   
-                                    </li>
-                       
+                                        {addReportUpdateDeleteButtons(count, key)}
                                     </ul>
                                 </div>
                             </div>
@@ -182,17 +231,6 @@ function MacroActivity(){
             
         }
 
-        function add(){
-            history.push({
-                pathname: '/addmacroactivities',
-                search: `?key=${document.URL.split('/')[3].split('=')[1]}`,
-            })
-        }
-
-        function back()
-        {
-            window.history.back()
-        }
 
         return( 
         <div>
@@ -201,15 +239,13 @@ function MacroActivity(){
                                                          marginRight: '20px'
                 }} onClick={back}/>
                 <input type='tex' onChange={searchMcs} className="form-control" id="search" aria-describedby="emailHelp" placeholder="Procurar.."></input>
-                <button type="button" className="btn btn-light" id='addbutton' onClick={add}>Adicionar</button>
+                {enableMcsAddButton()}
             </div>
            
             <div className='table-container'>
                 <div className='header-container'>
                     <div className='report-header'>Nome da Macro Actividade</div>
-                    <div className='report-header'>Actualizar</div>
-                    <div className='report-header'>Apagar</div>
-                    <div className='report-header'>Gerar Relatorio</div>
+                    {addColumnsToTable()}
                 </div>
                     {values}
             </div>
