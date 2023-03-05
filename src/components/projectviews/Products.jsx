@@ -97,7 +97,6 @@ function Product (){
 
     function searchProduct(e){
         
-        let a = []
         if (e.target.value === ''){
             getProduct()
         }

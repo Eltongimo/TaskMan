@@ -2,7 +2,6 @@ import React from 'react'
 import {db} from '../database/DatabaseHelper'
 import {useState, useEffect} from 'react'
 import { child, get, ref } from "firebase/database"
-import { useHistory } from 'react-router-dom/cjs/react-router-dom.min'
 import ActivityPDF from '../ReportsPDF/ActivityPDF'
 
 function Reports(){
@@ -12,21 +11,12 @@ function Reports(){
     const [products, setProducts] = useState()
     const [projects, setProjects ] = useState()
     const [wholeData, setWholeData] = useState({})
-    const [rows, setRows ] = useState()
     const dbRef = ref(db)
 
     function getProducts(){
         get(child(ref(db), 'Product')).then( snapshot => {
             if (snapshot.exists()){
                 setProducts(snapshot.val())
-            }
-        })
-    }
-
-    function getMacroActivities(){
-        get(child(ref(db), 'MacroActivity')).then( snapshot => {
-            if (snapshot.exists()){
-                setMacroActivities(snapshot().val())
             }
         })
     }
@@ -85,7 +75,6 @@ function Reports(){
     function getActivities(mcs){
 
         let a = []
-        let count = 0
         for (let index in activities.acts){
             if (mcs.Key === activities.acts[index].MacroActivityKey){
                 a.push(activities.acts[index])

@@ -10,11 +10,11 @@ function UpdateMacroActivity(){
     const [macroActivity, setMacroActivity] = useState({
         Key: uuidv4(),
         Name: '',
-        ProductKey: document.URL.split('=')[1]
+        ProductKey: productKey
     })
 
     useEffect( () => {
-        get(child(dbRef, `MacroActivity/${document.URL.split('=')[1]}`)).then((snapshot) => {
+        get(child(dbRef, `MacroActivity/${productKey}`)).then((snapshot) => {
             if (snapshot.exists()){
                 setMacroActivity(snapshot.val())
             }
@@ -31,7 +31,7 @@ function UpdateMacroActivity(){
     
     function updateMacroAcivity(e){
 
-        update(child(dbRef, `MacroActivity/${document.URL.split('=')[1]}`), macroActivity).then(() => {
+        update(child(dbRef, `MacroActivity/${productKey}`), macroActivity).then(() => {
             alert('Macro Actividade Actualizada com sucesso ')
         }).catch(() => {
             alert('Erro ao actualizar a Macro Actividade ')

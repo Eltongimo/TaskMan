@@ -1,7 +1,7 @@
 import { useEffect,useState } from "react"
 import React from 'react'
 import {db} from '../database/DatabaseHelper'
-import { child, get, getDatabase, ref, remove} from "firebase/database"
+import { child, get, ref, remove} from "firebase/database"
 import { useHistory } from 'react-router-dom/cjs/react-router-dom'
 import './Users.css'
 
@@ -9,7 +9,6 @@ function Users(){
 
     const [users, setUsers]  = useState()
     const history = useHistory()
-    const [projects, setProjects] = useState([])
     const dbRef = ref(db)
 
     useEffect( () => {

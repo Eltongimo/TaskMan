@@ -15,12 +15,27 @@ function ShowDashboard(){
     const [activities, setActivities] = useState()
     const dbRef = ref(db)
     const userRole = document.getElementById('role').innerHTML
+    const userProjects = document.getElementById('userprojects').innerHTML.split(';')
 
     function getProject(){
 
         get(child(dbRef, 'Project'),[]).then(snapshot => {
             if (snapshot.exists()){
-                setProjects(snapshot.val())
+                let a = {}
+
+                if (userRole !== 'operacional'){
+                    
+                    for (let index in userProjects){
+                        for (let key in snapshot.val()){
+                            if ( userProjects[index] === snapshot.val()[key].ProjectName){
+                                a[key] = snapshot.val()[key]
+                            }
+                        }
+                    }
+                }else{
+                    a = snapshot.val()
+                }
+                setProjects(a)
             }
         })
         get(child(dbRef, 'Product'),[]).then(snapshot => {
@@ -87,7 +102,7 @@ function ShowDashboard(){
         if  (userRole === 'operacional'){
             a.push(
                 <button type='button' className='btn btn-primary report-button' id={key} onClick={generateProjectReport}>
-                    Baixar Relatorio
+                     Relatorio
                 </button>
             )
         }

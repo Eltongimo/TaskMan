@@ -1,13 +1,12 @@
 import React, { useEffect } from 'react'
 import { useState,  } from 'react'
 import {db} from '../database/DatabaseHelper'
-import { child, get, getDatabase, ref, remove} from "firebase/database"
+import { child, get, ref, remove} from "firebase/database"
 import { useHistory } from 'react-router-dom/cjs/react-router-dom'
 
 function ShowLats(){
 
     const [lats, setLats] = useState()
-    const [latKeys, setLatKeys] = useState()
     const [projects, setProjects] = useState()
     const dbRef = ref(db)
     const history = useHistory()

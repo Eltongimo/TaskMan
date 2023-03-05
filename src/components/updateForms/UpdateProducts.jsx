@@ -2,8 +2,7 @@ import React from 'react'
 import { useState } from 'react'
 import { useEffect } from 'react'
 import {db} from '../database/DatabaseHelper'
-import {set,ref,get,child,update} from 'firebase/database'
-import {v4 as uuidv4} from 'uuid';
+import {ref,get,child,update} from 'firebase/database'
 
 function UpdateProduct(){
 

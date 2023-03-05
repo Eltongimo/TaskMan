@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import {db} from '../database/DatabaseHelper'
-import { child, get, getDatabase, ref, remove } from "firebase/database"
+import { child, get, ref, remove } from "firebase/database"
 import './Projects.css'
 import { useHistory } from 'react-router-dom/cjs/react-router-dom'
 import { useState } from 'react'
@@ -11,36 +11,19 @@ function Projects (){
     const history = useHistory()
     const dbRef = ref(db)
     const userRole = document.getElementById('role').value
-    const userProjects = document.getElementById('userprojects').innerHTML
-    const [user, setUser] = useState({})
-     
-    function getUser(username){
-
-        get(child(dbRef, 'User')).then(snapshot => {
-            if (snapshot.exists()){
-                for (let key in snapshot.val()){
-                    if (snapshot.val()[key].Username === username){
-                        setUser(snapshot.val()[key])
-                        break
-                    }
-                }
-            }
-        })
-        return user
-    }
+    const userProjects = document.getElementById('userprojects').innerHTML.split(';')
 
     function getProject(){
 
         get(child(dbRef, `Project`)).then((snapshot) => {
             let a = {}
-            const pjs = document.getElementById('userprojects').innerHTML.split(';')
 
             if (snapshot.exists())
             {
                 for (let key in snapshot.val()){
                    if (userRole !== 'operacional' ){
-                        for (let uKey in pjs){
-                            if (snapshot.val()[key].ProjectName === pjs[uKey]){
+                        for (let uKey in userProjects){
+                            if (snapshot.val()[key].ProjectName === userProjects[uKey]){
                                 a[key] = snapshot.val()[key]
                             }    
                         }
@@ -70,11 +53,6 @@ function Projects (){
 
 
     function handleButtonEvent(e){
-       
-         const userProject = document.getElementById('userprojects').innerHTML
-         
-         const clickedProject = document.getElementById(e.target.id).innerHTML
-
          history.push({
             pathname: '/products',
             search: `?key=${e.target.id}`,
@@ -131,7 +109,6 @@ function Projects (){
     }
  
     useEffect( () => {
-        const u = document.getElementById('welcome').innerHTML.split(',')[0]
         getProject()    
     },[])
 

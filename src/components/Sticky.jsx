@@ -48,7 +48,7 @@ function Sticky(props){
         if (userRole === 'operacional'){
             a.push(
                 <button type='button' className='btn btn-primary'>
-                    Baixar Relatorio da LAT
+                    Relatorio
                  </button>
             )
         }

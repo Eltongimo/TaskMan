@@ -2,8 +2,7 @@ import React from 'react'
 import './NewsLetter.css'
 import {db} from '../database/DatabaseHelper'
 import {useState, useEffect} from 'react'
-import { child, get, ref,remove,update, } from "firebase/database"
-import TaskRow from '../TaskRow'
+import { child, get, ref,remove } from "firebase/database"
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min'
 import { getDownloadURL, listAll, ref as storageRef } from 'firebase/storage'
 import {Storage} from '../database/Storage'
@@ -70,7 +69,6 @@ function NewsLetter (){
          
          var values  = []     
          let count = 0
-         let index = 0
  
          if (newsLetter !== null ){
              for(let key in newsLetter){
@@ -125,7 +123,6 @@ function NewsLetter (){
          }
 
          function add(e){
-            const key = e.target.id.split('.')
             history.push({
                 pathname: '/addnewsletter',
               })

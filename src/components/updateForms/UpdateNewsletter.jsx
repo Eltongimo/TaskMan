@@ -1,19 +1,10 @@
 import React, { useEffect } from 'react'
 import {useState} from 'react'
-import {v4 as uuidv4} from 'uuid';
-import {child, ref,set,get,update, remove} from 'firebase/database'
+import {child, ref,set,get, remove} from 'firebase/database'
 import {db} from '../database/DatabaseHelper'
-import {Storage} from '../database/Storage'
-import { uploadBytes, ref as refStorage } from 'firebase/storage'
 
 function UpdateNewsLetter(){
-    const [newsLetter, setNewsLetter] = useState({
-        Key: uuidv4(),
-        Title: '',
-        Body: '',
-        File: null 
-    })
-
+    
     const dbRef = ref(db)
 
     const newsletterKey = document.URL.split('=')[1]
@@ -81,8 +72,6 @@ function UpdateNewsLetter(){
         let a = []
 
         formElements.map((element, index) => {
-
-            console.log(element)
 
             a.push( <div key={index} style={{border: 'solid #ccc 0.1px', marginBottom: '10px'}}>
 

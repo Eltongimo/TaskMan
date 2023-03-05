@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 import {v4 as uuidv4} from 'uuid';
-import {ref,set,child,get,update} from 'firebase/database'
+import {ref,child,get,update} from 'firebase/database'
 import {db} from '../database/DatabaseHelper'
 import { useEffect } from 'react'
 

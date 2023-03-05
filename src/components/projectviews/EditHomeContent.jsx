@@ -46,7 +46,7 @@ function EditHomeContent(){
             setPomar({
                 Key: aboutPomar.Key,
                 About: aboutPomar.About,
-                File: e.target.files
+                File: e.target.files[0]
             })
     }
 

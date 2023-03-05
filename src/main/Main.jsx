@@ -4,7 +4,6 @@ import Footer from '../components/Footer'
 import Board from '../components/Board'
 import Menu from '../components/Menu'
 import './Main.css'
-import Login from '../components/loginpage/Login'
 
 function Main() {
     return (

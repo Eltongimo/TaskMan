@@ -1,7 +1,7 @@
 import React from 'react'
 import {db} from '../database/DatabaseHelper'
 import {useState, useEffect} from 'react'
-import { child, get, getDatabase, ref, remove,update } from "firebase/database"
+import { child, get,ref, remove } from "firebase/database"
 import '../TaskRow.css'
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min'
 import MacroActivityPDF from '../ReportsPDF/MacroActivityPDF'
@@ -10,7 +10,6 @@ function MacroActivity(){
     
     const [macroActivities, setMacroActivities] = useState({mcs: []})
     const [activities, setActivites ] = useState()
-    const [keys, setKeys ] = useState()
     const history = useHistory()
     const dbRef = ref(db)
     const userRole = document.getElementById('role').value

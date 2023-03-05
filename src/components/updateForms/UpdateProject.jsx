@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import {db} from '../database/DatabaseHelper'
-import { ref,set,get,update,child } from "firebase/database"
+import { ref,get,update,child } from "firebase/database"
 import { useState } from 'react'
 
 function UpdateProject(){

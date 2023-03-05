@@ -32,7 +32,7 @@ function AddNewsLetter(){
         
         for (let index in formElements){
             if (formElements[index].File !== null)
-                uploadBytes( refStorage(Storage,`Newsletter/${key}/${uuidv4()}`),formElements[index].File)
+                uploadBytes( refStorage(Storage,`Newsletter/${key}/${index}`),formElements[index].File)
         }
 
         set(ref(db, 'NewsLetter/' + key), formElements).then(
@@ -69,10 +69,6 @@ function AddNewsLetter(){
     function addField(e){
         let element =  {Title: '', Body: '', Imagem: null}
         setFormElements([...formElements,element])
-    }
-
-    function setFile(e){
-
     }
     
     return (
