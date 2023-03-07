@@ -71,8 +71,9 @@ function NewsLetter (){
          let count = 0
  
          if (newsLetter !== null ){
-             for(let key in newsLetter){
-                for (let innerKey in newsLetter[key]){
+             for(let key in newsLetter.Newsletters){
+                console.log(newsLetter)
+                for (let innerKey in newsLetter.Newsletters[key]){
                         values.push(
                             <button   style={{background: 'transparent',
                                            border: 'none',
@@ -85,7 +86,7 @@ function NewsLetter (){
                                     <button type='button' className='btn btn-secondary' onClick={updateNewsletter} id={key} > Editar </button>
                                </div>
                                    <div className="card-body">
-                                       <h5 className="card-title" style={{textAlign: 'justify'}}>{newsLetter[key][innerKey].Title}</h5>
+                                       <h5 className="card-title" style={{textAlign: 'justify'}}>{newsLetter[key].GeneralTitle}</h5>
                                        <p className="card-text" style={{textAlign: 'justify'}}>
                                            {newsLetter[key][innerKey].Body.split(" ").splice(0, 20).join(" ")} ...
                                        </p>

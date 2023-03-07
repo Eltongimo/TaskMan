@@ -8,12 +8,7 @@ import {Storage} from '../database/Storage'
 import { uploadBytes, ref as refStorage } from 'firebase/storage'
 
 function AddNewsLetter(){
-    const [newsLetter, setNewsLetter] = useState({
-        Key: uuidv4(),
-        Title: '',
-        Body: '',
-        File: null 
-    })
+    const [generalTitle, setGeneralTitle] = useState('')
 
     const [formElements, setFormElements ] = useState([
         {Title:  '', Body: '', File: null },
@@ -26,16 +21,13 @@ function AddNewsLetter(){
     function saveNewsLetter(e){
         
         const key = uuidv4()
-        let count = 0
-
-        console.log(formElements)
         
         for (let index in formElements){
             if (formElements[index].File !== null)
                 uploadBytes( refStorage(Storage,`Newsletter/${key}/${index}`),formElements[index].File)
         }
 
-        set(ref(db, 'NewsLetter/' + key), formElements).then(
+        set(ref(db, 'NewsLetter/' + key), {GeneralTitle: generalTitle , Newsletters: formElements}).then(
             ()=> {
                 alert('Newsletter adicionado com sucesso')
             }
@@ -70,6 +62,10 @@ function AddNewsLetter(){
         let element =  {Title: '', Body: '', Imagem: null}
         setFormElements([...formElements,element])
     }
+
+    function addGeneralTitle(e){
+        setGeneralTitle(e.target.value)
+    }
     
     return (
         <div>
@@ -85,6 +81,9 @@ function AddNewsLetter(){
             </div>
             <div id='newsletter-content'>
                 <form>
+                <label for="exampleFormControlTextarea1" style={{'font-weight': '400'}}>Titulo Geral</label>
+                <input type="text" name='generalText' className="form-control" onChange={addGeneralTitle} />
+                    
                     {formElements.map((element, index) => {
                        return ( <div key={index} style={{border: 'solid #ccc 0.1px', marginBottom: '10px'}}>
             

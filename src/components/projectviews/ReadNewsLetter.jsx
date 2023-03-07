@@ -7,11 +7,9 @@ import {Storage} from '../database/Storage'
 
 function ReadNewsNetter(){
 
-    const [newsletter, setnewsLetter] = useState({})
-    const [imageList, setImageList] = useState([])
+    const [newsletter, setnewsLetter] = useState()
     const newsletterKey = document.URL.split('=')[1]
     const listOfImages = storageRef(Storage, `Newsletter/${newsletterKey}`)
-    const [number, setNumber ] = useState(0)
 
     useEffect( () => {
         const dbRef = ref(db)
@@ -20,12 +18,13 @@ function ReadNewsNetter(){
             let a = 0
             response.items.forEach(item => getDownloadURL(item).then(url =>{
             
-               if (url !== undefined || url !== null ){
+               if (url !== undefined && url !== null ){
 
                 let divImage = document.getElementsByClassName('images')
 
                 if (divImage !== null && divImage !== undefined )
-                    divImage[a++].appendChild(insertImage(url))
+                    if( a < divImage.length )
+                        divImage[a++].appendChild(insertImage(url))
                }}))
         })
     
@@ -37,7 +36,6 @@ function ReadNewsNetter(){
             img.src = url
 
             return img
-            //  <img src={imageList[key]} className="card-img-top" alt="sem imagem para carregar"/>
         }
 
         get(child(dbRef, `NewsLetter/${newsletterKey}`)).then((snapshot) => {
@@ -55,19 +53,20 @@ function ReadNewsNetter(){
     function buildNewsLetter(){
         let a = []
 
+        a.push(<div > </div>)
         for(let key in newsletter){
-            
-            for (let innerKey in newsletter[key]){
-                a.push(<div>
+
+            for (let innerKey in newsletter[key].Newsletters){
+                a.push(<div id={key}>
                     <div className='title' style={{fontWeight: '500',marginTop: '15px' }}>
-                        {newsletter[key].Title}
+                        {newsletter[key].NewsLetters[innerKey].Title}
                     </div>
 
                     <div className='body'>
-                        {newsletter[key].Body}
+                        {newsletter[key].NewsLetters[innerKey].Body}
                     </div>
-                    <div className='images'  id={newsletter[key].Key} style={{marginTop: '20px'}}>
-                        {console.log(newsletter[key])}
+                    <div className='images' style={{marginTop: '20px'}}>
+                       
                     </div>
                 </div>)
                 break
