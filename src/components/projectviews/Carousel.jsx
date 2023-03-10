@@ -7,20 +7,22 @@ import Carousel from 'react-elastic-carousel';
 import ReactDOM from "react-dom";
 import Item from "./Item";
 import "./Carousel.css";
+import * as Dropbox from 'dropbox';
 
 function CarouselHome(){
 
     const [images, setImages] = useState([])
     const listOfImages = storageRef(Storage, 'HomeContent')
-
     useEffect(()=> {
-        listAll(listOfImages).then((response) => {
+
+    
+    /*   listAll(listOfImages).then((response) => {
          let urls = []
          response.items.forEach(item => getDownloadURL(item).then(url =>{
              urls.push(url)
          }))
          setImages(urls)
-      })
+      })*/
 
     },[])
 

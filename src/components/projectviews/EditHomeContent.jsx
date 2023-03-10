@@ -8,11 +8,13 @@ import { child, get } from "firebase/database"
 import { getDownloadURL, listAll, ref as storageRef } from 'firebase/storage'
 import { uploadBytes, ref as refStorage } from 'firebase/storage'
 import {Storage} from '../database/Storage'
+import DropboxChooser from 'react-dropbox-chooser'
 
 function EditHomeContent(){
     const [imageList, setImageList] = useState([])
     const listOfImages = storageRef(Storage, 'HomeContent/')
     const [image, setImages] = useState({})
+    const dbpAppKEY = 'mtwt18ujqpfy509'
 
     const [aboutPomar, setPomar] = useState({
             Key: uuidv4(),
@@ -77,7 +79,7 @@ function EditHomeContent(){
     }
 
     return (
-        <div className='edit-container'>
+        <div className='edit-container' id='homeContainer'>
               <div className='back-icon'>
                     <i className="bi bi-arrow-left" style={{cursor: 'pointer',
                                                                     marginRight: '20px'
@@ -97,8 +99,10 @@ function EditHomeContent(){
             </div>
             <div className='upload-pic'>
                 <label for="exampleInputEmail1">Carregar Imagem</label>
-                <input type="file" onChange={setFile} className="form-control" aria-describedby="emailHelp" />
-            </div>
+                <DropboxChooser appKey={dbpAppKEY}></DropboxChooser>
+                
+             {/*   <input type="file" onChange={setFile} className="form-control" aria-describedby="emailHelp" />
+           */} </div>
             <div className='submit-info'>
                 <button className='btn btn-primary' onClick={submit}>
                     Gravar Imagem
