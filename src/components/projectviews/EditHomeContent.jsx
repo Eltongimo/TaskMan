@@ -8,22 +8,21 @@ import { child, get } from "firebase/database"
 import { getDownloadURL, listAll, ref as storageRef } from 'firebase/storage'
 import { uploadBytes, ref as refStorage } from 'firebase/storage'
 import {Storage} from '../database/Storage'
-import DropboxChooser from 'react-dropbox-chooser'
 
 function EditHomeContent(){
     const [imageList, setImageList] = useState([])
     const listOfImages = storageRef(Storage, 'HomeContent/')
     const [image, setImages] = useState({})
-    const dbpAppKEY = 'mtwt18ujqpfy509'
 
     const [aboutPomar, setPomar] = useState({
             Key: uuidv4(),
             About: ''}
         )
-        
+    
     useEffect(()=>{
+
         const dbRef = ref(db)
-        
+
         listAll(listOfImages).then((response) => {
             let urls = []
             response.items.forEach(item => getDownloadURL(item).then(url =>{
@@ -60,13 +59,13 @@ function EditHomeContent(){
         )
   
     }
-    function submit(e){
 
+    function submit(e){
         if (image !== null){
             uploadBytes( refStorage(Storage,`HomeContent/${aboutPomar.Key}`),image)
             .then(() => {
                 alert('Imagem adicionada com Sucesso')
-            })
+            }) 
         }
     }
 
@@ -78,6 +77,12 @@ function EditHomeContent(){
         setImages(e.target.files[0])
     }
 
+    function handleSucess(e)
+    {
+        alert('Imagem adicionada com sucesso')
+        console.log(e)
+    }
+
     return (
         <div className='edit-container' id='homeContainer'>
               <div className='back-icon'>
@@ -87,7 +92,7 @@ function EditHomeContent(){
                         <p>Modificar Conteudo do Home</p>
               </div> 
               
-            <div className='about-pomar'>
+            <div className='about-pomar' id='about-pm'>
                 <label for="exampleInputEmail1">Sobre o Pomar</label>
                 <textarea rows='10' type='text' onChange={setAboutPomar} 
                     className="form-control" aria-describedby="emailHelp"  value={aboutPomar.About}/>
@@ -99,10 +104,7 @@ function EditHomeContent(){
             </div>
             <div className='upload-pic'>
                 <label for="exampleInputEmail1">Carregar Imagem</label>
-                <DropboxChooser appKey={dbpAppKEY}></DropboxChooser>
-                
-             {/*   <input type="file" onChange={setFile} className="form-control" aria-describedby="emailHelp" />
-           */} </div>
+            </div>
             <div className='submit-info'>
                 <button className='btn btn-primary' onClick={submit}>
                     Gravar Imagem

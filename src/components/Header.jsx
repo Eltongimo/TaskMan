@@ -7,7 +7,7 @@ import logo from '../assets/logo/logo.png'
 function Header() {
   
      return (
-               <header className='header'>
+               <header className='header' id='header'>
                     <div className='search-input'>
                          <div class="form-outline">
                               <input type="search" id="form1" class="form-control" placeholder="Search..."/>

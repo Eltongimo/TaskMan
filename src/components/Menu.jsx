@@ -29,7 +29,7 @@ function Menu(props) {
 
     }
       a.push(
-            <div className='navigation'>
+            <div className='navigation' id='menu'>
                 <nav >
                     <ul>
                         <li className='home'>

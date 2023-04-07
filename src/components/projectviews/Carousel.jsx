@@ -3,11 +3,10 @@ import { useState,useEffect } from 'react'
 import { getDownloadURL, listAll, ref as storageRef } from 'firebase/storage'
 import {Storage} from '../database/Storage'
 import { child, get, ref } from "firebase/database"
-import Carousel from 'react-elastic-carousel';
+//import Carousel from 'react-elastic-carousel';
 import ReactDOM from "react-dom";
 import Item from "./Item";
 import "./Carousel.css";
-import * as Dropbox from 'dropbox';
 
 function CarouselHome(){
 
@@ -16,13 +15,13 @@ function CarouselHome(){
     useEffect(()=> {
 
     
-    /*   listAll(listOfImages).then((response) => {
+       listAll(listOfImages).then((response) => {
          let urls = []
          response.items.forEach(item => getDownloadURL(item).then(url =>{
              urls.push(url)
          }))
          setImages(urls)
-      })*/
+      })
 
     },[])
 
@@ -36,7 +35,7 @@ function CarouselHome(){
     ];
     
     function buildCarouselImages(){
-        let a = []
+        let a = []/*
         images.map((element,index) => {
             a.push( <Item> 
                         <img src={`${element}`} data-toggle="modal" data-target={`#exampleModal${index}`} />
@@ -50,30 +49,20 @@ function CarouselHome(){
                             </div>
                         </div>
                     </Item>)
-        })
+        })*/
         return a
     }
     return (
     <>
         <div className="App">
-        <Carousel breakPoints={breakPoints}
+   {/*     <Carousel breakPoints={breakPoints}
             transitioning={true}           
         >
             {buildCarouselImages()}
-        </Carousel>
+    </Carousel> */}
         </div>
     </>
-    )
-
-    
-    /*
-    return( <Carousel>
-                {images.map((item) => {
-                    {console.log(item)}
-                    <img src={`${item}`} alt='No image to load'/>
-                })}
-            </Carousel>
-    )*/
+    )    
 }
 
 export default CarouselHome
