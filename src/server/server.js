@@ -1,22 +1,25 @@
-const express = require('express');
-const cors = require('cors');
+const express = require('express')
+const app = express()
+const cors = require('cors')
 
-const app = express();
-
-// Define your API endpoint
-app.get('/data', (req, res) => {
-  const data = { foo: 'bar', baz: 'qux' };
-  res.json(data);
+app.use((req, res, next) => {
+  res.header("Access-control-Allow-Origin", "*");
+  res.header("Access-control-Allow-Methods", "GET,PUT,POST,DELETE");
+  res.header("Access-control-Allow-Headers", "x-PINGOTHER,Content-Type,Authorization");
+  app.use(cors());
+  next();
 });
 
-app.post('/data', (req,res) => {
-  console.log(req)
- res.json('form submitted')
+
+
+app.post("/api", async (req, res) => {
+    res.json({message: "Hello, you can post now!"})
+});
+
+app.get("/api", async (req, res) => {
+  res.json({message: 'Hello, you can get now!'})
+});
+
+app.listen(3002, () => {
+  console.log("Server is running on PORT 3002")
 })
-
-// Start the server
-const port = process.env.PORT || 3002;
-
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
