@@ -62,13 +62,6 @@ function NewsLetterHome (){
             }
          }
 
-         function add(e){
-            const key = e.target.id.split('.')
-            history.push({
-                pathname: '/addnewsletter',
-              })
-         }
-
          return( 
          <div className='table-container'>
             {values}

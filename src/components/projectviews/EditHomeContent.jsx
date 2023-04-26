@@ -8,6 +8,7 @@ import { child, get } from "firebase/database"
 import { getDownloadURL, listAll, ref as storageRef } from 'firebase/storage'
 import { uploadBytes, ref as refStorage } from 'firebase/storage'
 import {Storage} from '../database/Storage'
+import axios from 'axios'
 
 function EditHomeContent(){
     const [imageList, setImageList] = useState([])
@@ -60,6 +61,7 @@ function EditHomeContent(){
   
     }
 
+
     function submit(e){
         if (image !== null){
             uploadBytes( refStorage(Storage,`HomeContent/${aboutPomar.Key}`),image)
@@ -106,6 +108,8 @@ function EditHomeContent(){
                 <label for="exampleInputEmail1">Carregar Imagem</label>
             </div>
             <div className='submit-info'>
+                 <input type="file" onChange={setFile} className="form-control" aria-describedby="emailHelp" />
+
                 <button className='btn btn-primary' onClick={submit}>
                     Gravar Imagem
                 </button>

@@ -47,10 +47,12 @@ function NewsLetter (){
      }
 
      function updateNewsletter(e){
+        alert("Error por favor verifique a conexão com a Internet...")
+        /*
         history.push({
             pathname: '/updatenewsletter',
             search: `?key=${e.target.id}`
-        })
+        }) */
      }
 
      function deleteNewsLetter(e){
@@ -64,6 +66,7 @@ function NewsLetter (){
 
         document.getElementById(`closemodal${e.target.id}`).click()
      }
+     
  
      function buildTable(){
          
@@ -71,9 +74,10 @@ function NewsLetter (){
          let count = 0
  
          if (newsLetter !== null ){
-             for(let key in newsLetter.Newsletters){
-                console.log(newsLetter)
-                for (let innerKey in newsLetter.Newsletters[key]){
+            for(let key in newsLetter){
+                
+                for (let innerKey in newsLetter[key].NewsLetters){
+                    
                         values.push(
                             <button   style={{background: 'transparent',
                                            border: 'none',
@@ -84,11 +88,11 @@ function NewsLetter (){
                                <div style={{display: 'flex',flexDirection: 'row',width: '100%',padding: '10px'}}>
                                     <button type='button' className='btn btn-danger' data-toggle="modal" data-target={`#exampleModal${key}`} > Apagar </button> 
                                     <button type='button' className='btn btn-secondary' onClick={updateNewsletter} id={key} > Editar </button>
-                               </div>
+                                </div>
                                    <div className="card-body">
                                        <h5 className="card-title" style={{textAlign: 'justify'}}>{newsLetter[key].GeneralTitle}</h5>
                                        <p className="card-text" style={{textAlign: 'justify'}}>
-                                           {newsLetter[key][innerKey].Body.split(" ").splice(0, 20).join(" ")} ...
+                                           {newsLetter[key].NewsLetters[innerKey].Body.split(" ").splice(0, 20).join(" ")} ...
                                        </p>
                                        <a className="btn btn-primary" onClick={seeMore} id={`${count++}.${key}`}>Ver Mais</a>
                                    </div>
