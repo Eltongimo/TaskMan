@@ -13,7 +13,7 @@ function ReadNewsNetter(){
 
     useEffect( () => {
         const dbRef = ref(db)
-
+/*
         listAll(listOfImages).then((response) => {
             let a = 0
             response.items.forEach(item => getDownloadURL(item).then(url =>{
@@ -27,17 +27,7 @@ function ReadNewsNetter(){
                         divImage[a++].appendChild(insertImage(url))
                }}))
         })
-    
-        function insertImage(url){
-    
-            let img = document.createElement('img')
-
-            img.className = 'card-img-top'
-            img.src = url
-
-            return img
-        }
-
+  */  
         get(child(dbRef, `NewsLetter/${newsletterKey}`)).then((snapshot) => {
                 if (snapshot.exists()){
                     setnewsLetter(snapshot.val())
@@ -53,26 +43,24 @@ function ReadNewsNetter(){
     function buildNewsLetter(){
         let a = []
 
-        a.push(<div > </div>)
-        for(let key in newsletter){
 
-            for (let innerKey in newsletter[key].Newsletters){
-                a.push(<div id={key}>
+        if (newsletter !== null && newsletter !== undefined){
+
+            for (let innerKey in newsletter.NewsLetters){
+                a.push(<div id={innerKey}>
                     <div className='title' style={{fontWeight: '500',marginTop: '15px' }}>
-                        {newsletter[key].NewsLetters[innerKey].Title}
+                        {newsletter.NewsLetters[innerKey].Title}
                     </div>
 
                     <div className='body'>
-                        {newsletter[key].NewsLetters[innerKey].Body}
+                        {newsletter.NewsLetters[innerKey].Body}
                     </div>
                     <div className='images' style={{marginTop: '20px'}}>
-                       
+                        <img className='card-img-top' src={newsletter.NewsLetters[innerKey].Image} alt='No Image' />
                     </div>
                 </div>)
-                break
             }
         }
-
         return a 
     }
         

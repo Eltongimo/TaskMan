@@ -6,9 +6,13 @@ import {ref,set} from 'firebase/database'
 import {db} from '../database/DatabaseHelper'
 import {Storage} from '../database/Storage'
 import { uploadBytes, ref as refStorage } from 'firebase/storage'
+import { getDownloadURL, listAll } from 'firebase/storage'
 
+                
 function AddNewsLetter(){
     const [generalTitle, setGeneralTitle] = useState('')
+    const key = uuidv4()
+    const listOfImages = refStorage(Storage, `Newsletter/${key}`)
 
     const [formElements, setFormElements ] = useState([
         {Title:  '', Body: '', File: null },
@@ -20,14 +24,24 @@ function AddNewsLetter(){
 
     function saveNewsLetter(e){
         
-        const key = uuidv4()
-        
+        let urls = []
+
         for (let index in formElements){
-            if (formElements[index].File !== null)
-                uploadBytes( refStorage(Storage,`Newsletter/${key}/${index}`),formElements[index].File)
+            if (formElements[index].File !== null){
+                uploadBytes( refStorage(Storage,`Newsletter/${key}/${index}`),formElements[index].File).then( e => {
+                    listAll(listOfImages).then((response) => {
+                        response.items.forEach(item => getDownloadURL(item).then(url =>{
+                            if ( !urls.includes(url)){
+                                formElements[index].Image = urls
+                            }
+                        }))
+                    })
+                })
+                
+            }
         }
 
-        set(ref(db, 'NewsLetter/' + key), {GeneralTitle: generalTitle , Newsletters: formElements}).then(
+        set(ref(db, 'NewsLetter/' + key), {GeneralTitle: generalTitle , NewsLetters: formElements}).then(
             ()=> {
                 alert('Newsletter adicionado com sucesso')
             }
@@ -82,7 +96,7 @@ function AddNewsLetter(){
             <div id='newsletter-content'>
                 <form>
                 <label for="exampleFormControlTextarea1" style={{'font-weight': '400'}}>Titulo Geral</label>
-                <input type="text" name='generalText' className="form-control" onChange={addGeneralTitle} />
+                <input type="text" name='generalText' className="form-control" onChange={addGeneralTitle}  style={{marginBottom: '8px'}}/>
                     
                     {formElements.map((element, index) => {
                        return ( <div key={index} style={{border: 'solid #ccc 0.1px', marginBottom: '10px'}}>
@@ -131,7 +145,7 @@ function AddNewsLetter(){
                                <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <div className="modal-body">
+                        <div classNam e="modal-body">
                         <form>
                             <div className="form-group">
                                 <label for="exampleInputEmail1">Submeter Newsletter ?</label>

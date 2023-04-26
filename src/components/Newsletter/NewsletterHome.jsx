@@ -32,13 +32,10 @@ function NewsLetterHome (){
 
          var values  = []     
          let count = 0
-         let index = 0
- 
+       
          if (newsLetter !== null && newsLetter !== undefined ){
              for(let key in newsLetter){
                 for (let innerKey in newsLetter[key].NewsLetters){
-
-                    console.log(newsLetter[key].NewsLetters)
                     values.push(
                         <
                             button   style={{background: 'transparent',
